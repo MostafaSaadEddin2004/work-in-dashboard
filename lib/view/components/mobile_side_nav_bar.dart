@@ -54,16 +54,6 @@ class _MobileSideNavBarState extends State<MobileSideNavBar> {
         isHovered: false,
         activeColor: AppColor.blue,
         unactiveColor: AppColor.primary),
-    NavBarModel(
-        title: 'Gants',
-        icon: const Icon(
-          Icons.workspace_premium_rounded,
-          color: AppColor.white,
-          size: 25,
-        ),
-        isHovered: false,
-        activeColor: AppColor.blue,
-        unactiveColor: AppColor.primary),
   ];
   final navController = Get.put(SideNavigationBarController());
   @override

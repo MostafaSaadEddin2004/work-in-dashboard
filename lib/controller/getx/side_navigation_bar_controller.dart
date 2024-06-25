@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:work_in_dashboard/view/screens/companies_screen.dart';
 import 'package:work_in_dashboard/view/screens/job_opportunities_screen.dart';
 import 'package:work_in_dashboard/view/screens/training_opportunities_screen.dart';
-import 'package:work_in_dashboard/view/screens/universiti_grants_screen.dart';
 import 'package:work_in_dashboard/view/screens/users_screend.dart';
 
 class SideNavigationBarController extends GetxController {
@@ -12,7 +11,6 @@ class SideNavigationBarController extends GetxController {
     CompaniesScreen(),
     JobOpportunitiesScreen(),
     TrainingOpportunities(),
-    UniversityGrantsScreen(),
   ];
 
   final currentIndex = 0.obs;
