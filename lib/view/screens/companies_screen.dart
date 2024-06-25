@@ -15,7 +15,6 @@ class CompaniesScreen extends StatefulWidget {
 
 class _CompaniesScreenState extends State<CompaniesScreen> {
   bool ascending = false;
-  List data = [];
   onSortColumn(columnIndex, ascending) {
     if (columnIndex == 0) {
       if (ascending) {
@@ -50,7 +49,7 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
               future: CompanyServices.getAllCompanies(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  final data = snapshot.data!;
+                  var data = snapshot.data!;
                   return PaginatedDataTable(
                     rowsPerPage: 5,
                     columnSpacing: 28.w,
@@ -70,7 +69,13 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                           hintText: 'Search a company',
                           onChanged: (value) {
                             setState(() {
-                              // myData = filterData.where((element)=> element.name.contains(value)).toList();
+                              data = value == null
+                                  ? data
+                                  : data
+                                      .where((element) => element.id
+                                          .toString()
+                                          .contains(value))
+                                      .toList();
                             });
                           },
                           wantAdd: false,
@@ -105,7 +110,7 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                     source: CompanyDataTable(companyData: data),
                   );
                 } else if (snapshot.hasData) {
-                  final data = snapshot.data!;
+                  var data = snapshot.data!;
                   return Skeletonizer(
                       child: PaginatedDataTable(
                     rowsPerPage: 5,
@@ -126,7 +131,13 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                           hintText: 'Search a companiesser',
                           onChanged: (value) {
                             setState(() {
-                              // myData = filterData.where((element)=> element.name.contains(value)).toList();
+                              data = value == null
+                                  ? data
+                                  : data
+                                      .where((element) => element.id
+                                          .toString()
+                                          .contains(value))
+                                      .toList();
                             });
                           },
                           wantAdd: false,

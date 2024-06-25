@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:work_in_dashboard/model/user_model.dart';
 
 class UserDataTable extends DataTableSource {
-  final List<UserModel>? userData;
-  UserDataTable({this.userData});
+  final List<UserModel> userData;
+  UserDataTable({required this.userData});
 
   // final _staticData = List.generate(5, (index) => {
-    
+
   // });
 
   @override
@@ -14,43 +14,43 @@ class UserDataTable extends DataTableSource {
     return DataRow(cells: [
       DataCell(
         Text(
-          userData![index].id.toString(),
+          userData[index].id.toString(),
           style: const TextStyle(fontSize: 14),
         ),
       ),
       DataCell(
         Text(
-          userData![index].username.toString(),
+          userData[index].username.toString(),
           style: const TextStyle(fontSize: 14),
         ),
       ),
       DataCell(
         Text(
-          userData![index].email.toString(),
+          userData[index].email.toString(),
           style: const TextStyle(fontSize: 14),
         ),
       ),
       DataCell(
         Text(
-          userData![index].phone.toString(),
+          userData[index].phone.toString(),
           style: const TextStyle(fontSize: 14),
         ),
       ),
       DataCell(
         Text(
-          userData![index].birthDate.toString(),
+          userData[index].birthDate.toString(),
           style: const TextStyle(fontSize: 14),
         ),
       ),
       DataCell(
         Text(
-          userData![index].gender.toString(),
+          userData[index].gender.toString(),
           style: const TextStyle(fontSize: 14),
         ),
       ),
       DataCell(
         Text(
-          userData![index].isAdmin.toString(),
+          userData[index].isAdmin.toString(),
           style: const TextStyle(fontSize: 14),
         ),
       ),
@@ -79,7 +79,7 @@ class UserDataTable extends DataTableSource {
 
   @override
   // TODO: implement rowCount
-  int get rowCount => userData!.length;
+  int get rowCount => userData.length;
 
   @override
   // TODO: implement selectedRowCount

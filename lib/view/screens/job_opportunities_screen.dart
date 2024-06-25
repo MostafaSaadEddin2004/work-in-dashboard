@@ -15,13 +15,16 @@ class JobOpportunitiesScreen extends StatefulWidget {
 
 class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
   bool ascending = false;
-  List data = [];
-  onSortColumn(columnIndex, ascending) {
+  onSortColumn(int columnIndex, bool ascending, List<dynamic> data) {
     if (columnIndex == 0) {
       if (ascending) {
-        // data.sort((a, b) => a.name.compareTo(b.name),);
+        data.sort(
+          (a, b) => a.name.compareTo(b.name),
+        );
       } else {
-        // data.sort((a, b) => b.name.compareTo(a.name),);
+        data.sort(
+          (a, b) => b.name.compareTo(a.name),
+        );
       }
     }
   }
@@ -50,7 +53,7 @@ class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
               future: JobServices.getAllJobs(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  final data = snapshot.data!;
+                  var data = snapshot.data!;
                   return PaginatedDataTable(
                     rowsPerPage: 5,
                     columnSpacing: 28.w,
@@ -70,7 +73,12 @@ class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
                           hintText: 'Search a job',
                           onChanged: (value) {
                             setState(() {
-                              // myData = filterData.where((element)=> element.name.contains(value)).toList();
+                              data = value == null
+                                  ? data
+                                  : data
+                                      .where((element) =>
+                                          element.jobTitle.contains(value))
+                                      .toList();
                             });
                           },
                           wantAdd: true,
@@ -91,7 +99,7 @@ class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
                           setState(() {
                             ascending = !ascending;
                           });
-                          onSortColumn(columnIndex, ascending);
+                          onSortColumn(columnIndex, ascending, data);
                         },
                       ),
                       DataColumn(
@@ -106,7 +114,7 @@ class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
                           setState(() {
                             ascending = !ascending;
                           });
-                          onSortColumn(columnIndex, ascending);
+                          onSortColumn(columnIndex, ascending, data);
                         },
                       ),
                       DataColumn(
@@ -161,7 +169,7 @@ class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
                     source: JobdataTable(jobData: data),
                   );
                 } else if (snapshot.hasData) {
-                  final data = snapshot.data!;
+                  var data = snapshot.data!;
                   return PaginatedDataTable(
                     rowsPerPage: 5,
                     columnSpacing: 28.w,
@@ -181,7 +189,12 @@ class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
                           hintText: 'Search a job',
                           onChanged: (value) {
                             setState(() {
-                              // myData = filterData.where((element)=> element.name.contains(value)).toList();
+                              data = value == null
+                                  ? data
+                                  : data
+                                      .where((element) =>
+                                          element.jobTitle.contains(value))
+                                      .toList();
                             });
                           },
                           wantAdd: true,
@@ -200,7 +213,7 @@ class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
                           setState(() {
                             ascending = !ascending;
                           });
-                          onSortColumn(columnIndex, ascending);
+                          onSortColumn(columnIndex, ascending, data);
                         },
                       ),
                       DataColumn(
@@ -213,7 +226,7 @@ class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
                           setState(() {
                             ascending = !ascending;
                           });
-                          onSortColumn(columnIndex, ascending);
+                          onSortColumn(columnIndex, ascending, data);
                         },
                       ),
                       DataColumn(
@@ -239,39 +252,18 @@ class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
                           'Job Title',
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {
-                          setState(() {
-                            ascending = !ascending;
-                            onSortColumn(columnIndex, ascending);
-                          });
-                        },
                       ),
                       DataColumn(
                         label: Text(
                           'Work Time',
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {
-                          setState(() {
-                            ascending = !ascending;
-                            onSortColumn(columnIndex, ascending);
-                          });
-                        },
                       ),
                       DataColumn(
                         label: Text(
                           'Actions',
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {
-                          setState(() {
-                            ascending = !ascending;
-                            onSortColumn(columnIndex, ascending);
-                          });
-                        },
                       ),
                     ],
                     source: JobdataTable(jobData: data),

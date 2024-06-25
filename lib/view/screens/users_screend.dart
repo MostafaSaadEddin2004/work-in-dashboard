@@ -15,13 +15,17 @@ class UsersScreen extends StatefulWidget {
 
 class _UsersScreenState extends State<UsersScreen> {
   bool ascending = false;
-  List data = [];
-  onSortColumn(columnIndex, ascending) {
+  List filterData = [];
+  onSortColumn(int columnIndex, bool ascending, List<dynamic> data) {
     if (columnIndex == 0) {
       if (ascending) {
-        // data.sort((a, b) => a.name.compareTo(b.name),);
+        data.sort(
+          (a, b) => a.name.compareTo(b.name),
+        );
       } else {
-        // data.sort((a, b) => b.name.compareTo(a.name),);
+        data.sort(
+          (a, b) => b.name.compareTo(a.name),
+        );
       }
     }
   }
@@ -50,6 +54,7 @@ class _UsersScreenState extends State<UsersScreen> {
               future: UserServices.getAllUsers(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
+                  var data = snapshot.data!;
                   return PaginatedDataTable(
                     rowsPerPage: 5,
                     columnSpacing: 28.w,
@@ -69,7 +74,12 @@ class _UsersScreenState extends State<UsersScreen> {
                           hintText: 'Search a user',
                           onChanged: (value) {
                             setState(() {
-                              // myData = filterData.where((element)=> element.name.contains(value)).toList();
+                              data = value == null
+                                  ? data
+                                  : data
+                                      .where((element) =>
+                                          element.username.contains(value))
+                                      .toList();
                             });
                           },
                           wantAdd: false,
@@ -89,7 +99,7 @@ class _UsersScreenState extends State<UsersScreen> {
                           setState(() {
                             ascending = !ascending;
                           });
-                          onSortColumn(columnIndex, ascending);
+                          onSortColumn(columnIndex, ascending, data);
                         },
                       ),
                       DataColumn(
@@ -104,7 +114,7 @@ class _UsersScreenState extends State<UsersScreen> {
                           setState(() {
                             ascending = !ascending;
                           });
-                          onSortColumn(columnIndex, ascending);
+                          onSortColumn(columnIndex, ascending, data);
                         },
                       ),
                       DataColumn(
@@ -114,13 +124,6 @@ class _UsersScreenState extends State<UsersScreen> {
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {
-                          setState(() {
-                            ascending = !ascending;
-                          });
-                          onSortColumn(columnIndex, ascending);
-                        },
                       ),
                       DataColumn(
                         label: Skeletonizer(
@@ -129,13 +132,6 @@ class _UsersScreenState extends State<UsersScreen> {
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {
-                          setState(() {
-                            ascending = !ascending;
-                          });
-                          onSortColumn(columnIndex, ascending);
-                        },
                       ),
                       DataColumn(
                         label: Skeletonizer(
@@ -144,13 +140,6 @@ class _UsersScreenState extends State<UsersScreen> {
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {
-                          setState(() {
-                            ascending = !ascending;
-                          });
-                          onSortColumn(columnIndex, ascending);
-                        },
                       ),
                       DataColumn(
                         label: Skeletonizer(
@@ -159,13 +148,6 @@ class _UsersScreenState extends State<UsersScreen> {
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {
-                          setState(() {
-                            ascending = !ascending;
-                          });
-                          onSortColumn(columnIndex, ascending);
-                        },
                       ),
                       DataColumn(
                         label: Skeletonizer(
@@ -174,34 +156,12 @@ class _UsersScreenState extends State<UsersScreen> {
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {
-                          setState(() {
-                            ascending = !ascending;
-                            onSortColumn(columnIndex, ascending);
-                          });
-                        },
-                      ),
-                      DataColumn(
-                        label: Skeletonizer(
-                          child: Text(
-                            'Created At',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {
-                          setState(() {
-                            ascending = !ascending;
-                            onSortColumn(columnIndex, ascending);
-                          });
-                        },
                       ),
                     ],
-                    source: UserDataTable(),
+                    source: UserDataTable(userData: data),
                   );
                 } else if (snapshot.hasData) {
-                  final data = snapshot.data!;
+                  var data = snapshot.data!;
                   return PaginatedDataTable(
                     rowsPerPage: 5,
                     columnSpacing: 28.w,
@@ -221,7 +181,12 @@ class _UsersScreenState extends State<UsersScreen> {
                           hintText: 'Search a user',
                           onChanged: (value) {
                             setState(() {
-                              // myData = filterData.where((element)=> element.name.contains(value)).toList();
+                              data = value == null
+                                  ? data
+                                  : data
+                                      .where((element) =>
+                                          element.username.contains(value))
+                                      .toList();
                             });
                           },
                           wantAdd: false,
@@ -239,7 +204,7 @@ class _UsersScreenState extends State<UsersScreen> {
                           setState(() {
                             ascending = !ascending;
                           });
-                          onSortColumn(columnIndex, ascending);
+                          onSortColumn(columnIndex, ascending, data);
                         },
                       ),
                       DataColumn(
@@ -252,7 +217,7 @@ class _UsersScreenState extends State<UsersScreen> {
                           setState(() {
                             ascending = !ascending;
                           });
-                          onSortColumn(columnIndex, ascending);
+                          onSortColumn(columnIndex, ascending, data);
                         },
                       ),
                       DataColumn(
@@ -262,78 +227,30 @@ class _UsersScreenState extends State<UsersScreen> {
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {
-                          setState(() {
-                            ascending = !ascending;
-                          });
-                          onSortColumn(columnIndex, ascending);
-                        },
                       ),
                       DataColumn(
                         label: Text(
                           'Phone',
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {
-                          setState(() {
-                            ascending = !ascending;
-                          });
-                          onSortColumn(columnIndex, ascending);
-                        },
                       ),
                       DataColumn(
                         label: Text(
                           'Birth Date',
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {
-                          setState(() {
-                            ascending = !ascending;
-                          });
-                          onSortColumn(columnIndex, ascending);
-                        },
                       ),
                       DataColumn(
                         label: Text(
                           'Gender',
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {
-                          setState(() {
-                            ascending = !ascending;
-                          });
-                          onSortColumn(columnIndex, ascending);
-                        },
                       ),
                       DataColumn(
                         label: Text(
                           'Is Admin',
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {
-                          setState(() {
-                            ascending = !ascending;
-                            onSortColumn(columnIndex, ascending);
-                          });
-                        },
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Created At',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {
-                          setState(() {
-                            ascending = !ascending;
-                            onSortColumn(columnIndex, ascending);
-                          });
-                        },
                       ),
                     ],
                     source: UserDataTable(userData: data),

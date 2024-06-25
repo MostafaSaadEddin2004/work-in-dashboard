@@ -15,8 +15,7 @@ class TrainingOpportunities extends StatefulWidget {
 
 class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
   bool ascending = false;
-  List data = [];
-  onSortColumn(columnIndex, ascending) {
+  onSortColumn(columnIndex, ascending, List<dynamic> data) {
     if (columnIndex == 0) {
       if (ascending) {
         // data.sort((a, b) => a.name.compareTo(b.name),);
@@ -50,7 +49,7 @@ class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
               future: TrainingServices.getAllTraining(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  final data = snapshot.data!;
+                  var data = snapshot.data!;
                   return PaginatedDataTable(
                     rowsPerPage: 5,
                     columnSpacing: 28.w,
@@ -70,7 +69,12 @@ class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
                           hintText: 'Search a training',
                           onChanged: (value) {
                             setState(() {
-                              // myData = filterData.where((element)=> element.name.contains(value)).toList();
+                              data = value == null
+                                  ? data
+                                  : data
+                                      .where((element) =>
+                                          element.kindOfTrain.contains(value))
+                                      .toList();
                             });
                           },
                           wantAdd: true,
@@ -91,7 +95,7 @@ class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
                           setState(() {
                             ascending = !ascending;
                           });
-                          onSortColumn(columnIndex, ascending);
+                          onSortColumn(columnIndex, ascending, data);
                         },
                       ),
                       DataColumn(
@@ -106,7 +110,7 @@ class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
                           setState(() {
                             ascending = !ascending;
                           });
-                          onSortColumn(columnIndex, ascending);
+                          onSortColumn(columnIndex, ascending, data);
                         },
                       ),
                       DataColumn(
@@ -137,7 +141,7 @@ class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
                     source: TrainingDataTable(trainingData: data),
                   );
                 } else if (snapshot.hasData) {
-                  final data = snapshot.data!;
+                  var data = snapshot.data!;
                   return PaginatedDataTable(
                     rowsPerPage: 5,
                     columnSpacing: 28.w,
@@ -157,7 +161,12 @@ class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
                           hintText: 'Search a training',
                           onChanged: (value) {
                             setState(() {
-                              // myData = filterData.where((element)=> element.name.contains(value)).toList();
+                              data = value == null
+                                  ? data
+                                  : data
+                                      .where((element) =>
+                                          element.kindOfTrain.contains(value))
+                                      .toList();
                             });
                           },
                           wantAdd: true,
@@ -176,7 +185,7 @@ class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
                           setState(() {
                             ascending = !ascending;
                           });
-                          onSortColumn(columnIndex, ascending);
+                          onSortColumn(columnIndex, ascending, data);
                         },
                       ),
                       DataColumn(
@@ -191,7 +200,7 @@ class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
                           setState(() {
                             ascending = !ascending;
                           });
-                          onSortColumn(columnIndex, ascending);
+                          onSortColumn(columnIndex, ascending, data);
                         },
                       ),
                       DataColumn(
