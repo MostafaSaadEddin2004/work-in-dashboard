@@ -3,18 +3,12 @@ class TrainingModel {
   final String trainingCompany;
   final String kindOfTrain;
   final String location;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final int version;
 
   TrainingModel({
     required this.id,
     required this.trainingCompany,
     required this.kindOfTrain,
     required this.location,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.version,
   });
 
   factory TrainingModel.fromJson(Map<String, dynamic> json) {
@@ -23,9 +17,6 @@ class TrainingModel {
       trainingCompany: json['TrainingCompany'],
       kindOfTrain: json['KindOfTrain'],
       location: json['Location'],
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
-      version: json['__v'],
     );
   }
 }

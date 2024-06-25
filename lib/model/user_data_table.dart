@@ -1,55 +1,75 @@
 import 'package:flutter/material.dart';
+import 'package:work_in_dashboard/model/user_model.dart';
 
 class UserDataTable extends DataTableSource {
-  final _data = List.generate(
-      100,
-      (index) => {
-            'fullname': 'Full name $index',
-            'user_experience': 'User Experience $index',
-            'email': 'email $index',
-            'phone': 'phone $index',
-            'age': 'Age $index',
-            'current_address': 'Current address $index',
-          });
+  final List<UserModel>? userData;
+  UserDataTable({this.userData});
+
+  // final _staticData = List.generate(5, (index) => {
+    
+  // });
+
   @override
   DataRow? getRow(int index) {
     return DataRow(cells: [
       DataCell(
         Text(
-          _data[index]['fullname'].toString(),
+          userData![index].id.toString(),
           style: const TextStyle(fontSize: 14),
         ),
       ),
       DataCell(
         Text(
-          _data[index]['user_experience'].toString(),
+          userData![index].username.toString(),
           style: const TextStyle(fontSize: 14),
         ),
       ),
       DataCell(
         Text(
-          _data[index]['email'].toString(),
+          userData![index].email.toString(),
           style: const TextStyle(fontSize: 14),
         ),
       ),
       DataCell(
         Text(
-          _data[index]['phone'].toString(),
+          userData![index].phone.toString(),
           style: const TextStyle(fontSize: 14),
         ),
       ),
       DataCell(
         Text(
-          _data[index]['age'].toString(),
+          userData![index].birthDate.toString(),
           style: const TextStyle(fontSize: 14),
         ),
       ),
       DataCell(
         Text(
-          _data[index]['current_address'].toString(),
+          userData![index].gender.toString(),
           style: const TextStyle(fontSize: 14),
         ),
       ),
+      DataCell(
+        Text(
+          userData![index].isAdmin.toString(),
+          style: const TextStyle(fontSize: 14),
+        ),
+      ),
+      DataCell(Row(
+        children: [
+          IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.mode_edit_rounded,
+                size: 25,
+              )),
+          IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.delete_rounded,
+                size: 25,
+              )),
+        ],
+      )),
     ]);
   }
 
@@ -59,7 +79,7 @@ class UserDataTable extends DataTableSource {
 
   @override
   // TODO: implement rowCount
-  int get rowCount => _data.length;
+  int get rowCount => userData!.length;
 
   @override
   // TODO: implement selectedRowCount

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:work_in_dashboard/controller/api/services/user_services.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/model/user_data_table.dart';
 import 'package:work_in_dashboard/view/components/search_text_field.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class UsersScreen extends StatefulWidget {
   const UsersScreen({super.key});
@@ -41,128 +43,307 @@ class _UsersScreenState extends State<UsersScreen> {
                   ),
                   const SizedBox(
                     height: 16,
-                  ),
+                  )
                 ],
               ),
-            PaginatedDataTable(
-              rowsPerPage: 5,
-              columnSpacing: 28.2.w,
-              showFirstLastButtons: true,
-              sortAscending: ascending,
-              sortColumnIndex: 0,
-              header: Row(
-                children: [
-                  Text(
-                    'Users',
-                    style: Theme.of(context).textTheme.labelSmall,
-                  ),
-                  const Spacer(
-                    flex: 1,
-                  ),
-                  SearchTextField(
-                    hintText: 'Search a grant',
-                    onChanged: (value) {
-                      setState(() {
-                        // myData = filterData.where((element)=> element.name.contains(value)).toList();
-                      });
-                    },
-                  ),
-                ],
-              ),
-              columns: [
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Full name',
-                      style: Theme.of(context).textTheme.bodyLarge,
+            FutureBuilder(
+              future: UserServices.getAllUsers(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return PaginatedDataTable(
+                    rowsPerPage: 5,
+                    columnSpacing: 28.w,
+                    showFirstLastButtons: true,
+                    sortAscending: ascending,
+                    sortColumnIndex: 0,
+                    header: Row(
+                      children: [
+                        Text(
+                          'Users',
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+                        const Spacer(
+                          flex: 1,
+                        ),
+                        SearchTextField(
+                          hintText: 'Search a user',
+                          onChanged: (value) {
+                            setState(() {
+                              // myData = filterData.where((element)=> element.name.contains(value)).toList();
+                            });
+                          },
+                          wantAdd: false,
+                        ),
+                      ],
                     ),
-                  ),
-                  mouseCursor: MaterialStateMouseCursor.clickable,
-                  onSort: (columnIndex, ascending) {
-                    setState(() {
-                      ascending = !ascending;
-                    });
-                    onSortColumn(columnIndex, ascending);
-                  },
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'User Experience',
-                      style: Theme.of(context).textTheme.bodyLarge,
+                    columns: [
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'Id',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ),
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        onSort: (columnIndex, ascending) {
+                          setState(() {
+                            ascending = !ascending;
+                          });
+                          onSortColumn(columnIndex, ascending);
+                        },
+                      ),
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'User Name',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ),
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        onSort: (columnIndex, ascending) {
+                          setState(() {
+                            ascending = !ascending;
+                          });
+                          onSortColumn(columnIndex, ascending);
+                        },
+                      ),
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'Email',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ),
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        onSort: (columnIndex, ascending) {
+                          setState(() {
+                            ascending = !ascending;
+                          });
+                          onSortColumn(columnIndex, ascending);
+                        },
+                      ),
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'Phone',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ),
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        onSort: (columnIndex, ascending) {
+                          setState(() {
+                            ascending = !ascending;
+                          });
+                          onSortColumn(columnIndex, ascending);
+                        },
+                      ),
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'Birth Date',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ),
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        onSort: (columnIndex, ascending) {
+                          setState(() {
+                            ascending = !ascending;
+                          });
+                          onSortColumn(columnIndex, ascending);
+                        },
+                      ),
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'Gender',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ),
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        onSort: (columnIndex, ascending) {
+                          setState(() {
+                            ascending = !ascending;
+                          });
+                          onSortColumn(columnIndex, ascending);
+                        },
+                      ),
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'Is Admin',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ),
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        onSort: (columnIndex, ascending) {
+                          setState(() {
+                            ascending = !ascending;
+                            onSortColumn(columnIndex, ascending);
+                          });
+                        },
+                      ),
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'Created At',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ),
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        onSort: (columnIndex, ascending) {
+                          setState(() {
+                            ascending = !ascending;
+                            onSortColumn(columnIndex, ascending);
+                          });
+                        },
+                      ),
+                    ],
+                    source: UserDataTable(),
+                  );
+                } else if (snapshot.hasData) {
+                  final data = snapshot.data!;
+                  return PaginatedDataTable(
+                    rowsPerPage: 5,
+                    columnSpacing: 28.w,
+                    showFirstLastButtons: true,
+                    sortAscending: ascending,
+                    sortColumnIndex: 0,
+                    header: Row(
+                      children: [
+                        Text(
+                          'Users',
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+                        const Spacer(
+                          flex: 1,
+                        ),
+                        SearchTextField(
+                          hintText: 'Search a user',
+                          onChanged: (value) {
+                            setState(() {
+                              // myData = filterData.where((element)=> element.name.contains(value)).toList();
+                            });
+                          },
+                          wantAdd: false,
+                        ),
+                      ],
                     ),
-                  ),
-                  mouseCursor: MaterialStateMouseCursor.clickable,
-                  onSort: (columnIndex, ascending) {
-                    setState(() {
-                      ascending = !ascending;
-                    });
-                    onSortColumn(columnIndex, ascending);
-                  },
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Email',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ),
-                  mouseCursor: MaterialStateMouseCursor.clickable,
-                  onSort: (columnIndex, ascending) {
-                    setState(() {
-                      ascending = !ascending;
-                    });
-                    onSortColumn(columnIndex, ascending);
-                  },
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Phone',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ),
-                  mouseCursor: MaterialStateMouseCursor.clickable,
-                  onSort: (columnIndex, ascending) {
-                    setState(() {
-                      ascending = !ascending;
-                    });
-                    onSortColumn(columnIndex, ascending);
-                  },
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Age',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ),
-                  mouseCursor: MaterialStateMouseCursor.clickable,
-                  onSort: (columnIndex, ascending) {
-                    setState(() {
-                      ascending = !ascending;
-                    });
-                    onSortColumn(columnIndex, ascending);
-                  },
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Current address',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ),
-                  mouseCursor: MaterialStateMouseCursor.clickable,
-                  onSort: (columnIndex, ascending) {
-                    setState(() {
-                      ascending = !ascending;
-                      onSortColumn(columnIndex, ascending);
-                    });
-                  },
-                ),
-              ],
-              source: UserDataTable(),
-            ),
+                    columns: [
+                      DataColumn(
+                        label: Text(
+                          'Id',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        onSort: (columnIndex, ascending) {
+                          setState(() {
+                            ascending = !ascending;
+                          });
+                          onSortColumn(columnIndex, ascending);
+                        },
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'User Name',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        onSort: (columnIndex, ascending) {
+                          setState(() {
+                            ascending = !ascending;
+                          });
+                          onSortColumn(columnIndex, ascending);
+                        },
+                      ),
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'Email',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ),
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        onSort: (columnIndex, ascending) {
+                          setState(() {
+                            ascending = !ascending;
+                          });
+                          onSortColumn(columnIndex, ascending);
+                        },
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Phone',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        onSort: (columnIndex, ascending) {
+                          setState(() {
+                            ascending = !ascending;
+                          });
+                          onSortColumn(columnIndex, ascending);
+                        },
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Birth Date',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        onSort: (columnIndex, ascending) {
+                          setState(() {
+                            ascending = !ascending;
+                          });
+                          onSortColumn(columnIndex, ascending);
+                        },
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Gender',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        onSort: (columnIndex, ascending) {
+                          setState(() {
+                            ascending = !ascending;
+                          });
+                          onSortColumn(columnIndex, ascending);
+                        },
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Is Admin',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        onSort: (columnIndex, ascending) {
+                          setState(() {
+                            ascending = !ascending;
+                            onSortColumn(columnIndex, ascending);
+                          });
+                        },
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Created At',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        onSort: (columnIndex, ascending) {
+                          setState(() {
+                            ascending = !ascending;
+                            onSortColumn(columnIndex, ascending);
+                          });
+                        },
+                      ),
+                    ],
+                    source: UserDataTable(userData: data),
+                  );
+                }
+                return const Center(
+                  child: Text('There is no data'),
+                );
+              },
+            )
           ],
         ),
       ),

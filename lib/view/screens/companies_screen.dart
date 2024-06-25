@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+import 'package:work_in_dashboard/controller/api/services/company_services.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
-import 'package:work_in_dashboard/model/user_data_table.dart';
+import 'package:work_in_dashboard/model/company_data_table.dart';
 import 'package:work_in_dashboard/view/components/search_text_field.dart';
 
 class CompaniesScreen extends StatefulWidget {
@@ -44,125 +46,122 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                   ),
                 ],
               ),
-            PaginatedDataTable(
-              rowsPerPage: 5,
-              columnSpacing: 28.2.w,
-              showFirstLastButtons: true,
-              sortAscending: ascending,
-              sortColumnIndex: 0,
-              header: Row(
-                children: [
-                  Text(
-                    'Companies',
-                    style: Theme.of(context).textTheme.labelSmall,
-                  ),
-                  const Spacer(
-                    flex: 1,
-                  ),
-                  SearchTextField(
-                    hintText: 'Search a company',
-                    onChanged: (value) {
-                      setState(() {
-                        // myData = filterData.where((element)=> element.name.contains(value)).toList();
-                      });
-                    },
-                  ),
-                ],
-              ),
-              columns: [
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Full name',
-                      style: Theme.of(context).textTheme.bodyLarge,
+            FutureBuilder(
+              future: CompanyServices.getAllCompanies(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  final data = snapshot.data!;
+                  return PaginatedDataTable(
+                    rowsPerPage: 5,
+                    columnSpacing: 28.w,
+                    showFirstLastButtons: true,
+                    sortAscending: ascending,
+                    sortColumnIndex: 0,
+                    header: Row(
+                      children: [
+                        Text(
+                          'Companies',
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+                        const Spacer(
+                          flex: 1,
+                        ),
+                        SearchTextField(
+                          hintText: 'Search a company',
+                          onChanged: (value) {
+                            setState(() {
+                              // myData = filterData.where((element)=> element.name.contains(value)).toList();
+                            });
+                          },
+                          wantAdd: false,
+                        ),
+                      ],
                     ),
-                  ),
-                  mouseCursor: MaterialStateMouseCursor.clickable,
-                  onSort: (columnIndex, ascending) {
-                    setState(() {
-                      ascending = !ascending;
-                    });
-                    onSortColumn(columnIndex, ascending);
-                  },
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'User Experience',
-                      style: Theme.of(context).textTheme.bodyLarge,
+                    columns: [
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'Id',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ),
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        onSort: (columnIndex, ascending) {
+                          setState(() {
+                            ascending = !ascending;
+                          });
+                          onSortColumn(columnIndex, ascending);
+                        },
+                      ),
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'Actions',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ),
+                      ),
+                    ],
+                    source: CompanyDataTable(companyData: data),
+                  );
+                } else if (snapshot.hasData) {
+                  final data = snapshot.data!;
+                  return Skeletonizer(
+                      child: PaginatedDataTable(
+                    rowsPerPage: 5,
+                    columnSpacing: 28.w,
+                    showFirstLastButtons: true,
+                    sortAscending: ascending,
+                    sortColumnIndex: 0,
+                    header: Row(
+                      children: [
+                        Text(
+                          'Companies',
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+                        const Spacer(
+                          flex: 1,
+                        ),
+                        SearchTextField(
+                          hintText: 'Search a companiesser',
+                          onChanged: (value) {
+                            setState(() {
+                              // myData = filterData.where((element)=> element.name.contains(value)).toList();
+                            });
+                          },
+                          wantAdd: false,
+                        ),
+                      ],
                     ),
-                  ),
-                  mouseCursor: MaterialStateMouseCursor.clickable,
-                  onSort: (columnIndex, ascending) {
-                    setState(() {
-                      ascending = !ascending;
-                    });
-                    onSortColumn(columnIndex, ascending);
-                  },
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Email',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ),
-                  mouseCursor: MaterialStateMouseCursor.clickable,
-                  onSort: (columnIndex, ascending) {
-                    setState(() {
-                      ascending = !ascending;
-                    });
-                    onSortColumn(columnIndex, ascending);
-                  },
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Phone',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ),
-                  mouseCursor: MaterialStateMouseCursor.clickable,
-                  onSort: (columnIndex, ascending) {
-                    setState(() {
-                      ascending = !ascending;
-                    });
-                    onSortColumn(columnIndex, ascending);
-                  },
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Age',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ),
-                  mouseCursor: MaterialStateMouseCursor.clickable,
-                  onSort: (columnIndex, ascending) {
-                    setState(() {
-                      ascending = !ascending;
-                    });
-                    onSortColumn(columnIndex, ascending);
-                  },
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Current address',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ),
-                  mouseCursor: MaterialStateMouseCursor.clickable,
-                  onSort: (columnIndex, ascending) {
-                    setState(() {
-                      ascending = !ascending;
-                      onSortColumn(columnIndex, ascending);
-                    });
-                  },
-                ),
-              ],
-              source: UserDataTable(),
-            ),
+                    columns: [
+                      DataColumn(
+                        label: Text(
+                          'Id',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        onSort: (columnIndex, ascending) {
+                          setState(() {
+                            ascending = !ascending;
+                          });
+                          onSortColumn(columnIndex, ascending);
+                        },
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Actions',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
+                    ],
+                    source: CompanyDataTable(companyData: data),
+                  ));
+                }
+                return const Center(
+                  child: Text('There is no data'),
+                );
+              },
+            )
           ],
         ),
       ),

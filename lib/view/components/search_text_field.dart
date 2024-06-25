@@ -7,9 +7,13 @@ class SearchTextField extends StatelessWidget {
     super.key,
     required this.onChanged,
     required this.hintText,
+    required this.wantAdd,
+    this.onAddPressed,
   });
   final void Function(String? value) onChanged;
   final String hintText;
+  final bool wantAdd;
+  final void Function()? onAddPressed;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -24,9 +28,17 @@ class SearchTextField extends StatelessWidget {
           filled: true,
           fillColor: Theme.of(context).colorScheme.primary,
           hintText: hintText,
-          suffixIcon: const Icon(Icons.search_rounded),
+          suffixIcon: wantAdd == true
+              ? IconButton(
+                  onPressed: onAddPressed,
+                  icon: const Icon(Icons.add_circle_rounded))
+              : const Icon(Icons.search_rounded),
+          prefixIcon: wantAdd == true
+              ? const Icon(Icons.search_rounded)
+              : const PreferredSize(
+                  preferredSize: Size.zero, child: SizedBox()),
           contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         ),
         onChanged: onChanged,
       ),
