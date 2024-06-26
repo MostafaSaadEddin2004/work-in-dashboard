@@ -6,6 +6,9 @@ class JobModel {
   final String workTime;
   final String companyNav;
   final String gender;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final int version;
 
   JobModel({
     required this.id,
@@ -15,6 +18,9 @@ class JobModel {
     required this.workTime,
     required this.companyNav,
     required this.gender,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.version,
   });
 
   factory JobModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +32,9 @@ class JobModel {
       workTime: json['WorkTime'],
       companyNav: json['CompanyNav'],
       gender: json['Gender'],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+      version: json['__v'],
     );
   }
 }

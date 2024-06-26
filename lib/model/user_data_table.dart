@@ -1,87 +1,84 @@
 import 'package:flutter/material.dart';
 import 'package:work_in_dashboard/model/user_model.dart';
+import 'package:work_in_dashboard/view/components/skeletonizer_text.dart';
 
 class UserDataTable extends DataTableSource {
   final List<UserModel> userData;
   UserDataTable({required this.userData});
-
-  // final _staticData = List.generate(5, (index) => {
-
-  // });
-
   @override
   DataRow? getRow(int index) {
     return DataRow(cells: [
-      DataCell(
-        Text(
-          userData[index].id.toString(),
-          style: const TextStyle(fontSize: 14),
-        ),
-      ),
-      DataCell(
-        Text(
-          userData[index].username.toString(),
-          style: const TextStyle(fontSize: 14),
-        ),
-      ),
-      DataCell(
-        Text(
-          userData[index].email.toString(),
-          style: const TextStyle(fontSize: 14),
-        ),
-      ),
-      DataCell(
-        Text(
-          userData[index].phone.toString(),
-          style: const TextStyle(fontSize: 14),
-        ),
-      ),
-      DataCell(
-        Text(
-          userData[index].birthDate.toString(),
-          style: const TextStyle(fontSize: 14),
-        ),
-      ),
-      DataCell(
-        Text(
-          userData[index].gender.toString(),
-          style: const TextStyle(fontSize: 14),
-        ),
-      ),
-      DataCell(
-        Text(
-          userData[index].isAdmin.toString(),
-          style: const TextStyle(fontSize: 14),
-        ),
-      ),
-      DataCell(Row(
-        children: [
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.mode_edit_rounded,
-                size: 25,
-              )),
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.delete_rounded,
-                size: 25,
-              )),
-        ],
+      DataCell(Text(
+        userData[index].username.toString(),
+        style: const TextStyle(fontSize: 14),
+      )),
+      DataCell(Text(
+        userData[index].email.toString(),
+        style: const TextStyle(fontSize: 14),
+      )),
+      DataCell(Text(
+        userData[index].phone.toString(),
+        style: const TextStyle(fontSize: 14),
+      )),
+      DataCell(Text(
+        userData[index].birthDate.toString(),
+        style: const TextStyle(fontSize: 14),
+      )),
+      DataCell(Text(
+        userData[index].gender.toString(),
+        style: const TextStyle(fontSize: 14),
+      )),
+      DataCell(Text(
+        userData[index].isAdmin.toString(),
+        style: const TextStyle(fontSize: 14),
       )),
     ]);
   }
 
   @override
-  // TODO: implement isRowCountApproximate
   bool get isRowCountApproximate => false;
 
   @override
-  // TODO: implement rowCount
   int get rowCount => userData.length;
 
   @override
-  // TODO: implement selectedRowCount
+  int get selectedRowCount => 0;
+}
+
+class NullUserDataTable extends DataTableSource {
+  final _data = List.generate(
+      10,
+      (index) => UserModel(
+          id: 'asd454asdasd',
+          username: 'username',
+          email: 'email',
+          password: 'password',
+          phone: 'phone',
+          birthDate: 'birthDate',
+          gender: 'gender',
+          isAdmin: false,
+          createdAt: DateTime(2024, 25, 6),
+          updatedAt: DateTime(2024, 25, 6),
+          version: 0));
+
+  @override
+  DataRow? getRow(int index) {
+    return DataRow(cells: [
+      DataCell(SkeletonizerText(text: _data[index].username)),
+      DataCell(SkeletonizerText(text: _data[index].email)),
+      DataCell(SkeletonizerText(text: _data[index].password)),
+      DataCell(SkeletonizerText(text: _data[index].phone)),
+      DataCell(SkeletonizerText(text: _data[index].birthDate)),
+      DataCell(SkeletonizerText(text: _data[index].gender)),
+    ]);
+  }
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => _data.length;
+
+  @override
   int get selectedRowCount => 0;
 }

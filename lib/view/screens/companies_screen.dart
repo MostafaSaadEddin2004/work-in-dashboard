@@ -14,6 +14,7 @@ class CompaniesScreen extends StatefulWidget {
 }
 
 class _CompaniesScreenState extends State<CompaniesScreen> {
+  bool addMode = false;
   bool ascending = false;
   onSortColumn(columnIndex, ascending) {
     if (columnIndex == 0) {
@@ -49,7 +50,6 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
               future: CompanyServices.getAllCompanies(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  var data = snapshot.data!;
                   return PaginatedDataTable(
                     rowsPerPage: 5,
                     columnSpacing: 28.w,
@@ -67,17 +67,7 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                         ),
                         SearchTextField(
                           hintText: 'Search a company',
-                          onChanged: (value) {
-                            setState(() {
-                              data = value == null
-                                  ? data
-                                  : data
-                                      .where((element) => element.id
-                                          .toString()
-                                          .contains(value))
-                                      .toList();
-                            });
-                          },
+                          onChanged: (value) {},
                           wantAdd: false,
                         ),
                       ],
@@ -98,21 +88,12 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                           onSortColumn(columnIndex, ascending);
                         },
                       ),
-                      DataColumn(
-                        label: Skeletonizer(
-                          child: Text(
-                            'Actions',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ),
-                      ),
                     ],
-                    source: CompanyDataTable(companyData: data),
+                    source: NullCompanyDataTable(),
                   );
                 } else if (snapshot.hasData) {
                   var data = snapshot.data!;
-                  return Skeletonizer(
-                      child: PaginatedDataTable(
+                  return PaginatedDataTable(
                     rowsPerPage: 5,
                     columnSpacing: 28.w,
                     showFirstLastButtons: true,
@@ -134,9 +115,8 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                               data = value == null
                                   ? data
                                   : data
-                                      .where((element) => element.id
-                                          .toString()
-                                          .contains(value))
+                                      .where((element) =>
+                                          element.id.toString().contains(value))
                                       .toList();
                             });
                           },
@@ -158,15 +138,9 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                           onSortColumn(columnIndex, ascending);
                         },
                       ),
-                      DataColumn(
-                        label: Text(
-                          'Actions',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ),
                     ],
                     source: CompanyDataTable(companyData: data),
-                  ));
+                  );
                 }
                 return const Center(
                   child: Text('There is no data'),

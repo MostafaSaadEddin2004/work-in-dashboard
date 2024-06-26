@@ -10,4 +10,10 @@ class Responsive {
 
   static bool isDesktop(BuildContext context) =>
       MediaQuery.of(context).size.width > 979;
+
+  static double screenWidth(BuildContext context) =>
+      MediaQuery.of(context).size.width;
+
+  static double screenHeiht(BuildContext context) =>
+      MediaQuery.of(context).size.height;
 }

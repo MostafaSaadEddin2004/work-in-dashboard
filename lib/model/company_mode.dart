@@ -1,5 +1,5 @@
 class CompanyModel {
-  final int id;
+  final String id;
   CompanyModel({required this.id});
 
   factory CompanyModel.fromJson(Map<String, dynamic> json) {

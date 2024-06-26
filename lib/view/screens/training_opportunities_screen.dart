@@ -4,6 +4,8 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:work_in_dashboard/controller/api/services/training_services.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/model/training_data_table.dart';
+import 'package:work_in_dashboard/view/components/add_job_card.dart';
+import 'package:work_in_dashboard/view/components/info_text_field.dart';
 import 'package:work_in_dashboard/view/components/search_text_field.dart';
 
 class TrainingOpportunities extends StatefulWidget {
@@ -14,6 +16,7 @@ class TrainingOpportunities extends StatefulWidget {
 }
 
 class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
+  bool addMode = false;
   bool ascending = false;
   onSortColumn(columnIndex, ascending, List<dynamic> data) {
     if (columnIndex == 0) {
@@ -25,6 +28,9 @@ class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
     }
   }
 
+  final _trainingCompany = TextEditingController();
+  final _kindOfTrain = TextEditingController();
+  final _location = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -49,96 +55,114 @@ class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
               future: TrainingServices.getAllTraining(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  var data = snapshot.data!;
-                  return PaginatedDataTable(
-                    rowsPerPage: 5,
-                    columnSpacing: 28.w,
-                    showFirstLastButtons: true,
-                    sortAscending: ascending,
-                    sortColumnIndex: 0,
-                    header: Row(
-                      children: [
-                        Text(
-                          'Training',
-                          style: Theme.of(context).textTheme.labelSmall,
+                  return Column(
+                    children: [
+                      PaginatedDataTable(
+                        rowsPerPage: 5,
+                        columnSpacing: 28.w,
+                        showFirstLastButtons: true,
+                        sortAscending: ascending,
+                        sortColumnIndex: 0,
+                        header: Row(
+                          children: [
+                            Text(
+                              'Training',
+                              style: Theme.of(context).textTheme.labelSmall,
+                            ),
+                            const Spacer(
+                              flex: 1,
+                            ),
+                            SearchTextField(
+                              hintText: 'Search a training',
+                              onChanged: (value) {},
+                              wantAdd: true,
+                              onAddPressed: () {
+                                setState(() {
+                                  addMode = true;
+                                });
+                              },
+                            ),
+                          ],
                         ),
-                        const Spacer(
-                          flex: 1,
-                        ),
-                        SearchTextField(
-                          hintText: 'Search a training',
-                          onChanged: (value) {
-                            setState(() {
-                              data = value == null
-                                  ? data
-                                  : data
-                                      .where((element) =>
-                                          element.kindOfTrain.contains(value))
-                                      .toList();
-                            });
-                          },
-                          wantAdd: true,
-                          onAddPressed: () {},
-                        ),
-                      ],
-                    ),
-                    columns: [
-                      DataColumn(
-                        label: Skeletonizer(
-                          child: Text(
-                            'Id',
-                            style: Theme.of(context).textTheme.bodyLarge,
+                        columns: [
+                          DataColumn(
+                            label: Skeletonizer(
+                              child: Text(
+                                'Id',
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                            ),
+                            mouseCursor: MaterialStateMouseCursor.clickable,
+                            onSort: (columnIndex, ascending) {},
                           ),
-                        ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {
+                          DataColumn(
+                            label: Skeletonizer(
+                              child: Text(
+                                'Company',
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                            ),
+                            mouseCursor: MaterialStateMouseCursor.clickable,
+                            onSort: (columnIndex, ascending) {},
+                          ),
+                          DataColumn(
+                            label: Skeletonizer(
+                              child: Text(
+                                'Kind of Training',
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Skeletonizer(
+                              child: Text(
+                                'Location',
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Skeletonizer(
+                              child: Text(
+                                'Actions',
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                            ),
+                          ),
+                        ],
+                        source: NullTrainingDataTable(),
+                      ),
+                      AddCard(
+                        addMode: addMode,
+                        fieldList: [
+                          InfoTextField(
+                            controller: _trainingCompany,
+                            enabled: true,
+                            hintText: 'Enter company name',
+                            labelText: 'Company name',
+                          ),
+                          InfoTextField(
+                            controller: _kindOfTrain,
+                            enabled: true,
+                            hintText: 'Enter job title',
+                            labelText: 'Job title',
+                          ),
+                          InfoTextField(
+                            controller: _location,
+                            enabled: true,
+                            hintText: 'Enter job title',
+                            labelText: 'Job title',
+                          ),
+                        ],
+                        onAddAnotherPressed: () {},
+                        onAddPressed: () {},
+                        onCancelPressed: () {
                           setState(() {
-                            ascending = !ascending;
+                            addMode = false;
                           });
-                          onSortColumn(columnIndex, ascending, data);
                         },
-                      ),
-                      DataColumn(
-                        label: Skeletonizer(
-                          child: Text(
-                            'Company',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {
-                          setState(() {
-                            ascending = !ascending;
-                          });
-                          onSortColumn(columnIndex, ascending, data);
-                        },
-                      ),
-                      DataColumn(
-                        label: Skeletonizer(
-                          child: Text(
-                            'Kind of Training',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Skeletonizer(
-                          child: Text(
-                            'Location',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Skeletonizer(
-                          child: Text(
-                            'Actions',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ),
                       ),
                     ],
-                    source: TrainingDataTable(trainingData: data),
                   );
                 } else if (snapshot.hasData) {
                   var data = snapshot.data!;
@@ -170,7 +194,6 @@ class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
                             });
                           },
                           wantAdd: true,
-                          onAddPressed: () {},
                         ),
                       ],
                     ),

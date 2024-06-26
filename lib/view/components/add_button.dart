@@ -24,16 +24,17 @@ class _AddButtonState extends State<AddButton> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeIn,
+        padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
+        margin: const EdgeInsets.symmetric(vertical: 16),
         height: 40,
-        width: 120,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: isHovered? AppColor.blue.withOpacity(0.5): AppColor.blue,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
           widget.text,
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: Theme.of(context).textTheme.bodySmall,
         ),
       ),
     );

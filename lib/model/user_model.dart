@@ -1,15 +1,15 @@
 class UserModel {
-  String id;
-  String username;
-  String email;
-  String password;
-  String phone;
-  String birthDate;
-  String gender;
-  bool isAdmin;
-  DateTime createdAt;
-  DateTime updatedAt;
-  int v;
+  final String id;
+  final String username;
+  final String email;
+  final String password;
+  final String phone;
+  final String birthDate;
+  final String gender;
+  final bool isAdmin;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final int version;
 
   UserModel({
     required this.id,
@@ -22,7 +22,7 @@ class UserModel {
     required this.isAdmin,
     required this.createdAt,
     required this.updatedAt,
-    required this.v,
+    required this.version,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -37,23 +37,7 @@ class UserModel {
       isAdmin: json['isAdmin'],
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
-      v: json['__v'],
+      version: json['__v'],
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      '_id': id,
-      'username': username,
-      'email': email,
-      'password': password,
-      'Phone': phone,
-      'BirthDate': birthDate,
-      'Gender': gender,
-      'isAdmin': isAdmin,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
-      '__v': v,
-    };
   }
 }
