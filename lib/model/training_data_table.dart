@@ -45,17 +45,19 @@ class TrainingDataTable extends DataTableSource {
               )),
           IconButton(
               onPressed: () {
-                Get.defaultDialog(title: 'Edit a job',content: Container(
-                  margin: const EdgeInsets.symmetric(
-                      horizontal: 240, vertical: 120),
-                  padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(24),
-                      color: AppColor.primary),
-                      child: Column(children: [
-                        TextFormField()
-                      ],),
-                ));
+                Get.defaultDialog(
+                    title: 'Edit a job',
+                    content: Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 240, vertical: 120),
+                      padding: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(24),
+                          color: AppColor.primary),
+                      child: Column(
+                        children: [TextFormField()],
+                      ),
+                    ));
               },
               icon: const Icon(
                 Icons.delete_rounded,
@@ -83,7 +85,10 @@ class NullTrainingDataTable extends DataTableSource {
           id: 'dsfssfd60sdf4',
           trainingCompany: 'trainingCompany',
           kindOfTrain: 'kindOfTrain',
-          location: 'location'));
+          location: 'location',
+          createdAt: DateTime(2024, 6, 25),
+          updatedAt: DateTime(2024, 6, 25),
+          version: 1));
   @override
   DataRow? getRow(int index) {
     return DataRow(cells: [

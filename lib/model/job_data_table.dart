@@ -77,8 +77,8 @@ class NullJobdataTable extends DataTableSource {
           workTime: 'workTime',
           companyNav: 'companyNav',
           gender: 'gender',
-          createdAt: DateTime(2024, 25, 6),
-          updatedAt: DateTime(2024, 25, 6),
+          createdAt: DateTime(2024, 6, 25),
+          updatedAt: DateTime(2024, 6, 25),
           version: 1));
   @override
   DataRow? getRow(int index) {
