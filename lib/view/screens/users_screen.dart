@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:work_in_dashboard/controller/api/services/user_services.dart';
@@ -62,7 +64,7 @@ class _UsersScreenState extends State<UsersScreen>
                       PaginatedDataTable(
                         rowsPerPage: 5,
                         columnSpacing: 28.w,
-                        showFirstLastButtons: true,
+                        
                         sortAscending: ascending,
                         sortColumnIndex: 0,
                         header: Row(
@@ -160,7 +162,7 @@ class _UsersScreenState extends State<UsersScreen>
                       PaginatedDataTable(
                         rowsPerPage: 5,
                         columnSpacing: 28.w,
-                        showFirstLastButtons: true,
+                        
                         sortAscending: ascending,
                         sortColumnIndex: 0,
                         header: Row(

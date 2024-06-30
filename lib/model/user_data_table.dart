@@ -57,9 +57,10 @@ class NullUserDataTable extends DataTableSource {
           birthDate: 'birthDate',
           gender: 'gender',
           isAdmin: false,
-          createdAt: DateTime(2024,6,25),
-          updatedAt: DateTime(2024,6,25),
-          version: 0));
+          createdAt: '29/6/2024',
+          updatedAt: '29/6/2024',
+          v: 0
+          ));
 
   @override
   DataRow? getRow(int index) {

@@ -8,16 +8,16 @@ class InfoTextField extends StatelessWidget {
     required this.controller,
     required this.labelText,
     required this.hintText,
-    required this.enabled,
     this.suffixIcon,
     this.onTap,
+    this.validator,
   });
   final TextEditingController controller;
   final String labelText;
   final String hintText;
-  final bool enabled;
   final Widget? suffixIcon;
   final void Function()? onTap;
+  final String? Function(String? value)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -34,13 +34,14 @@ class InfoTextField extends StatelessWidget {
             height: 8,
           ),
           TextFormField(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             enableSuggestions: true,
             maxLines: 1,
-            enabled: enabled,
             onTap: onTap,
+            validator: validator,
             controller: controller,
             cursorColor: AppColor.white.withOpacity(0.5),
-            style: Theme.of(context).textTheme.bodySmall,
+            style: const TextStyle(fontSize: 12, color: AppColor.white),
             decoration: InputDecoration(
               border: OutlineInputBorder(
                   borderSide: BorderSide.none,

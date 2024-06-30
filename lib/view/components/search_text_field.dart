@@ -17,14 +17,19 @@ class SearchTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 270.w,
+      width: 180.w,
       child: TextFormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        
         cursorColor: AppColor.white.withOpacity(0.5),
-        style: Theme.of(context).textTheme.bodySmall,
+        style: const TextStyle(fontSize: 12),
         decoration: InputDecoration(
+          errorStyle: const TextStyle(fontSize: 12),
           border: OutlineInputBorder(
               borderSide: BorderSide.none,
               borderRadius: BorderRadius.circular(16)),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           filled: true,
           fillColor: Theme.of(context).colorScheme.primary,
           hintText: hintText,
@@ -33,12 +38,7 @@ class SearchTextField extends StatelessWidget {
                   onPressed: onAddPressed,
                   icon: const Icon(Icons.add_circle_rounded))
               : const Icon(Icons.search_rounded),
-          prefixIcon: wantAdd == true
-              ? const Icon(Icons.search_rounded)
-              : const PreferredSize(
-                  preferredSize: Size.zero, child: SizedBox()),
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+       
         ),
         onChanged: onChanged,
       ),

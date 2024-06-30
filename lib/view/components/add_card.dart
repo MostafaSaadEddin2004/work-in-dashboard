@@ -1,31 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:work_in_dashboard/controller/style/app_color.dart';
+import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/view/components/add_button.dart';
 
 class AddCard extends StatelessWidget {
   const AddCard(
       {super.key,
-      required this.onCancelPressed,
+      this.onCancelPressed,
       required this.onAddPressed,
-      required this.onAddAnotherPressed,
       required this.fieldList,
-      this.addMode = false});
-  final void Function() onCancelPressed;
+      this.isAddMode = false,
+      this.isAddLoading = false});
+  final void Function()? onCancelPressed;
   final void Function() onAddPressed;
-  final void Function() onAddAnotherPressed;
   final List<Widget> fieldList;
-  final bool addMode;
+  final bool isAddMode;
+  final bool isAddLoading;
+
   @override
   Widget build(BuildContext context) {
-    if (addMode != false) {
+    if (isAddMode != false) {
       return Container(
           width: double.infinity,
           padding: const EdgeInsets.all(16),
-          margin: const EdgeInsets.symmetric(vertical: 16),
+          margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 4),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(12),
               color: AppColor.secondary),
           child: Column(
+            crossAxisAlignment: Responsive.isDesktop(context)
+                ? CrossAxisAlignment.start
+                : CrossAxisAlignment.center,
             children: [
               Row(
                 children: [
@@ -45,24 +50,15 @@ class AddCard extends StatelessWidget {
                 height: 32,
               ),
               Wrap(
-                spacing: 50,
+                spacing: 32,
                 runSpacing: 16,
                 children: fieldList,
               ),
-              Row(
-                children: [
-                  AddButton(
-                    text: 'Add job',
-                    onTap: onAddPressed,
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  AddButton(
-                    text: 'Add job and add another',
-                    onTap: onAddAnotherPressed,
-                  ),
-                ],
+              AddButton(
+                text: 'Add job',
+                onPressed: onAddPressed,
+                isAddLoading: isAddLoading,
+                color: AppColor.blue,
               )
             ],
           ));

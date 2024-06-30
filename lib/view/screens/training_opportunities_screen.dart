@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:work_in_dashboard/controller/api/services/training_services.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/model/training_data_table.dart';
-import 'package:work_in_dashboard/view/components/add_job_card.dart';
+import 'package:work_in_dashboard/view/components/add_card.dart';
 import 'package:work_in_dashboard/view/components/info_text_field.dart';
 import 'package:work_in_dashboard/view/components/search_text_field.dart';
 
@@ -16,8 +17,9 @@ class TrainingOpportunities extends StatefulWidget {
 }
 
 class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
-  bool addMode = false;
+  bool isAddMode = false;
   bool ascending = false;
+  double opacity = 0.0;
   onSortColumn(columnIndex, ascending, List<dynamic> data) {
     if (columnIndex == 0) {
       if (ascending) {
@@ -60,7 +62,6 @@ class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
                       PaginatedDataTable(
                         rowsPerPage: 5,
                         columnSpacing: 28.w,
-                        showFirstLastButtons: true,
                         sortAscending: ascending,
                         sortColumnIndex: 0,
                         header: Row(
@@ -78,7 +79,8 @@ class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
                               wantAdd: true,
                               onAddPressed: () {
                                 setState(() {
-                                  addMode = true;
+                                  isAddMode = true;
+                                  opacity = 1.0;
                                 });
                               },
                             ),
@@ -122,45 +124,58 @@ class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
                             ),
                           ),
                           DataColumn(
-                            label: Skeletonizer(
-                              child: Text(
-                                'Actions',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
+                            label: Text(
+                              'Actions',
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
                         ],
                         source: NullTrainingDataTable(),
                       ),
-                      AddCard(
-                        addMode: addMode,
-                        fieldList: [
-                          InfoTextField(
-                            controller: _trainingCompany,
-                            enabled: true,
-                            hintText: 'Enter company name',
-                            labelText: 'Company name',
-                          ),
-                          InfoTextField(
-                            controller: _kindOfTrain,
-                            enabled: true,
-                            hintText: 'Enter job title',
-                            labelText: 'Job title',
-                          ),
-                          InfoTextField(
-                            controller: _location,
-                            enabled: true,
-                            hintText: 'Enter job title',
-                            labelText: 'Job title',
-                          ),
-                        ],
-                        onAddAnotherPressed: () {},
-                        onAddPressed: () {},
-                        onCancelPressed: () {
-                          setState(() {
-                            addMode = false;
-                          });
-                        },
+                      AnimatedOpacity(
+                        duration: const Duration(seconds: 1),
+                        opacity: opacity,
+                        curve: Curves.easeInOut,
+                        child: AddCard(
+                          isAddMode: isAddMode,
+                          fieldList: [
+                            InfoTextField(
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Company location field is required';
+                                }
+                                return null;
+                              },
+                              controller: _trainingCompany,
+                              hintText: 'Enter company name',
+                              labelText: 'Company name',
+                            ),
+                            InfoTextField(
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Company location field is required';
+                                }
+                                return null;
+                              },
+                              controller: _kindOfTrain,
+                              hintText: 'Enter job title',
+                              labelText: 'Job title',
+                            ),
+                            InfoTextField(
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Company location field is required';
+                                }
+                                return null;
+                              },
+                              controller: _location,
+                              hintText: 'Enter job title',
+                              labelText: 'Job title',
+                            ),
+                          ],
+                          onAddPressed: () {},
+                          
+                        ),
                       ),
                     ],
                   );
@@ -169,7 +184,6 @@ class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
                   return PaginatedDataTable(
                     rowsPerPage: 5,
                     columnSpacing: 28.w,
-                    showFirstLastButtons: true,
                     sortAscending: ascending,
                     sortColumnIndex: 0,
                     header: Row(
@@ -198,19 +212,6 @@ class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
                       ],
                     ),
                     columns: [
-                      DataColumn(
-                        label: Text(
-                          'Id',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {
-                          setState(() {
-                            ascending = !ascending;
-                          });
-                          onSortColumn(columnIndex, ascending, data);
-                        },
-                      ),
                       DataColumn(
                         label: Expanded(
                           child: Text(

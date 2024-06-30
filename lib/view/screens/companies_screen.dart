@@ -53,7 +53,7 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                   return PaginatedDataTable(
                     rowsPerPage: 5,
                     columnSpacing: 28.w,
-                    showFirstLastButtons: true,
+                    
                     sortAscending: ascending,
                     sortColumnIndex: 0,
                     header: Row(
@@ -96,7 +96,7 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                   return PaginatedDataTable(
                     rowsPerPage: 5,
                     columnSpacing: 28.w,
-                    showFirstLastButtons: true,
+                    
                     sortAscending: ascending,
                     sortColumnIndex: 0,
                     header: Row(

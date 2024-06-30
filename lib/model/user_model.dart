@@ -7,9 +7,9 @@ class UserModel {
   final String birthDate;
   final String gender;
   final bool isAdmin;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final int version;
+  final String createdAt;
+  final String updatedAt;
+  final int v;
 
   UserModel({
     required this.id,
@@ -22,7 +22,7 @@ class UserModel {
     required this.isAdmin,
     required this.createdAt,
     required this.updatedAt,
-    required this.version,
+    required this.v,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -35,9 +35,9 @@ class UserModel {
       birthDate: json['BirthDate'],
       gender: json['Gender'],
       isAdmin: json['isAdmin'],
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
-      version: json['__v'],
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
+      v: json['__v'],
     );
   }
 }

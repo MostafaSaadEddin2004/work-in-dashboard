@@ -1,12 +1,15 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:work_in_dashboard/controller/api/services/job_services.dart';
 import 'package:work_in_dashboard/controller/style/app_color.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/model/job_data_table.dart';
-import 'package:work_in_dashboard/view/components/add_job_card.dart';
+import 'package:work_in_dashboard/model/job_model.dart';
+import 'package:work_in_dashboard/view/components/add_card.dart';
+import 'package:work_in_dashboard/view/components/gender_radio_buttons.dart';
 import 'package:work_in_dashboard/view/components/info_text_field.dart';
 import 'package:work_in_dashboard/view/components/search_text_field.dart';
 
@@ -18,28 +21,32 @@ class JobOpportunitiesScreen extends StatefulWidget {
 }
 
 class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
-  bool addMode = false;
-  String? gender;
+  bool isAddMode = false;
+  double opacity = 0.0;
+  bool isAddLoading = false;
   bool ascending = false;
-  onSortColumn(int columnIndex, bool ascending, List<dynamic> data) {
+  onSortColumn(int columnIndex, bool ascendingF, List<JobModel> data) {
     if (columnIndex == 0) {
-      if (ascending) {
-        data.sort(
-          (a, b) => a.name.compareTo(b.name),
+      if (ascendingF) {
+        filterData!.sort(
+          (a, b) => a.companyName.compareTo(b.companyName),
         );
       } else {
-        data.sort(
-          (a, b) => b.name.compareTo(a.name),
+        filterData!.sort(
+          (a, b) => b.companyName.compareTo(a.companyName),
         );
       }
     }
   }
 
+  List<JobModel>? filterData;
   final _companyName = TextEditingController();
   final _jobTitle = TextEditingController();
   final _experiencesForJob = TextEditingController();
   final _workTime = TextEditingController();
   final _location = TextEditingController();
+  int selectedGender = 1;
+  GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -64,217 +71,98 @@ class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
               future: JobServices.getAllJobs(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return Column(
-                    children: [
-                      PaginatedDataTable(
-                        rowsPerPage: 5,
-                        columnSpacing: 28.w,
-                        showFirstLastButtons: true,
-                        sortAscending: ascending,
-                        sortColumnIndex: 0,
-                        header: Row(
-                          children: [
-                            Text(
-                              'jobs',
-                              style: Theme.of(context).textTheme.labelSmall,
-                            ),
-                            const Spacer(
-                              flex: 1,
-                            ),
-                            SearchTextField(
-                              hintText: 'Search a job',
-                              onChanged: (value) {},
-                              wantAdd: true,
-                              onAddPressed: () {
-                                setState(() {
-                                  addMode = true;
-                                });
-                              },
-                            ),
-                          ],
+                  return PaginatedDataTable(
+                    rowsPerPage: 5,
+                    columnSpacing: 28.w,
+                    sortAscending: ascending,
+                    sortColumnIndex: 0,
+                    header: Row(
+                      children: [
+                        Text(
+                          'jobs',
+                          style: Theme.of(context).textTheme.labelSmall,
                         ),
-                        columns: [
-                          DataColumn(
-                            label: Skeletonizer(
-                              child: Text(
-                                'Id',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
-                            mouseCursor: MaterialStateMouseCursor.clickable,
-                            onSort: (columnIndex, ascending) {},
+                        const Spacer(
+                          flex: 1,
+                        ),
+                        SearchTextField(
+                          hintText: 'Search a job',
+                          onChanged: (value) {},
+                          wantAdd: false,
+                        ),
+                      ],
+                    ),
+                    columns: [
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'Id',
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
-                          DataColumn(
-                            label: Skeletonizer(
-                              child: Text(
-                                'Company',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
-                            mouseCursor: MaterialStateMouseCursor.clickable,
-                            onSort: (columnIndex, ascending) {},
-                          ),
-                          DataColumn(
-                            label: Skeletonizer(
-                              child: Text(
-                                'Location',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Skeletonizer(
-                              child: Text(
-                                'Required Experiences',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Skeletonizer(
-                              child: Text(
-                                'Gender',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Skeletonizer(
-                              child: Text(
-                                'job Title',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Skeletonizer(
-                              child: Text(
-                                'Work Time',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Skeletonizer(
-                              child: Text(
-                                'Actions',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
-                          ),
-                        ],
-                        source: NullJobdataTable(),
+                        ),
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        onSort: (columnIndex, ascending) {},
                       ),
-                      AddCard(
-                        addMode: addMode,
-                        fieldList: [
-                          InfoTextField(
-                            controller: _companyName,
-                            enabled: true,
-                            hintText: 'Enter company name',
-                            labelText: 'Company name',
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'Company',
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
-                          InfoTextField(
-                            controller: _jobTitle,
-                            enabled: true,
-                            hintText: 'Enter job title',
-                            labelText: 'Job title',
+                        ),
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        onSort: (columnIndex, ascending) {},
+                      ),
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'Location',
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
-                          InfoTextField(
-                            controller: _experiencesForJob,
-                            enabled: true,
-                            hintText: 'Enter required experiences',
-                            labelText: 'Required experiences',
+                        ),
+                      ),
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'Required Experiences',
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
-                          InfoTextField(
-                            controller: _workTime,
-                            enabled: true,
-                            hintText: 'Enter work time',
-                            labelText: 'WorkTime',
+                        ),
+                      ),
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'Gender',
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
-                          InfoTextField(
-                            controller: _location,
-                            enabled: true,
-                            hintText: 'Enter company location',
-                            labelText: 'Company location',
+                        ),
+                      ),
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'job Title',
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Gender',
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              DropdownButtonHideUnderline(
-                                child: DropdownButton2<String>(
-                                  isExpanded: true,
-                                  hint: const Text('Choose gender'),
-                                  items: [
-                                    DropdownMenuItem(
-                                      child: Text('Male',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall),
-                                      value: 'Male',
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text('Female',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall),
-                                      value: 'Female',
-                                    ),
-                                  ],
-                                  value: gender,
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      gender = value!;
-                                    });
-                                  },
-                                  buttonStyleData: ButtonStyleData(
-                                    height: 46,
-                                    width: 240.w,
-                                    padding: const EdgeInsets.only(
-                                        left: 14, right: 14),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(14),
-                                      color: AppColor.primary,
-                                    ),
-                                    elevation: 1,
-                                  ),
-                                  iconStyleData: const IconStyleData(
-                                    icon: Icon(
-                                      Icons.arrow_forward_ios_rounded,
-                                    ),
-                                    iconSize: 24,
-                                    iconEnabledColor: AppColor.white,
-                                  ),
-                                  dropdownStyleData: DropdownStyleData(
-                                    maxHeight: 100,
-                                    width: 240.w,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(14),
-                                      color: AppColor.primary,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                        ),
+                      ),
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'Work Time',
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
-                        ],
-                        onAddAnotherPressed: () {},
-                        onAddPressed: () {},
-                        onCancelPressed: () {
-                          setState(() {
-                            addMode = false;
-                          });
-                        },
+                        ),
+                      ),
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'Actions',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ),
                       ),
                     ],
+                    source: NullJobdataTable(),
                   );
                 } else if (snapshot.hasData) {
                   var data = snapshot.data!;
@@ -283,7 +171,6 @@ class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
                       PaginatedDataTable(
                         rowsPerPage: 5,
                         columnSpacing: 28.w,
-                        showFirstLastButtons: true,
                         sortAscending: ascending,
                         sortColumnIndex: 0,
                         header: Row(
@@ -299,48 +186,30 @@ class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
                               hintText: 'Search a job',
                               onChanged: (value) {
                                 setState(() {
-                                  data = value == null
-                                      ? data
-                                      : data
-                                          .where((element) =>
-                                              element.jobTitle.contains(value))
-                                          .toList();
+                                  filterData = data
+                                      .where((element) =>
+                                          element.companyName.contains(value!))
+                                      .toList();
                                 });
                               },
-                              wantAdd: true,
-                              onAddPressed: () {
-                                setState(() {
-                                  addMode = true;
-                                });
-                              },
+                              wantAdd: false,
+                              
                             ),
                           ],
                         ),
                         columns: [
                           DataColumn(
                             label: Text(
-                              'Id',
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            mouseCursor: MaterialStateMouseCursor.clickable,
-                            onSort: (columnIndex, ascending) {
-                              setState(() {
-                                ascending = !ascending;
-                              });
-                              onSortColumn(columnIndex, ascending, data);
-                            },
-                          ),
-                          DataColumn(
-                            label: Text(
                               'Company',
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                             mouseCursor: MaterialStateMouseCursor.clickable,
-                            onSort: (columnIndex, ascending) {
+                            onSort: (columnIndex, ascendingF) {
                               setState(() {
-                                ascending = !ascending;
+                                ascending = ascendingF;
                               });
-                              onSortColumn(columnIndex, ascending, data);
+                              onSortColumn(columnIndex, ascendingF,
+                                  filterData == null ? data : filterData!);
                             },
                           ),
                           DataColumn(
@@ -373,56 +242,142 @@ class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
-                          DataColumn(
-                            label: Text(
-                              'Actions',
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          ),
-                        ],
-                        source: JobdataTable(jobData: data),
+                         DataColumn(
+                        label: Text(
+                          'Actions',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
                       ),
-                      AddCard(
-                        addMode: addMode,
-                        fieldList: [
-                          InfoTextField(
-                            controller: _companyName,
-                            enabled: true,
-                            hintText: 'Enter company name',
-                            labelText: 'Company name',
-                          ),
-                          InfoTextField(
-                            controller: _jobTitle,
-                            enabled: true,
-                            hintText: 'Enter job title',
-                            labelText: 'Job title',
-                          ),
-                          InfoTextField(
-                            controller: _experiencesForJob,
-                            enabled: true,
-                            hintText: 'Enter required experiences',
-                            labelText: 'Required experiences',
-                          ),
-                          InfoTextField(
-                            controller: _workTime,
-                            enabled: true,
-                            hintText: 'Enter work time',
-                            labelText: 'WorkTime',
-                          ),
-                          InfoTextField(
-                            controller: _location,
-                            enabled: true,
-                            hintText: 'Enter company location',
-                            labelText: 'Company location',
-                          ),
                         ],
-                        onAddAnotherPressed: () {},
-                        onAddPressed: () {},
-                        onCancelPressed: () {
-                          setState(() {
-                            addMode = false;
-                          });
-                        },
+                        source: JobdataTable(
+                            jobData: filterData == null ? data : filterData!),
+                      ),
+                      Form(
+                        key: formKey,
+                        child: AnimatedOpacity(
+                          duration: const Duration(seconds: 1),
+                          opacity: opacity,
+                          curve: Curves.easeInOut,
+                          child: AddCard(
+                            isAddMode: isAddMode,
+                            isAddLoading: isAddLoading,
+                            fieldList: [
+                              InfoTextField(
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Company name field is required';
+                                  }
+                                  return null;
+                                },
+                                controller: _companyName,
+                                hintText: 'Enter company name',
+                                labelText: 'Company name',
+                              ),
+                              InfoTextField(
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Job title field is required';
+                                  }
+                                  return null;
+                                },
+                                controller: _jobTitle,
+                                hintText: 'Enter job title',
+                                labelText: 'Job title',
+                              ),
+                              InfoTextField(
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Required experiences field is required';
+                                  }
+                                  return null;
+                                },
+                                controller: _experiencesForJob,
+                                hintText: 'Enter required experiences',
+                                labelText: 'Required experiences',
+                              ),
+                              InfoTextField(
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Work time field is required';
+                                  }
+                                  return null;
+                                },
+                                controller: _workTime,
+                                hintText: 'Enter work time',
+                                labelText: 'WorkTime',
+                              ),
+                              InfoTextField(
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Company location field is required';
+                                  }
+                                  return null;
+                                },
+                                controller: _location,
+                                hintText: 'Enter company location',
+                                labelText: 'Company location',
+                              ),
+                              GenderRadioButton(
+                                selectedRadio: selectedGender,
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedGender = value!;
+                                  });
+                                },
+                              )
+                            ],
+                            onAddPressed: () async {
+                              if (formKey.currentState!.validate()) {
+                                try {
+                                  setState(() {
+                                    isAddLoading = true;
+                                  });
+                                  await JobServices.addJob(
+                                      companyName: _companyName.text,
+                                      jobTitle: _jobTitle.text,
+                                      experiencesForJob:
+                                          _experiencesForJob.text,
+                                      workTime: _workTime.text,
+                                      companyNav: _location.text,
+                                      gender: selectedGender == 1
+                                          ? 'Male'
+                                          : 'Female');
+                                  setState(() {
+                                    isAddLoading = false;
+                                  });
+                                  Get.defaultDialog(
+                                      title: 'Congrats!',
+                                      content: const Text(
+                                        'Job has been added successfully',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: AppColor.white,
+                                        ),
+                                      ));
+                                } on HttpException catch (e) {
+                                  Get.defaultDialog(
+                                      title: 'Warning',
+                                      content: Text(
+                                        e.message,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          color: AppColor.white,
+                                        ),
+                                      ));
+                                  setState(() {
+                                    isAddLoading = false;
+                                  });
+                                }
+                              }
+                            },
+                            onCancelPressed: () {
+                              setState(() {
+                                isAddMode = false;
+                                opacity = 0.0;
+                              });
+                            },
+                          ),
+                        ),
                       ),
                     ],
                   );

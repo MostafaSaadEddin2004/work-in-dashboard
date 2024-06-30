@@ -70,8 +70,8 @@ class _DesktopSideNavBarState extends State<DesktopSideNavBar> {
             });
           },
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 400),
-            curve: Curves.easeIn,
+            duration: const Duration(seconds: 1),
+            curve: Curves.easeInOut,
             margin: const EdgeInsets.only(left: 16, top: 16, right: 16),
             width: double.infinity,
             height: 40,

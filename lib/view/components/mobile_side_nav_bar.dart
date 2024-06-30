@@ -58,35 +58,39 @@ class _MobileSideNavBarState extends State<MobileSideNavBar> {
   final navController = Get.put(SideNavigationBarController());
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: navData.length,
-        itemBuilder: (context, index) => InkWell(
-              hoverColor: Colors.transparent,
-              focusColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              onTap: () {
-                navController.changeScreen(index);
-              },
-              onHover: (value) {
-                setState(() {
-                  navData[index].isHovered = value;
-                });
-              },
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 400),
-                curve: Curves.easeIn,
-                width: 60,
-                height: 40,
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                    color: SideNavBarItemColor.itemColor(
-                        index,
-                        navController.currentIndex.value,
-                        navData[index].isHovered),
-                    borderRadius: BorderRadius.circular(32)),
-                child: navData[index].icon,
-              ),
-            ));
+    return SizedBox(
+      child: ListView.builder(
+          itemCount: navData.length,
+          itemBuilder: (context, index) => InkWell(
+                hoverColor: Colors.transparent,
+                focusColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onTap: () {
+                  navController.changeScreen(index);
+                },
+                onHover: (value) {
+                  setState(() {
+                    navData[index].isHovered = value;
+                  });
+                },
+                child: Obx(
+                  ()=> AnimatedContainer(
+                    duration: const Duration(seconds: 1),
+                    curve: Curves.easeInOut,
+                    width: 60,
+                    height: 40,
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                        color: SideNavBarItemColor.itemColor(
+                            index,
+                            navController.currentIndex.value,
+                            navData[index].isHovered),
+                        borderRadius: BorderRadius.circular(32)),
+                    child: navData[index].icon,
+                  ),
+                ),
+              )),
+    );
   }
 }

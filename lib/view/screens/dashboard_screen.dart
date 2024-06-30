@@ -39,7 +39,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             )
           : const PreferredSize(preferredSize: Size.zero, child: SizedBox()),
       drawer: !Responsive.isDesktop(context)? Drawer(
-        width: 200.h,
+        width: 100.w,
         backgroundColor: AppColor.secondary,
         child: Column(
           children: [

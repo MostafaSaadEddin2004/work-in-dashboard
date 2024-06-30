@@ -33,13 +33,13 @@ abstract class TrainingServices extends BaseApi {
 
   static Future<String> updateTraining({
     required String id,
-    String? trainingCompany,
-    String? kindOfTrain,
-    String? location,
+    required String trainingCompany,
+    required String kindOfTrain,
+    required String location,
   }) async {
     try {
       final response =
-          await BaseApi.putRequest(endPoint: 'TrainingForm/Update-Train',id: id, data: {
+          await BaseApi.putRequest(endPoint: 'TrainingForm/Update-Train/$id',id: id, data: {
         'TrainingCompany': trainingCompany,
         'KindOfTrain': kindOfTrain,
         'Location': location,
@@ -53,7 +53,7 @@ abstract class TrainingServices extends BaseApi {
 
   static Future<String> deleteTraining({required String id}) async {
     try {
-      await BaseApi.deleteRequest(endPoint: 'TrainingForm/Delete-Train', id: id);
+      await BaseApi.deleteRequest(endPoint: 'TrainingForm/Delete-Train/$id', id: id);
       return 'Job has been deleted successfully';
     } on HttpException catch (e) {
       return e.message;
