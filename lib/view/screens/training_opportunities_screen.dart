@@ -5,6 +5,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:work_in_dashboard/controller/api/services/training_services.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/model/training_data_table.dart';
+import 'package:work_in_dashboard/model/training_model.dart';
 import 'package:work_in_dashboard/view/components/add_card.dart';
 import 'package:work_in_dashboard/view/components/info_text_field.dart';
 import 'package:work_in_dashboard/view/components/search_text_field.dart';
@@ -20,12 +21,12 @@ class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
   bool isAddMode = false;
   bool ascending = false;
   double opacity = 0.0;
-  onSortColumn(columnIndex, ascending, List<dynamic> data) {
+  onSortColumn(columnIndex, ascending, List<TrainingModel> data) {
     if (columnIndex == 0) {
       if (ascending) {
-        // data.sort((a, b) => a.name.compareTo(b.name),);
+        data.sort((a, b) => a.trainingCompany.compareTo(b.trainingCompany),);
       } else {
-        // data.sort((a, b) => b.name.compareTo(a.name),);
+        data.sort((a, b) => b.trainingCompany.compareTo(a.trainingCompany),);
       }
     }
   }
@@ -76,27 +77,11 @@ class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
                             SearchTextField(
                               hintText: 'Search a training',
                               onChanged: (value) {},
-                              wantAdd: true,
-                              onAddPressed: () {
-                                setState(() {
-                                  isAddMode = true;
-                                  opacity = 1.0;
-                                });
-                              },
+                              wantAdd: false,
                             ),
                           ],
                         ),
                         columns: [
-                          DataColumn(
-                            label: Skeletonizer(
-                              child: Text(
-                                'Id',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
-                            mouseCursor: MaterialStateMouseCursor.clickable,
-                            onSort: (columnIndex, ascending) {},
-                          ),
                           DataColumn(
                             label: Skeletonizer(
                               child: Text(

@@ -1,10 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:work_in_dashboard/controller/api/services/user_services.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/model/user_data_table.dart';
+import 'package:work_in_dashboard/model/user_model.dart';
 import 'package:work_in_dashboard/view/components/search_text_field.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -18,18 +17,15 @@ class UsersScreen extends StatefulWidget {
 class _UsersScreenState extends State<UsersScreen>
     with SingleTickerProviderStateMixin {
   bool ascending = false;
-  onSortColumn(
-      {required int columnIndex,
-      required bool ascending,
-      List<dynamic>? data}) {
+  onSortColumn(int columnIndex, bool ascending, List<UserModel> data) {
     if (columnIndex == 0) {
       if (ascending) {
-        data!.sort(
-          (a, b) => a.name.compareTo(b.name),
+        data.sort(
+          (a, b) => a.username.compareTo(b.username),
         );
       } else {
-        data!.sort(
-          (a, b) => b.name.compareTo(a.name),
+        data.sort(
+          (a, b) => b.username.compareTo(a.username),
         );
       }
     }
@@ -64,7 +60,6 @@ class _UsersScreenState extends State<UsersScreen>
                       PaginatedDataTable(
                         rowsPerPage: 5,
                         columnSpacing: 28.w,
-                        
                         sortAscending: ascending,
                         sortColumnIndex: 0,
                         header: Row(
@@ -100,15 +95,7 @@ class _UsersScreenState extends State<UsersScreen>
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                             ),
-                            mouseCursor: MaterialStateMouseCursor.clickable,
-                            onSort: (columnIndex, ascending) {
-                              setState(() {
-                                ascending = !ascending;
-                              });
-                              onSortColumn(
-                                  columnIndex: columnIndex,
-                                  ascending: ascending);
-                            },
+                           
                           ),
                           DataColumn(
                             label: Skeletonizer(
@@ -162,7 +149,6 @@ class _UsersScreenState extends State<UsersScreen>
                       PaginatedDataTable(
                         rowsPerPage: 5,
                         columnSpacing: 28.w,
-                        
                         sortAscending: ascending,
                         sortColumnIndex: 0,
                         header: Row(
@@ -201,10 +187,7 @@ class _UsersScreenState extends State<UsersScreen>
                               setState(() {
                                 ascending = !ascending;
                               });
-                              onSortColumn(
-                                  columnIndex: columnIndex,
-                                  ascending: ascending,
-                                  data: data);
+                              onSortColumn(columnIndex, ascending, data);
                             },
                           ),
                           DataColumn(

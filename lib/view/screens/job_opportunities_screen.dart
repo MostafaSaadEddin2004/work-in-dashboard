@@ -28,11 +28,11 @@ class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
   onSortColumn(int columnIndex, bool ascendingF, List<JobModel> data) {
     if (columnIndex == 0) {
       if (ascendingF) {
-        filterData!.sort(
+        data.sort(
           (a, b) => a.companyName.compareTo(b.companyName),
         );
       } else {
-        filterData!.sort(
+        data.sort(
           (a, b) => b.companyName.compareTo(a.companyName),
         );
       }

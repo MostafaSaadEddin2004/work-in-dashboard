@@ -4,6 +4,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:work_in_dashboard/controller/api/services/company_services.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/model/company_data_table.dart';
+import 'package:work_in_dashboard/model/company_mode.dart';
 import 'package:work_in_dashboard/view/components/search_text_field.dart';
 
 class CompaniesScreen extends StatefulWidget {
@@ -16,7 +17,7 @@ class CompaniesScreen extends StatefulWidget {
 class _CompaniesScreenState extends State<CompaniesScreen> {
   bool addMode = false;
   bool ascending = false;
-  onSortColumn(columnIndex, ascending) {
+  onSortColumn(int columnIndex, bool ascending, List<CompanyModel> data) {
     if (columnIndex == 0) {
       if (ascending) {
         // data.sort((a, b) => a.name.compareTo(b.name),);
@@ -53,7 +54,6 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                   return PaginatedDataTable(
                     rowsPerPage: 5,
                     columnSpacing: 28.w,
-                    
                     sortAscending: ascending,
                     sortColumnIndex: 0,
                     header: Row(
@@ -80,13 +80,6 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {
-                          setState(() {
-                            ascending = !ascending;
-                          });
-                          onSortColumn(columnIndex, ascending);
-                        },
                       ),
                     ],
                     source: NullCompanyDataTable(),
@@ -96,7 +89,6 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                   return PaginatedDataTable(
                     rowsPerPage: 5,
                     columnSpacing: 28.w,
-                    
                     sortAscending: ascending,
                     sortColumnIndex: 0,
                     header: Row(
@@ -135,7 +127,7 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                           setState(() {
                             ascending = !ascending;
                           });
-                          onSortColumn(columnIndex, ascending);
+                          onSortColumn(columnIndex, ascending, data);
                         },
                       ),
                     ],
