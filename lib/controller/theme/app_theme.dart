@@ -6,21 +6,21 @@ abstract class AppTheme {
       brightness: Brightness.dark,
       textTheme: const TextTheme(
         labelLarge: TextStyle(
-            fontSize: 28, color: AppColor.white, fontWeight: FontWeight.bold),
-        labelMedium: TextStyle(
             fontSize: 26, color: AppColor.white, fontWeight: FontWeight.bold),
-        labelSmall: TextStyle(
+        labelMedium: TextStyle(
             fontSize: 24, color: AppColor.white, fontWeight: FontWeight.bold),
+        labelSmall: TextStyle(
+            fontSize: 22, color: AppColor.white, fontWeight: FontWeight.bold),
         bodyLarge: TextStyle(
-          fontSize: 24,
+          fontSize: 22,
           color: AppColor.white,
         ),
         bodyMedium: TextStyle(
-          fontSize: 20,
+          fontSize: 18,
           color: AppColor.white,
         ),
         bodySmall: TextStyle(
-          fontSize: 16,
+          fontSize: 14,
           color: AppColor.white,
         ),
       ),

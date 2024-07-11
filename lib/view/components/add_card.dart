@@ -10,12 +10,14 @@ class AddCard extends StatelessWidget {
       required this.onAddPressed,
       required this.fieldList,
       this.isAddMode = false,
-      this.isAddLoading = false});
+      this.isAddLoading = false,
+      required this.label});
   final void Function()? onCancelPressed;
   final void Function() onAddPressed;
   final List<Widget> fieldList;
   final bool isAddMode;
   final bool isAddLoading;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class AddCard extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'Add job',
+                    label,
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
                   const Spacer(

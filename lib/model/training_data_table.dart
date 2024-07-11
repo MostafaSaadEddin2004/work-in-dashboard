@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:work_in_dashboard/controller/api/services/training_services.dart';
@@ -33,7 +31,26 @@ class TrainingDataTable extends DataTableSource {
               labelText: 'Company',
               hintText: 'Enter Company',
             ),
-            onConfirm: () {},
+            cancel: AddButton(
+              text: 'Cancel',
+              color: AppColor.red,
+              onPressed: () {
+                Get.back();
+              },
+            ),
+            confirm: AddButton(
+              text: 'Confirm',
+              color: AppColor.blue,
+              onPressed: () async {
+                await TrainingServices.updateTraining(
+                  id: trainingData[index].id,
+                  trainingCompany: _trainingCompany.text,
+                  kindOfTrain: trainingData[index].trainingCompany,
+                  location: trainingData[index].location,
+                );
+                Get.back();
+              },
+            ),
           );
         },
       ),
@@ -52,7 +69,26 @@ class TrainingDataTable extends DataTableSource {
               labelText: 'Kind of training',
               hintText: 'Enter kind of training',
             ),
-            onConfirm: () {},
+            cancel: AddButton(
+              text: 'Cancel',
+              color: AppColor.red,
+              onPressed: () {
+                Get.back();
+              },
+            ),
+            confirm: AddButton(
+              text: 'Confirm',
+              color: AppColor.blue,
+              onPressed: () async {
+                await TrainingServices.updateTraining(
+                  id: trainingData[index].id,
+                  trainingCompany: trainingData[index].trainingCompany,
+                  kindOfTrain: _kindOfTrain.text,
+                  location: trainingData[index].location,
+                );
+                Get.back();
+              },
+            ),
           );
         },
       ),
@@ -71,30 +107,24 @@ class TrainingDataTable extends DataTableSource {
               labelText: 'Location',
               hintText: 'Enter Location',
             ),
+            cancel: AddButton(
+              text: 'Cancel',
+              color: AppColor.red,
+              onPressed: () {
+                Get.back();
+              },
+            ),
             confirm: AddButton(
               text: 'Confirm',
               color: AppColor.blue,
               onPressed: () async {
-                try {
-                  await TrainingServices.updateTraining(
-                      id: trainingData[index].id,
-                      trainingCompany: trainingData[index].trainingCompany,
-                      kindOfTrain: trainingData[index].kindOfTrain,
-                      location: _location.text);
-                      print('done');
-                } on HttpException catch (e) {
-                  print('object');
-                  throw HttpException(e.message);
-                }
+                await TrainingServices.updateTraining(
+                    id: trainingData[index].id,
+                    trainingCompany: trainingData[index].trainingCompany,
+                    kindOfTrain: trainingData[index].kindOfTrain,
+                    location: _location.text);
                 Get.back();
               },
-            ),
-            cancel: AddButton(
-              onPressed: () {
-                Get.back();
-              },
-              text: 'Cancel',
-              color: AppColor.red,
             ),
           );
         },
@@ -102,12 +132,14 @@ class TrainingDataTable extends DataTableSource {
       DataCell(Row(
         children: [
           IconButton(
-              onPressed: () {
-                TrainingServices.deleteTraining(id: trainingData[index].id);
+              onPressed: () async {
+                await TrainingServices.deleteTraining(
+                    id: trainingData[index].id);
               },
               icon: const Icon(
                 Icons.delete_rounded,
                 size: 25,
+                color: AppColor.red,
               )),
         ],
       )),
@@ -138,9 +170,6 @@ class NullTrainingDataTable extends DataTableSource {
   @override
   DataRow? getRow(int index) {
     return DataRow(cells: [
-      DataCell(
-        SkeletonizerText(text: _data[index].id),
-      ),
       DataCell(SkeletonizerText(text: _data[index].trainingCompany)),
       DataCell(SkeletonizerText(text: _data[index].kindOfTrain)),
       DataCell(SkeletonizerText(text: _data[index].location)),

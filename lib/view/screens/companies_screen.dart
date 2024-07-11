@@ -65,9 +65,9 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                         const Spacer(
                           flex: 1,
                         ),
-                        SearchTextField(
+                        const SearchTextField(
+                          enabled: false,
                           hintText: 'Search a company',
-                          onChanged: (value) {},
                           wantAdd: false,
                         ),
                       ],
@@ -87,7 +87,7 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                 } else if (snapshot.hasData) {
                   var data = snapshot.data!;
                   return PaginatedDataTable(
-                    rowsPerPage: 5,
+                    rowsPerPage: data.length < 5 ? data.length : 5,
                     columnSpacing: 28.w,
                     sortAscending: ascending,
                     sortColumnIndex: 0,
@@ -101,6 +101,7 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                           flex: 1,
                         ),
                         SearchTextField(
+                          enabled: true,
                           hintText: 'Search a companiesser',
                           onChanged: (value) {
                             setState(() {

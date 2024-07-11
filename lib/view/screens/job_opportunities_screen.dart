@@ -1,10 +1,7 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:work_in_dashboard/controller/api/services/job_services.dart';
-import 'package:work_in_dashboard/controller/style/app_color.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/model/job_data_table.dart';
 import 'package:work_in_dashboard/model/job_model.dart';
@@ -39,7 +36,6 @@ class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
     }
   }
 
-  List<JobModel>? filterData;
   final _companyName = TextEditingController();
   final _jobTitle = TextEditingController();
   final _experiencesForJob = TextEditingController();
@@ -85,9 +81,9 @@ class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
                         const Spacer(
                           flex: 1,
                         ),
-                        SearchTextField(
+                        const SearchTextField(
+                          enabled: false,
                           hintText: 'Search a job',
-                          onChanged: (value) {},
                           wantAdd: false,
                         ),
                       ],
@@ -169,7 +165,7 @@ class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
                   return Column(
                     children: [
                       PaginatedDataTable(
-                        rowsPerPage: 5,
+                        rowsPerPage: data.length < 5 ? data.length : 5,
                         columnSpacing: 28.w,
                         sortAscending: ascending,
                         sortColumnIndex: 0,
@@ -183,17 +179,26 @@ class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
                               flex: 1,
                             ),
                             SearchTextField(
+                              enabled: true,
                               hintText: 'Search a job',
                               onChanged: (value) {
                                 setState(() {
-                                  filterData = data
-                                      .where((element) =>
-                                          element.companyName.contains(value!))
-                                      .toList();
+                                  data = value == null
+                                      ? data
+                                      : data
+                                          .where((element) => element
+                                              .companyName
+                                              .contains(value))
+                                          .toList();
                                 });
                               },
-                              wantAdd: false,
-                              
+                              wantAdd: true,
+                              onAddPressed: () {
+                                setState(() {
+                                  isAddMode = true;
+                                  opacity = 1.0;
+                                });
+                              },
                             ),
                           ],
                         ),
@@ -208,8 +213,7 @@ class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
                               setState(() {
                                 ascending = ascendingF;
                               });
-                              onSortColumn(columnIndex, ascendingF,
-                                  filterData == null ? data : filterData!);
+                              onSortColumn(columnIndex, ascendingF, data);
                             },
                           ),
                           DataColumn(
@@ -242,15 +246,14 @@ class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
-                         DataColumn(
-                        label: Text(
-                          'Actions',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ),
+                          DataColumn(
+                            label: Text(
+                              'Actions',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ),
                         ],
-                        source: JobdataTable(
-                            jobData: filterData == null ? data : filterData!),
+                        source: JobdataTable(jobData: data),
                       ),
                       Form(
                         key: formKey,
@@ -259,6 +262,7 @@ class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
                           opacity: opacity,
                           curve: Curves.easeInOut,
                           child: AddCard(
+                            label: 'Add job',
                             isAddMode: isAddMode,
                             isAddLoading: isAddLoading,
                             fieldList: [
@@ -328,46 +332,21 @@ class _JobOpportunitiesScreenState extends State<JobOpportunitiesScreen> {
                             ],
                             onAddPressed: () async {
                               if (formKey.currentState!.validate()) {
-                                try {
-                                  setState(() {
-                                    isAddLoading = true;
-                                  });
-                                  await JobServices.addJob(
-                                      companyName: _companyName.text,
-                                      jobTitle: _jobTitle.text,
-                                      experiencesForJob:
-                                          _experiencesForJob.text,
-                                      workTime: _workTime.text,
-                                      companyNav: _location.text,
-                                      gender: selectedGender == 1
-                                          ? 'Male'
-                                          : 'Female');
-                                  setState(() {
-                                    isAddLoading = false;
-                                  });
-                                  Get.defaultDialog(
-                                      title: 'Congrats!',
-                                      content: const Text(
-                                        'Job has been added successfully',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: AppColor.white,
-                                        ),
-                                      ));
-                                } on HttpException catch (e) {
-                                  Get.defaultDialog(
-                                      title: 'Warning',
-                                      content: Text(
-                                        e.message,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          color: AppColor.white,
-                                        ),
-                                      ));
-                                  setState(() {
-                                    isAddLoading = false;
-                                  });
-                                }
+                                setState(() {
+                                  isAddLoading = true;
+                                });
+                                await JobServices.addJob(
+                                    companyName: _companyName.text,
+                                    jobTitle: _jobTitle.text,
+                                    experiencesForJob: _experiencesForJob.text,
+                                    workTime: _workTime.text,
+                                    companyNav: _location.text,
+                                    gender: selectedGender == 1
+                                        ? 'Male'
+                                        : 'Female');
+                                setState(() {
+                                  isAddLoading = false;
+                                });
                               }
                             },
                             onCancelPressed: () {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:work_in_dashboard/controller/api/services/training_services.dart';
@@ -20,13 +19,18 @@ class TrainingOpportunities extends StatefulWidget {
 class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
   bool isAddMode = false;
   bool ascending = false;
+  bool isAddLoading = false;
   double opacity = 0.0;
   onSortColumn(columnIndex, ascending, List<TrainingModel> data) {
     if (columnIndex == 0) {
       if (ascending) {
-        data.sort((a, b) => a.trainingCompany.compareTo(b.trainingCompany),);
+        data.sort(
+          (a, b) => a.trainingCompany.compareTo(b.trainingCompany),
+        );
       } else {
-        data.sort((a, b) => b.trainingCompany.compareTo(a.trainingCompany),);
+        data.sort(
+          (a, b) => b.trainingCompany.compareTo(a.trainingCompany),
+        );
       }
     }
   }
@@ -34,6 +38,7 @@ class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
   final _trainingCompany = TextEditingController();
   final _kindOfTrain = TextEditingController();
   final _location = TextEditingController();
+  GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -58,114 +63,6 @@ class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
               future: TrainingServices.getAllTraining(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return Column(
-                    children: [
-                      PaginatedDataTable(
-                        rowsPerPage: 5,
-                        columnSpacing: 28.w,
-                        sortAscending: ascending,
-                        sortColumnIndex: 0,
-                        header: Row(
-                          children: [
-                            Text(
-                              'Training',
-                              style: Theme.of(context).textTheme.labelSmall,
-                            ),
-                            const Spacer(
-                              flex: 1,
-                            ),
-                            SearchTextField(
-                              hintText: 'Search a training',
-                              onChanged: (value) {},
-                              wantAdd: false,
-                            ),
-                          ],
-                        ),
-                        columns: [
-                          DataColumn(
-                            label: Skeletonizer(
-                              child: Text(
-                                'Company',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
-                            mouseCursor: MaterialStateMouseCursor.clickable,
-                            onSort: (columnIndex, ascending) {},
-                          ),
-                          DataColumn(
-                            label: Skeletonizer(
-                              child: Text(
-                                'Kind of Training',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Skeletonizer(
-                              child: Text(
-                                'Location',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'Actions',
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          ),
-                        ],
-                        source: NullTrainingDataTable(),
-                      ),
-                      AnimatedOpacity(
-                        duration: const Duration(seconds: 1),
-                        opacity: opacity,
-                        curve: Curves.easeInOut,
-                        child: AddCard(
-                          isAddMode: isAddMode,
-                          fieldList: [
-                            InfoTextField(
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Company location field is required';
-                                }
-                                return null;
-                              },
-                              controller: _trainingCompany,
-                              hintText: 'Enter company name',
-                              labelText: 'Company name',
-                            ),
-                            InfoTextField(
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Company location field is required';
-                                }
-                                return null;
-                              },
-                              controller: _kindOfTrain,
-                              hintText: 'Enter job title',
-                              labelText: 'Job title',
-                            ),
-                            InfoTextField(
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Company location field is required';
-                                }
-                                return null;
-                              },
-                              controller: _location,
-                              hintText: 'Enter job title',
-                              labelText: 'Job title',
-                            ),
-                          ],
-                          onAddPressed: () {},
-                          
-                        ),
-                      ),
-                    ],
-                  );
-                } else if (snapshot.hasData) {
-                  var data = snapshot.data!;
                   return PaginatedDataTable(
                     rowsPerPage: 5,
                     columnSpacing: 28.w,
@@ -180,48 +77,38 @@ class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
                         const Spacer(
                           flex: 1,
                         ),
-                        SearchTextField(
+                        const SearchTextField(
+                          enabled: false,
                           hintText: 'Search a training',
-                          onChanged: (value) {
-                            setState(() {
-                              data = value == null
-                                  ? data
-                                  : data
-                                      .where((element) =>
-                                          element.kindOfTrain.contains(value))
-                                      .toList();
-                            });
-                          },
-                          wantAdd: true,
+                          wantAdd: false,
                         ),
                       ],
                     ),
                     columns: [
                       DataColumn(
-                        label: Expanded(
+                        label: Skeletonizer(
                           child: Text(
                             'Company',
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ),
                         mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {
-                          setState(() {
-                            ascending = !ascending;
-                          });
-                          onSortColumn(columnIndex, ascending, data);
-                        },
+                        onSort: (columnIndex, ascending) {},
                       ),
                       DataColumn(
-                        label: Text(
-                          'Kind Of Training',
-                          style: Theme.of(context).textTheme.bodyLarge,
+                        label: Skeletonizer(
+                          child: Text(
+                            'Kind of Training',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
                         ),
                       ),
                       DataColumn(
-                        label: Text(
-                          'Location',
-                          style: Theme.of(context).textTheme.bodyLarge,
+                        label: Skeletonizer(
+                          child: Text(
+                            'Location',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
                         ),
                       ),
                       DataColumn(
@@ -231,7 +118,156 @@ class _TrainingOpportunitiesState extends State<TrainingOpportunities> {
                         ),
                       ),
                     ],
-                    source: TrainingDataTable(trainingData: data),
+                    source: NullTrainingDataTable(),
+                  );
+                } else if (snapshot.hasData) {
+                  var data = snapshot.data!;
+                  return Column(
+                    children: [
+                      PaginatedDataTable(
+                        rowsPerPage: data.length < 5 ? data.length : 5,
+                        columnSpacing: 28.w,
+                        sortAscending: ascending,
+                        sortColumnIndex: 0,
+                        header: Row(
+                          children: [
+                            Text(
+                              'Training',
+                              style: Theme.of(context).textTheme.labelSmall,
+                            ),
+                            const Spacer(
+                              flex: 1,
+                            ),
+                            SearchTextField(
+                              enabled: true,
+                              hintText: 'Search a training',
+                              onChanged: (value) {
+                                setState(() {
+                                  data = value == null
+                                      ? data
+                                      : data
+                                          .where((element) => element
+                                              .kindOfTrain
+                                              .contains(value))
+                                          .toList();
+                                });
+                              },
+                              wantAdd: true,
+                              onAddPressed: () {
+                                setState(() {
+                                  isAddMode = true;
+                                  opacity = 1.0;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        columns: [
+                          DataColumn(
+                            label: Expanded(
+                              child: Text(
+                                'Company',
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                            ),
+                            mouseCursor: MaterialStateMouseCursor.clickable,
+                            onSort: (columnIndex, ascending) {
+                              setState(() {
+                                ascending = !ascending;
+                              });
+                              onSortColumn(columnIndex, ascending, data);
+                            },
+                          ),
+                          DataColumn(
+                            label: Text(
+                              'Kind Of Training',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              'Location',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              'Actions',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ),
+                        ],
+                        source: TrainingDataTable(trainingData: data),
+                      ),
+                      Form(
+                        key: formKey,
+                        child: AnimatedOpacity(
+                          duration: const Duration(seconds: 1),
+                          opacity: opacity,
+                          curve: Curves.easeInOut,
+                          child: AddCard(
+                            label: 'Add Training',
+                            isAddMode: isAddMode,
+                            isAddLoading: isAddLoading,
+                            fieldList: [
+                              InfoTextField(
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Company location field is required';
+                                  }
+                                  return null;
+                                },
+                                controller: _trainingCompany,
+                                hintText: 'Enter company name',
+                                labelText: 'Company name',
+                              ),
+                              InfoTextField(
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Company location field is required';
+                                  }
+                                  return null;
+                                },
+                                controller: _kindOfTrain,
+                                hintText: 'Enter job title',
+                                labelText: 'Job title',
+                              ),
+                              InfoTextField(
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Company location field is required';
+                                  }
+                                  return null;
+                                },
+                                controller: _location,
+                                hintText: 'Enter job title',
+                                labelText: 'Job title',
+                              ),
+                            ],
+                            onAddPressed: () async {
+                              if (formKey.currentState!.validate()) {
+                                setState(() {
+                                  isAddLoading = true;
+                                });
+                                await TrainingServices.addTraining(
+                                    kindOfTrain: _kindOfTrain.text,
+                                    location: _location.text,
+                                    trainingCompany: _trainingCompany.text);
+                                setState(() {
+                                  isAddLoading = false;
+                                });
+                              }
+                            },
+                            onCancelPressed: () {
+                              setState(() {
+                                isAddMode = false;
+                                opacity = 0.0;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
                   );
                 }
                 return const Center(

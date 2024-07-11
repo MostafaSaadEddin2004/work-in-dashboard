@@ -71,18 +71,9 @@ class _UsersScreenState extends State<UsersScreen>
                             const Spacer(
                               flex: 1,
                             ),
-                            SearchTextField(
+                            const SearchTextField(
+                              enabled: false,
                               hintText: 'Search a user',
-                              onChanged: (value) {
-                                // setState(() {
-                                //   data = value == null
-                                //       ? data
-                                //       : data
-                                //           .where((element) =>
-                                //               element.username.contains(value))
-                                //           .toList();
-                                // });
-                              },
                               wantAdd: false,
                             ),
                           ],
@@ -147,7 +138,7 @@ class _UsersScreenState extends State<UsersScreen>
                   return Column(
                     children: [
                       PaginatedDataTable(
-                        rowsPerPage: 5,
+                        rowsPerPage: data.length < 5 ? data.length : 5,
                         columnSpacing: 28.w,
                         sortAscending: ascending,
                         sortColumnIndex: 0,
@@ -161,6 +152,7 @@ class _UsersScreenState extends State<UsersScreen>
                               flex: 1,
                             ),
                             SearchTextField(
+                              enabled: true,
                               hintText: 'Search a user',
                               onChanged: (value) {
                                 setState(() {

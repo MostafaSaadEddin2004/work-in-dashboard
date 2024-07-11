@@ -54,12 +54,12 @@ class NullUserDataTable extends DataTableSource {
           email: 'email',
           password: 'password',
           phone: 'phone',
-          birthDate: 'birthDate',
+          birthDate: DateTime(2000, 10, 6),
           gender: 'gender',
           isAdmin: false,
-          createdAt: '29/6/2024',
-          updatedAt: '29/6/2024',
-          v: 0
+          // createdAt: DateTime(2024, 10, 6),
+          // updatedAt: DateTime(2024, 10, 6),
+          // v: 0,
           ));
 
   @override
@@ -69,7 +69,7 @@ class NullUserDataTable extends DataTableSource {
       DataCell(SkeletonizerText(text: _data[index].email)),
       DataCell(SkeletonizerText(text: _data[index].password)),
       DataCell(SkeletonizerText(text: _data[index].phone)),
-      DataCell(SkeletonizerText(text: _data[index].birthDate)),
+      DataCell(SkeletonizerText(text: _data[index].birthDate.toString())),
       DataCell(SkeletonizerText(text: _data[index].gender)),
     ]);
   }

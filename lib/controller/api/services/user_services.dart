@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:work_in_dashboard/controller/api/base_api_model.dart';
 import 'package:work_in_dashboard/model/user_model.dart';
 
@@ -10,10 +9,11 @@ abstract class UserServices extends BaseApi {
     final data = (jsonDecode(response.body) as List)
         .map((e) => UserModel.fromJson(e))
         .toList();
+        print(response.statusCode);
+        print(response.body);
     return data;
-    } on HttpException catch (e) {
-      print(e.message);
-      throw HttpException(e.message);
+    } on Exception catch (e) {
+      throw Exception(e.toString());
     }
   }
 }

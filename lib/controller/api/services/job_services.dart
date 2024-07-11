@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:get/get.dart';
 import 'package:work_in_dashboard/controller/api/base_api_model.dart';
 import 'package:work_in_dashboard/model/job_model.dart';
 
@@ -12,12 +13,11 @@ abstract class JobServices extends BaseApi {
           .toList();
       return data;
     } on HttpException catch (e) {
-      print(e.message);
       throw HttpException(e.message);
     }
   }
 
-  static Future<String> addJob({
+  static Future<void> addJob({
     required String companyName,
     required String jobTitle,
     required String experiencesForJob,
@@ -25,27 +25,22 @@ abstract class JobServices extends BaseApi {
     required String companyNav,
     required String gender,
   }) async {
-    final response =
-        await BaseApi.postRequest(endPoint: 'JobForm/Add-job', data: {
-      'CompanyName': companyName,
-      'JobTitle': jobTitle,
-      'ExperiencesForJob': experiencesForJob,
-      'WorkTime': workTime,
-      'CompanyNav': companyNav,
-      'Gender': gender,
-    });
-
-    print(response.body);
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      return 'Job has been added successfully';
-    } else {
-      final errorMessage =
-          jsonDecode(response.body)['errors']['Gender']['message'];
-      throw Exception(errorMessage);
+    try {
+      await BaseApi.postRequest(endPoint: 'JobForm/Add-job', data: {
+        'CompanyName': companyName,
+        'JobTitle': jobTitle,
+        'ExperiencesForJob': experiencesForJob,
+        'WorkTime': workTime,
+        'CompanyNav': companyNav,
+        'Gender': gender,
+      });
+      Get.snackbar('Congrats!', 'Job has been added successfully');
+    } on HttpException catch (e) {
+      Get.snackbar('Warning!', e.message);
     }
   }
 
-  static Future<String> updateJob({
+  static Future<void> updateJob({
     required String id,
     String? companyName,
     String? jobTitle,
@@ -55,8 +50,8 @@ abstract class JobServices extends BaseApi {
     String? gender,
   }) async {
     try {
-      final response = await BaseApi.putRequest(
-          endPoint: 'JobForm/Update-Job/$id',
+      await BaseApi.putRequest(
+          endPoint: 'JobForm/Update-Job',
           id: id,
           data: {
             'CompanyName': companyName,
@@ -66,19 +61,19 @@ abstract class JobServices extends BaseApi {
             'CompanyNav': companyNav,
             'Gender': gender,
           });
-      print(response.body);
-      return 'Job has been updated successfully';
+      Get.snackbar('Congrats!', 'Job has been updated successfully');
     } on HttpException catch (e) {
-      return e.message;
+      Get.snackbar('Warning!', e.message);
+      throw HttpException(e.message);
     }
   }
 
-  static Future<String> deleteJob({required String id}) async {
+  static Future<void> deleteJob({required String id}) async {
     try {
-      await BaseApi.deleteRequest(endPoint: 'JobForm/Delete-job/$id', id: id);
-      return 'Job has been deleted successfully';
+      await BaseApi.deleteRequest(endPoint: 'JobForm/Delete-job', id: id);
+      Get.snackbar('Congrats!', 'Job has been deleted successfully');
     } on HttpException catch (e) {
-      return e.message;
+      Get.snackbar('Warning!', e.message);
     }
   }
 }
