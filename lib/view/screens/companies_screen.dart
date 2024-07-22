@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:work_in_dashboard/controller/api/services/company_services.dart';
+import 'package:work_in_dashboard/controller/bloc/company_service/company_services_cubit.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/model/company_data_table.dart';
 import 'package:work_in_dashboard/model/company_mode.dart';
@@ -47,40 +48,15 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                   ),
                 ],
               ),
-            FutureBuilder(
-              future: CompanyServices.getAllCompanies(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return PaginatedDataTable(
-                    rowsPerPage: 5,
-                    columnSpacing: 28.w,
-                    sortAscending: ascending,
-                    sortColumnIndex: 0,
-                    header: const Row(
-                      children: [
-                        Spacer(
-                          flex: 1,
-                        ),
-                        SearchTextField(
-                          enabled: false,
-                          hintText: 'Search a company',
-                        ),
-                      ],
-                    ),
-                    columns: [
-                      DataColumn(
-                        label: Skeletonizer(
-                          child: Text(
-                            'Id',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ),
-                      ),
-                    ],
-                    source: NullCompanyDataTable(),
+            BlocBuilder<CompanyServicesCubit, CompanyServicesState>(
+              bloc: CompanyServicesCubit()..getAllCompanies(),
+              builder: (context, state) {
+                if (state is CompanyServicesFailure) {
+                  return Center(
+                    child: Text(state.errorMessage),
                   );
-                } else if (snapshot.hasData) {
-                  var data = snapshot.data!;
+                } else if (state is CompanyServicesFetched) {
+                  var data = state.companyData;
                   return PaginatedDataTable(
                     rowsPerPage: data.length < 5 ? data.length : 5,
                     columnSpacing: 28.w,
@@ -110,7 +86,7 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                     columns: [
                       DataColumn(
                         label: Text(
-                          'Id',
+                          'Name',
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         mouseCursor: MaterialStateMouseCursor.clickable,
@@ -121,12 +97,55 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                           onSortColumn(columnIndex, ascending, data);
                         },
                       ),
+                      DataColumn(
+                        label: Text(
+                          'Email',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Phone',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Company field',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
                     ],
                     source: CompanyDataTable(companyData: data),
                   );
                 }
-                return const Center(
-                  child: Text('There is no data'),
+                return PaginatedDataTable(
+                  rowsPerPage: 5,
+                  columnSpacing: 28.w,
+                  sortAscending: ascending,
+                  sortColumnIndex: 0,
+                  header: const Row(
+                    children: [
+                      Spacer(
+                        flex: 1,
+                      ),
+                      SearchTextField(
+                        enabled: false,
+                        hintText: 'Search a company',
+                      ),
+                    ],
+                  ),
+                  columns: [
+                    DataColumn(
+                      label: Skeletonizer(
+                        child: Text(
+                          'Id',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
+                    ),
+                  ],
+                  source: NullCompanyDataTable(),
                 );
               },
             )

@@ -18,3 +18,5 @@ final class TrainingServicesFailure extends TrainingServicesState {
 
   TrainingServicesFailure({required this.errorMessage});
 }
+
+final class TrainingServicesSuccess extends TrainingServicesState {}

@@ -29,6 +29,7 @@ class JobServicesCubit extends Cubit<JobServicesState> {
       String workTime,
       String companyNav,
       String gender) {
+    emit(JobServicesLoading());
     try {
       JobServices.addJob(
           companyName: companyName,
@@ -37,8 +38,10 @@ class JobServicesCubit extends Cubit<JobServicesState> {
           workTime: workTime,
           companyNav: companyNav,
           gender: gender);
+      emit(JobServicesSuccess());
       Snack.showSnack(context, 'Congrats!', 'Job has been added successfully');
     } on HttpException catch (e) {
+      emit(JobServicesFailure(errorMessage: e.message));
       Snack.showSnack(context, 'Warning!', e.message);
     }
   }
@@ -52,6 +55,7 @@ class JobServicesCubit extends Cubit<JobServicesState> {
       String workTime,
       String companyNav,
       String gender) {
+    emit(JobServicesLoading());
     try {
       JobServices.updateJob(
           id: id,
@@ -61,21 +65,25 @@ class JobServicesCubit extends Cubit<JobServicesState> {
           workTime: workTime,
           companyNav: companyNav,
           gender: gender);
+      emit(JobServicesSuccess());
       Snack.showSnack(
           context, 'Congrats!', 'Job has been updated successfully');
     } on HttpException catch (e) {
+      emit(JobServicesFailure(errorMessage: e.message));
       Snack.showSnack(context, 'Warning!', e.message);
     }
   }
 
   void deleteJob(BuildContext context, String id) {
+    emit(JobServicesLoading());
     try {
       JobServices.deleteJob(id: id);
+      emit(JobServicesSuccess());
       Snack.showSnack(
           context, 'Congrats!', 'Job has been deleted successfully');
     } on HttpException catch (e) {
+      emit(JobServicesFailure(errorMessage: e.message));
       Snack.showSnack(context, 'Congrats!', e.message);
     }
   }
-
 }

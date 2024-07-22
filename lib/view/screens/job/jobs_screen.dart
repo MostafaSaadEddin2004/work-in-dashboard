@@ -1,8 +1,9 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:work_in_dashboard/controller/api/services/job_services.dart';
+import 'package:work_in_dashboard/controller/bloc/job_services/job_services_cubit.dart';
 import 'package:work_in_dashboard/controller/constants/nav_items.dart';
 import 'package:work_in_dashboard/controller/style/app_color.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
@@ -56,104 +57,15 @@ class _JobsScreenState extends State<JobsScreen> {
                   ),
                 ],
               ),
-            FutureBuilder(
-              future: JobServices.getAllJobs(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return PaginatedDataTable(
-                    rowsPerPage: 5,
-                    columnSpacing: 28.w,
-                    sortAscending: ascending,
-                    sortColumnIndex: 0,
-                    header: const Row(
-                      children: [
-                        AddButton(
-                          text: 'Add new',
-                          color: AppColor.blue,
-                        ),
-                        Spacer(
-                          flex: 1,
-                        ),
-                        SearchTextField(
-                          enabled: false,
-                          hintText: 'Search a job',
-                        ),
-                      ],
-                    ),
-                    columns: [
-                      DataColumn(
-                        label: Skeletonizer(
-                          child: Text(
-                            'Id',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {},
-                      ),
-                      DataColumn(
-                        label: Skeletonizer(
-                          child: Text(
-                            'Company',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {},
-                      ),
-                      DataColumn(
-                        label: Skeletonizer(
-                          child: Text(
-                            'Location',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Skeletonizer(
-                          child: Text(
-                            'Required Experiences',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Skeletonizer(
-                          child: Text(
-                            'Gender',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Skeletonizer(
-                          child: Text(
-                            'job Title',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Skeletonizer(
-                          child: Text(
-                            'Work Time',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Skeletonizer(
-                          child: Text(
-                            'Actions',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ),
-                      ),
-                    ],
-                    source: NullJobdataTable(),
+            BlocBuilder<JobServicesCubit, JobServicesState>(
+              bloc: JobServicesCubit()..getAllJobs(),
+              builder: (context, state) {
+                if (state is JobServicesFailure) {
+                  return Center(
+                    child: Text(state.errorMessage),
                   );
-                } else if (snapshot.hasData) {
-                  var data = snapshot.data!;
+                } else if (state is JobServicesFetched) {
+                  var data = state.jobData;
                   return PaginatedDataTable(
                     rowsPerPage: data.length < 5 ? data.length : 5,
                     columnSpacing: 28.w,
@@ -243,11 +155,107 @@ class _JobsScreenState extends State<JobsScreen> {
                     ],
                     source: JobdataTable(
                       jobData: data,
+                      context: context,
+                      onEditPressed: () {
+                        setState(() {
+                          _beam.currentState?.routerDelegate
+                              .beamToNamed(BeamerNavItem.updateJob);
+                        });
+                      },
                     ),
                   );
                 }
-                return const Center(
-                  child: Text('There is no data'),
+                return PaginatedDataTable(
+                  rowsPerPage: 5,
+                  columnSpacing: 28.w,
+                  sortAscending: ascending,
+                  sortColumnIndex: 0,
+                  header: const Row(
+                    children: [
+                      AddButton(
+                        text: 'Add new',
+                        color: AppColor.blue,
+                      ),
+                      Spacer(
+                        flex: 1,
+                      ),
+                      SearchTextField(
+                        enabled: false,
+                        hintText: 'Search a job',
+                      ),
+                    ],
+                  ),
+                  columns: [
+                    DataColumn(
+                      label: Skeletonizer(
+                        child: Text(
+                          'Id',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
+                      mouseCursor: MaterialStateMouseCursor.clickable,
+                      onSort: (columnIndex, ascending) {},
+                    ),
+                    DataColumn(
+                      label: Skeletonizer(
+                        child: Text(
+                          'Company',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
+                      mouseCursor: MaterialStateMouseCursor.clickable,
+                      onSort: (columnIndex, ascending) {},
+                    ),
+                    DataColumn(
+                      label: Skeletonizer(
+                        child: Text(
+                          'Location',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Skeletonizer(
+                        child: Text(
+                          'Required Experiences',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Skeletonizer(
+                        child: Text(
+                          'Gender',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Skeletonizer(
+                        child: Text(
+                          'job Title',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Skeletonizer(
+                        child: Text(
+                          'Work Time',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Skeletonizer(
+                        child: Text(
+                          'Actions',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
+                    ),
+                  ],
+                  source: NullJobdataTable(),
                 );
               },
             )

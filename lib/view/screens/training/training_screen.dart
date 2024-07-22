@@ -1,8 +1,9 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:work_in_dashboard/controller/api/services/training_services.dart';
+import 'package:work_in_dashboard/controller/bloc/training_services/training_services_cubit.dart';
 import 'package:work_in_dashboard/controller/constants/nav_items.dart';
 import 'package:work_in_dashboard/controller/style/app_color.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
@@ -53,8 +54,13 @@ class _TrainingScreenState extends State<TrainingScreen> {
                         'Training',
                         style: Theme.of(context).textTheme.labelLarge,
                       ),
-                      const Spacer(flex: 1,),
-                        const AddButton(text: 'Add new', color: AppColor.blue,),
+                      const Spacer(
+                        flex: 1,
+                      ),
+                      const AddButton(
+                        text: 'Add new',
+                        color: AppColor.blue,
+                      ),
                     ],
                   ),
                   const SizedBox(
@@ -62,64 +68,15 @@ class _TrainingScreenState extends State<TrainingScreen> {
                   ),
                 ],
               ),
-            FutureBuilder(
-              future: TrainingServices.getAllTraining(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return PaginatedDataTable(
-                    rowsPerPage: 5,
-                    columnSpacing: 28.w,
-                    sortAscending: ascending,
-                    sortColumnIndex: 0,
-                    header: const Row(
-                      children: [
-                        Spacer(
-                          flex: 1,
-                        ),
-                        SearchTextField(
-                          enabled: false,
-                          hintText: 'Search a training',
-                        ),
-                      ],
-                    ),
-                    columns: [
-                      DataColumn(
-                        label: Skeletonizer(
-                          child: Text(
-                            'Company',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {},
-                      ),
-                      DataColumn(
-                        label: Skeletonizer(
-                          child: Text(
-                            'Kind of Training',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Skeletonizer(
-                          child: Text(
-                            'Location',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Actions',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ),
-                    ],
-                    source: NullTrainingDataTable(),
+            BlocBuilder<TrainingServicesCubit, TrainingServicesState>(
+              bloc: TrainingServicesCubit()..getAllTraining(),
+              builder: (context, state) {
+                if (state is TrainingServicesFailure) {
+                  return Center(
+                    child: Text(state.errorMessage),
                   );
-                } else if (snapshot.hasData) {
-                  var data = snapshot.data!;
+                } else if (state is TrainingServicesFetched) {
+                  var data = state.trainingData;
                   return PaginatedDataTable(
                     rowsPerPage: data.length < 5 ? data.length : 5,
                     columnSpacing: 28.w,
@@ -191,12 +148,69 @@ class _TrainingScreenState extends State<TrainingScreen> {
                         ),
                       ),
                     ],
-                    source:
-                        TrainingDataTable(trainingData: data,),
+                    source: TrainingDataTable(
+                      trainingData: data,
+                      context: context,
+                      onEditPressed: () {
+                        setState(() {
+                          _beam.currentState?.routerDelegate
+                              .beamToNamed(BeamerNavItem.updateTraining);
+                        });
+                      },
+                    ),
                   );
                 }
-                return const Center(
-                  child: Text('There is no data'),
+                return PaginatedDataTable(
+                  rowsPerPage: 5,
+                  columnSpacing: 28.w,
+                  sortAscending: ascending,
+                  sortColumnIndex: 0,
+                  header: const Row(
+                    children: [
+                      Spacer(
+                        flex: 1,
+                      ),
+                      SearchTextField(
+                        enabled: false,
+                        hintText: 'Search a training',
+                      ),
+                    ],
+                  ),
+                  columns: [
+                    DataColumn(
+                      label: Skeletonizer(
+                        child: Text(
+                          'Company',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
+                      mouseCursor: MaterialStateMouseCursor.clickable,
+                      onSort: (columnIndex, ascending) {},
+                    ),
+                    DataColumn(
+                      label: Skeletonizer(
+                        child: Text(
+                          'Kind of training',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Skeletonizer(
+                        child: Text(
+                          'Location',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        'Actions',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ),
+                  ],
+                  source: NullTrainingDataTable(),
                 );
               },
             )

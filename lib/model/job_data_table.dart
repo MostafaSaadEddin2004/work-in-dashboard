@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:work_in_dashboard/controller/api/services/job_services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:work_in_dashboard/controller/bloc/job_services/job_services_cubit.dart';
 import 'package:work_in_dashboard/controller/style/app_color.dart';
 import 'package:work_in_dashboard/model/job_model.dart';
 import 'package:work_in_dashboard/view/components/skeletonizer_text.dart';
 
 class JobdataTable extends DataTableSource {
   final List<JobModel> jobData;
+  final BuildContext context;
+  final void Function() onEditPressed;
   JobdataTable({
     required this.jobData,
+    required this.context,
+    required this.onEditPressed,
   });
-
-  final _companyName = TextEditingController();
-  final _jobTitle = TextEditingController();
-  final _experiencesForJob = TextEditingController();
-  final _workTime = TextEditingController();
-  final _location = TextEditingController();
-  int selectedGender = 1;
   @override
   DataRow? getRow(int index) {
     return DataRow(cells: [
@@ -24,256 +22,50 @@ class JobdataTable extends DataTableSource {
           jobData[index].companyName,
           style: const TextStyle(fontSize: 14),
         ),
-        showEditIcon: true,
-        onTap: () {
-          _companyName.text = jobData[index].companyName;
-          // Get.defaultDialog(
-          //   title: 'Edit company name',
-          //   content: InfoTextField(
-          //     controller: _companyName,
-          //     labelText: 'Company name',
-          //     hintText: 'Enter company name',
-          //   ),
-          //   cancel: AddButton(
-          //     text: 'Cancel',
-          //     color: AppColor.red,
-          //     onPressed: () {
-          //       Get.back();
-          //     },
-          //   ),
-          //   confirm: AddButton(
-          //     text: 'Confirm',
-          //     color: AppColor.blue,
-          //     onPressed: () async {
-          //       await JobServices.updateJob(
-          //           id: jobData[index].id,
-          //           companyName: _companyName.text,
-          //           companyNav: jobData[index].companyNav,
-          //           experiencesForJob: jobData[index].experiencesForJob,
-          //           gender: jobData[index].gender,
-          //           jobTitle: jobData[index].jobTitle,
-          //           workTime: jobData[index].workTime);
-          //       Get.back();
-          //     },
-          //   ),
-          // );
-        },
       ),
       DataCell(
         Text(
           jobData[index].companyNav,
           style: const TextStyle(fontSize: 14),
         ),
-        showEditIcon: true,
-        onTap: () {
-          _jobTitle.text = jobData[index].companyNav;
-          // Get.defaultDialog(
-          //   title: 'Edit location',
-          //   content: InfoTextField(
-          //     controller: _jobTitle,
-          //     labelText: 'Location',
-          //     hintText: 'Enter location',
-          //   ),
-          //   cancel: AddButton(
-          //     text: 'Cancel',
-          //     color: AppColor.red,
-          //     onPressed: () {
-          //       Get.back();
-          //     },
-          //   ),
-          //   confirm: AddButton(
-          //     text: 'Confirm',
-          //     color: AppColor.blue,
-          //     onPressed: () async {
-          //       await JobServices.updateJob(
-          //           id: jobData[index].id,
-          //           companyName: jobData[index].companyName,
-          //           companyNav: _companyName.text,
-          //           experiencesForJob: jobData[index].experiencesForJob,
-          //           gender: jobData[index].gender,
-          //           jobTitle: jobData[index].jobTitle,
-          //           workTime: jobData[index].workTime);
-          //       Get.back();
-          //     },
-          //   ),
-          // );
-        },
       ),
       DataCell(
         Text(
           jobData[index].experiencesForJob,
           style: const TextStyle(fontSize: 14),
         ),
-        showEditIcon: true,
-        onTap: () {
-          _experiencesForJob.text = jobData[index].experiencesForJob;
-          // Get.defaultDialog(
-          //   title: 'Edit required experiences',
-          //   content: InfoTextField(
-          //     controller: _experiencesForJob,
-          //     labelText: 'Required experiences',
-          //     hintText: 'Enter required experiences',
-          //   ),
-          //   cancel: AddButton(
-          //     text: 'Cancel',
-          //     color: AppColor.red,
-          //     onPressed: () {
-          //       Get.back();
-          //     },
-          //   ),
-          //   confirm: AddButton(
-          //     text: 'Confirm',
-          //     color: AppColor.blue,
-          //     onPressed: () async {
-          //       await JobServices.updateJob(
-          //         id: jobData[index].id,
-          //         companyName: jobData[index].companyName,
-          //         companyNav: jobData[index].companyNav,
-          //         experiencesForJob: _experiencesForJob.text,
-          //         gender: jobData[index].gender,
-          //         jobTitle: jobData[index].jobTitle,
-          //         workTime: jobData[index].workTime,
-          //       );
-          //       Get.back();
-          //     },
-          //   ),
-          // );
-        },
       ),
       DataCell(
         Text(
           jobData[index].gender,
           style: const TextStyle(fontSize: 14),
         ),
-        showEditIcon: true,
-        onTap: () {
-          // Get.defaultDialog(
-          //   title: 'Edit gender',
-          //   content: GenderRadioButton(
-          //     selectedRadio: jobData[index].gender == 'male' ? 1 : 2,
-          //     onChanged: (value) {
-          //       selectedGender = value!;
-          //     },
-          //   ),
-          //   cancel: AddButton(
-          //     text: 'Cancel',
-          //     color: AppColor.red,
-          //     onPressed: () {
-          //       Get.back();
-          //     },
-          //   ),
-          //   confirm: AddButton(
-          //     text: 'Confirm',
-          //     color: AppColor.blue,
-          //     onPressed: () async {
-          //       await JobServices.updateJob(
-          //         id: jobData[index].id,
-          //         companyName: jobData[index].companyName,
-          //         companyNav: jobData[index].companyNav,
-          //         experiencesForJob: jobData[index].experiencesForJob,
-          //         gender: selectedGender == 1 ? 'male' : 'female',
-          //         jobTitle: jobData[index].jobTitle,
-          //         workTime: jobData[index].workTime,
-          //       );
-          //       Get.back();
-          //     },
-          //   ),
-          // );
-        },
       ),
       DataCell(
         Text(
           jobData[index].jobTitle,
           style: const TextStyle(fontSize: 14),
         ),
-        showEditIcon: true,
-        onTap: () {
-          _location.text = jobData[index].jobTitle;
-          // Get.defaultDialog(
-          //   title: 'Edit job title',
-          //   content: InfoTextField(
-          //     controller: _location,
-          //     labelText: 'Job title',
-          //     hintText: 'Enter job title',
-          //   ),
-          //   cancel: AddButton(
-          //     text: 'Cancel',
-          //     color: AppColor.red,
-          //     onPressed: () {
-          //       Get.back();
-          //     },
-          //   ),
-          //   confirm: AddButton(
-          //     text: 'Confirm',
-          //     color: AppColor.blue,
-          //     onPressed: () async {
-          //       await JobServices.updateJob(
-          //         id: jobData[index].id,
-          //         companyName: jobData[index].companyName,
-          //         companyNav: jobData[index].companyNav,
-          //         experiencesForJob: jobData[index].experiencesForJob,
-          //         gender: jobData[index].gender,
-          //         jobTitle: _jobTitle.text,
-          //         workTime: jobData[index].workTime,
-          //       );
-          //       Get.back();
-          //     },
-          //   ),
-          // );
-        },
       ),
       DataCell(
         Text(
           jobData[index].workTime,
           style: const TextStyle(fontSize: 14),
         ),
-        showEditIcon: true,
-        onTap: () {
-          _workTime.text = jobData[index].workTime;
-          // Get.defaultDialog(
-          //   title: 'Edit work time',
-          //   content: InfoTextField(
-          //     controller: _workTime,
-          //     labelText: 'Work time',
-          //     hintText: 'Enter work time',
-          //   ),
-          //   cancel: AddButton(
-          //     text: 'Cancel',
-          //     color: AppColor.red,
-          //     onPressed: () {
-          //       Get.back();
-          //     },
-          //   ),
-          //   confirm: AddButton(
-          //     text: 'Confirm',
-          //     color: AppColor.blue,
-          //     onPressed: () async {
-          //       await JobServices.updateJob(
-          //         id: jobData[index].id,
-          //         companyName: jobData[index].companyName,
-          //         companyNav: jobData[index].companyNav,
-          //         experiencesForJob: jobData[index].experiencesForJob,
-          //         gender: jobData[index].gender,
-          //         jobTitle: jobData[index].jobTitle,
-          //         workTime: _workTime.text,
-          //       );
-          //       Get.back();
-          //     },
-          //   ),
-          // );
-        },
       ),
       DataCell(Row(
         children: [
           IconButton(
-              onPressed: () {},
+              onPressed: onEditPressed,
               icon: const Icon(
                 Icons.edit_rounded,
                 size: 25,
               )),
           IconButton(
-              onPressed: () async {
-                await JobServices.deleteJob(id: jobData[index].id);
+              onPressed: () {
+                context
+                    .read<JobServicesCubit>()
+                    .deleteJob(context, jobData[index].id);
               },
               icon: const Icon(
                 Icons.delete_rounded,

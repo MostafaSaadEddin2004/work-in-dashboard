@@ -18,3 +18,5 @@ final class JobServicesFailure extends JobServicesState {
 
   JobServicesFailure({required this.errorMessage});
 }
+
+final class JobServicesSuccess extends JobServicesState {}

@@ -10,7 +10,19 @@ class CompanyDataTable extends DataTableSource {
   DataRow? getRow(int index) {
     return DataRow(cells: [
       DataCell(Text(
-        companyData[index].id.toString(),
+        companyData[index].companyName,
+        style: const TextStyle(fontSize: 14),
+      )),
+      DataCell(Text(
+        companyData[index].email,
+        style: const TextStyle(fontSize: 14),
+      )),
+      DataCell(Text(
+        companyData[index].phone,
+        style: const TextStyle(fontSize: 14),
+      )),
+      DataCell(Text(
+        companyData[index].companyField,
         style: const TextStyle(fontSize: 14),
       )),
     ]);
@@ -47,7 +59,16 @@ class NullCompanyDataTable extends DataTableSource {
   DataRow? getRow(int index) {
     return DataRow(cells: [
       DataCell(
-        SkeletonizerText(text: _data[index].id),
+        SkeletonizerText(text: _data[index].companyName),
+      ),
+      DataCell(
+        SkeletonizerText(text: _data[index].email),
+      ),
+      DataCell(
+        SkeletonizerText(text: _data[index].phone),
+      ),
+      DataCell(
+        SkeletonizerText(text: _data[index].companyField),
       ),
     ]);
   }
