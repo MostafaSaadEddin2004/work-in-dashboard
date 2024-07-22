@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 import 'package:work_in_dashboard/controller/api/services/training_services.dart';
 import 'package:work_in_dashboard/controller/utilities/snack.dart';
 import 'package:work_in_dashboard/model/training_model.dart';
