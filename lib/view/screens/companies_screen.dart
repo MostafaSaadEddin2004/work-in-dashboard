@@ -30,7 +30,7 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.all(16),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +39,7 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
               Column(
                 children: [
                   Text(
-                    'Dashboard',
+                    'Companies',
                     style: Theme.of(context).textTheme.labelLarge,
                   ),
                   const SizedBox(
@@ -56,19 +56,14 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                     columnSpacing: 28.w,
                     sortAscending: ascending,
                     sortColumnIndex: 0,
-                    header: Row(
+                    header: const Row(
                       children: [
-                        Text(
-                          'Companies',
-                          style: Theme.of(context).textTheme.labelSmall,
-                        ),
-                        const Spacer(
+                        Spacer(
                           flex: 1,
                         ),
-                        const SearchTextField(
+                        SearchTextField(
                           enabled: false,
                           hintText: 'Search a company',
-                          wantAdd: false,
                         ),
                       ],
                     ),
@@ -93,16 +88,12 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                     sortColumnIndex: 0,
                     header: Row(
                       children: [
-                        Text(
-                          'Companies',
-                          style: Theme.of(context).textTheme.labelSmall,
-                        ),
                         const Spacer(
                           flex: 1,
                         ),
                         SearchTextField(
                           enabled: true,
-                          hintText: 'Search a companiesser',
+                          hintText: 'Search a company',
                           onChanged: (value) {
                             setState(() {
                               data = value == null
@@ -113,7 +104,6 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                                       .toList();
                             });
                           },
-                          wantAdd: false,
                         ),
                       ],
                     ),

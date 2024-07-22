@@ -4,16 +4,12 @@ import 'package:work_in_dashboard/model/user_model.dart';
 
 abstract class UserServices extends BaseApi {
   static Future<List<UserModel>> getAllUsers() async {
-    try {
-      final response = await BaseApi.getRequest(endPoint: 'users');
+    final response = await BaseApi.getRequest(endPoint: 'users');
     final data = (jsonDecode(response.body) as List)
         .map((e) => UserModel.fromJson(e))
         .toList();
-        print(response.statusCode);
-        print(response.body);
+    print(response.statusCode);
+    print(response.body);
     return data;
-    } on Exception catch (e) {
-      throw Exception(e.toString());
-    }
   }
 }

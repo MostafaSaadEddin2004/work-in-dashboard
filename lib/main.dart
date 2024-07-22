@@ -1,10 +1,11 @@
 import 'dart:io';
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+import 'package:work_in_dashboard/controller/constants/nav_items.dart';
 import 'package:work_in_dashboard/controller/theme/app_theme.dart';
 import 'package:work_in_dashboard/model/http_override_model.dart';
-import 'package:work_in_dashboard/view/screens/dashboard_screen.dart';
+import 'package:work_in_dashboard/view/screens/home_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,13 +22,18 @@ class Main extends StatelessWidget {
       designSize: const Size(360, 819.5),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context, child) => GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.darkTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.dark,
-        home: const DashBoardScreen(),
-      ),
+      builder: (context, child) => MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.darkTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: ThemeMode.dark,
+          routeInformationParser: BeamerParser(),
+          routerDelegate: BeamerDelegate(
+              transitionDelegate: const NoAnimationTransitionDelegate(),
+              locationBuilder: RoutesLocationBuilder(routes: {
+                BeamerNavItem.route: (context, state, data) => LayoutBuilder(
+                    builder: (context, constraints) => const HomeScreen()),
+              }).call)),
     );
   }
 }

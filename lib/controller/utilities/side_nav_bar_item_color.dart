@@ -17,5 +17,6 @@ abstract class SideNavBarItemColor {
     } else {
       return AppColor.blue;
     }
+    
   }
 }

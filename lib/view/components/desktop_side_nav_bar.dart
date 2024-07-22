@@ -1,72 +1,32 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:work_in_dashboard/controller/getx/side_navigation_bar_controller.dart';
-import 'package:work_in_dashboard/controller/style/app_color.dart';
 import 'package:work_in_dashboard/controller/utilities/side_nav_bar_item_color.dart';
 import 'package:work_in_dashboard/model/nav_bar_model.dart';
 
 class DesktopSideNavBar extends StatefulWidget {
-  const DesktopSideNavBar({super.key});
-
+  const DesktopSideNavBar({super.key, required this.beam});
+  final GlobalKey<BeamerState> beam;
   @override
   State<DesktopSideNavBar> createState() => _DesktopSideNavBarState();
 }
 
 class _DesktopSideNavBarState extends State<DesktopSideNavBar> {
-  final List<NavBarModel> navData = [
-    NavBarModel(
-        title: 'Users',
-        icon: const Icon(
-          Icons.person,
-          color: AppColor.white,
-          size: 25,
-        ),
-        isHovered: false,
-        activeColor: AppColor.blue,
-        unactiveColor: AppColor.primary),
-    NavBarModel(
-        title: 'Companies',
-        icon: const Icon(
-          Icons.business_rounded,
-          color: AppColor.white,
-          size: 25,
-        ),
-        isHovered: false,
-        activeColor: AppColor.blue,
-        unactiveColor: AppColor.primary),
-    NavBarModel(
-        title: 'Jobs',
-        icon: const Icon(
-          Icons.business_center_rounded,
-          color: AppColor.white,
-          size: 25,
-        ),
-        isHovered: false,
-        activeColor: AppColor.blue,
-        unactiveColor: AppColor.primary),
-    NavBarModel(
-        title: 'Training',
-        icon: const Icon(
-          Icons.accessibility_new_sharp,
-          color: AppColor.white,
-          size: 25,
-        ),
-        isHovered: false,
-        activeColor: AppColor.blue,
-        unactiveColor: AppColor.primary),
-  ];
-  final navController = Get.put(SideNavigationBarController());
+  int selectedIndex = -1;
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: navData.length,
+      itemCount: NavBarModel.navData.length,
       itemBuilder: (context, index) => InkWell(
           onTap: () {
-            navController.changeScreen(index);
+            setState(() {
+              selectedIndex = index;
+              widget.beam.currentState?.routerDelegate
+                  .beamToNamed(NavBarModel.navData[index].nav);
+            });
           },
           onHover: (value) {
             setState(() {
-              navData[index].isHovered = value;
+              NavBarModel.navData[index].isHovered = value;
             });
           },
           child: AnimatedContainer(
@@ -76,34 +36,25 @@ class _DesktopSideNavBarState extends State<DesktopSideNavBar> {
             width: double.infinity,
             height: 40,
             decoration: BoxDecoration(
-                color: SideNavBarItemColor.itemColor(index,
-                    navController.currentIndex.value, navData[index].isHovered),
+                color: SideNavBarItemColor.itemColor(
+                    index,
+                    selectedIndex,
+                    NavBarModel.navData[index].isHovered),
                 borderRadius: BorderRadius.circular(8)),
             child: Row(
               children: [
                 SizedBox(
                   width: 40,
                   height: 40,
-                  child: navData[index].icon,
+                  child: NavBarModel.navData[index].icon,
                 ),
                 Text(
-                  navData[index].title,
+                  NavBarModel.navData[index].title,
                   style: Theme.of(context).textTheme.bodySmall,
                 )
               ],
             ),
-          )
-          // ListTile(
-          //   tileColor: selectedIndex == index
-          //       ? navData[index].activeColor
-          //       : navData[index].unactiveColor,
-          //   leading: navData[index].icon,
-          //   title: Text(
-          // navData[index].title,
-          // style: Theme.of(context).textTheme.bodySmall,
-          //   ),
-          // ),
-          ),
+          )),
     );
   }
 }

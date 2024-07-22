@@ -29,7 +29,18 @@ class CompanyDataTable extends DataTableSource {
 class NullCompanyDataTable extends DataTableSource {
   final _data = List.generate(
     10,
-    (index) => CompanyModel(id: 'asddasdyrh5656'),
+    (index) => CompanyModel(
+        isAdmin: true,
+        id: 'sadasdasd',
+        companyName: 'companyName',
+        email: 'email',
+        password: 'password',
+        phone: 'phone',
+        companyField: 'companyField',
+        createdAt: DateTime(7, 22, 2024),
+        updatedAt: DateTime(7, 22, 2024),
+        v: 0,
+        block: false),
   );
 
   @override
