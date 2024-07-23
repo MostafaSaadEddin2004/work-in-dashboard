@@ -1,7 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:work_in_dashboard/controller/bloc/training_services/training_services_cubit.dart';
 import 'package:work_in_dashboard/controller/constants/nav_items.dart';
@@ -79,7 +78,8 @@ class _TrainingScreenState extends State<TrainingScreen> {
                   var data = state.trainingData;
                   return PaginatedDataTable(
                     rowsPerPage: data.length < 5 ? data.length : 5,
-                    columnSpacing: 28.w,
+                    columnSpacing: Responsive.isDesktop(context)? 208: 20,
+                    horizontalMargin: 16,
                     sortAscending: ascending,
                     sortColumnIndex: 0,
                     header: Row(
@@ -161,7 +161,8 @@ class _TrainingScreenState extends State<TrainingScreen> {
                 }
                 return PaginatedDataTable(
                   rowsPerPage: 5,
-                  columnSpacing: 28.w,
+                  columnSpacing: Responsive.isDesktop(context)? 208: 20,
+                    horizontalMargin: 16,
                   sortAscending: ascending,
                   sortColumnIndex: 0,
                   header: const Row(

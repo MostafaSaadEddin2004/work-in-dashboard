@@ -31,12 +31,13 @@ class _HomeScreenState extends State<HomeScreen> {
     } else if (path.contains(BeamerNavItem.training)) {
       return 'Training';
     } else {
-      return '';
+      return '*';
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    getTitle();
     return Scaffold(
       key: _globalKey,
       backgroundColor: AppColor.primary,

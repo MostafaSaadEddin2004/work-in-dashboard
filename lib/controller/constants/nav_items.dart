@@ -1,5 +1,5 @@
 abstract class BeamerNavItem{
-  static String route = '/';
+  static String route = '*';
   static String dashBoard = '/Dashboard';
   static String users = '/Users';
   static String companies = '/Companies';
@@ -10,14 +10,14 @@ abstract class BeamerNavItem{
   static String addTraining = '/Training/AddTraining';
   static String updateTraining = '/Training/UpdateTraining';
 
-  static String routeKey = '/';
-  static String dashBoardKey = 'Dashboard';
-  static String usersKey = 'Users';
-  static String companiesKey = 'Companies';
-  static String jobsKey = 'Jobs';
-  static String addJobKey = 'AddJob';
-  static String updateJobKey = 'UpdateJob';
-  static String trainingKey = 'Training';
-  static String addTrainingKey = 'AddTraining';
-  static String updateTrainingKey = 'UpdateTraining';
+  static String routeKey = '*';
+  static String dashBoardKey = 'DashboardKey';
+  static String usersKey = 'UsersKey';
+  static String companiesKey = 'CompaniesKey';
+  static String jobsKey = 'JobsKey';
+  static String addJobKey = 'AddJobKey';
+  static String updateJobKey = 'UpdateJobKey';
+  static String trainingKey = 'TrainingKey';
+  static String addTrainingKey = 'AddTrainingKey';
+  static String updateTrainingKey = 'UpdateTrainingKey';
 }

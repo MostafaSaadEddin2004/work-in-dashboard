@@ -14,59 +14,57 @@ import 'package:work_in_dashboard/view/screens/users_screen.dart';
 abstract class BeamerRouterDeleget {
   static BeamerDelegate appRouter() {
     return BeamerDelegate(
-        initialPath: '/',
         setBrowserTabTitle: true,
-        
         locationBuilder: RoutesLocationBuilder(
           routes: {
-            BeamerNavItem.route: (context, state, data) => BeamPage(
-                key: ValueKey(BeamerNavItem.routeKey),
-                type: BeamPageType.fadeTransition,
-                child: const DashBoardScreen()),
+            // BeamerNavItem.route: (context, state, data) => BeamPage(
+            //     key: ValueKey(BeamerNavItem.routeKey),
+            //     type: BeamPageType.slideTopTransition,
+            //     child: const DashBoardScreen()),
             BeamerNavItem.dashBoard: (context, state, data) => BeamPage(
                 key: ValueKey(BeamerNavItem.dashBoardKey),
-                type: BeamPageType.fadeTransition,
+                type: BeamPageType.slideTopTransition,
                 child: const DashBoardScreen()),
             BeamerNavItem.users: (context, state, data) => BeamPage(
                 key: ValueKey(BeamerNavItem.usersKey),
-                type: BeamPageType.fadeTransition,
+                type: BeamPageType.slideTopTransition,
                 child: const UsersScreen()),
             BeamerNavItem.companies: (context, state, data) => BeamPage(
                 key: ValueKey(BeamerNavItem.companiesKey),
-                type: BeamPageType.fadeTransition,
+                type: BeamPageType.slideTopTransition,
                 child: const CompaniesScreen()),
             BeamerNavItem.jobs: (context, state, data) {
-              if (state.pathPatternSegments.contains('Add')) {
+              if (state.pathPatternSegments.contains('AddJob')) {
                 return BeamPage(
                     key: ValueKey(BeamerNavItem.addJobKey),
-                    type: BeamPageType.fadeTransition,
+                    type: BeamPageType.slideLeftTransition,
                     child: const AddJobScreen());
-              } else if (state.pathPatternSegments.contains('Update')) {
+              } else if (state.pathPatternSegments.contains('UpdateJob')) {
                 return BeamPage(
                     key: ValueKey(BeamerNavItem.updateJobKey),
-                    type: BeamPageType.fadeTransition,
+                    type: BeamPageType.slideLeftTransition,
                     child: const UpdateJobScreen());
               }
               return BeamPage(
                   key: ValueKey(BeamerNavItem.jobsKey),
-                  type: BeamPageType.fadeTransition,
+                  type: BeamPageType.slideTopTransition,
                   child: const JobsScreen());
             },
             BeamerNavItem.training: (context, state, data) {
-              if (state.pathPatternSegments.contains('Add')) {
+              if (state.pathPatternSegments.contains('AddTraining')) {
                 return BeamPage(
                     key: ValueKey(BeamerNavItem.addTrainingKey),
-                    type: BeamPageType.fadeTransition,
+                    type: BeamPageType.slideLeftTransition,
                     child: const AddTrainingScreen());
-              } else if (state.pathPatternSegments.contains('Update')) {
+              } else if (state.pathPatternSegments.contains('UpdateTraining')) {
                 return BeamPage(
                     key: ValueKey(BeamerNavItem.updateTrainingKey),
-                    type: BeamPageType.fadeTransition,
+                    type: BeamPageType.slideLeftTransition,
                     child: const UpdateTrainingScreen());
               }
               return BeamPage(
                   key: ValueKey(BeamerNavItem.trainingKey),
-                  type: BeamPageType.fadeTransition,
+                  type: BeamPageType.slideTopTransition,
                   child: const TrainingScreen());
             }
           },

@@ -166,7 +166,7 @@ class _JobsScreenState extends State<JobsScreen> {
                 }
                 return PaginatedDataTable(
                   rowsPerPage: 5,
-                  columnSpacing: 28.w,
+                  columnSpacing: Responsive.isDesktop(context) ? 100 : 20,
                   sortAscending: ascending,
                   sortColumnIndex: 0,
                   header: const Row(
@@ -185,16 +185,6 @@ class _JobsScreenState extends State<JobsScreen> {
                     ],
                   ),
                   columns: [
-                    DataColumn(
-                      label: Skeletonizer(
-                        child: Text(
-                          'Id',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ),
-                      mouseCursor: MaterialStateMouseCursor.clickable,
-                      onSort: (columnIndex, ascending) {},
-                    ),
                     DataColumn(
                       label: Skeletonizer(
                         child: Text(
@@ -246,11 +236,9 @@ class _JobsScreenState extends State<JobsScreen> {
                       ),
                     ),
                     DataColumn(
-                      label: Skeletonizer(
-                        child: Text(
-                          'Actions',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
+                      label: Text(
+                        'Actions',
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
                   ],

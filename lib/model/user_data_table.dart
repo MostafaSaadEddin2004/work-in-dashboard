@@ -57,9 +57,9 @@ class NullUserDataTable extends DataTableSource {
           birthDate: DateTime(2000, 10, 6),
           gender: 'gender',
           isAdmin: false,
-          // createdAt: DateTime(2024, 10, 6),
-          // updatedAt: DateTime(2024, 10, 6),
-          // v: 0,
+          createdAt: DateTime(2024, 10, 6),
+          updatedAt: DateTime(2024, 10, 6),
+          v: 0,
           ));
 
   @override

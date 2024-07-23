@@ -104,10 +104,7 @@ class NullJobdataTable extends DataTableSource {
   @override
   DataRow? getRow(int index) {
     return DataRow(cells: [
-      DataCell(SkeletonizerText(
-        text: _data[index].id,
-      )),
-      DataCell(SkeletonizerText(
+    DataCell(SkeletonizerText(
         text: _data[index].companyName,
       )),
       DataCell(SkeletonizerText(

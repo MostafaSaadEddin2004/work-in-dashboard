@@ -47,20 +47,16 @@ class Main extends StatelessWidget {
             theme: AppTheme.darkTheme,
             darkTheme: AppTheme.darkTheme,
             themeMode: ThemeMode.dark,
-            routeInformationParser: BeamerParser(
-              onParse: (context) {
-                return RouteInformation(
-                  state: context.state,
-                  uri: context.uri,
-                );
-              },
-            ),
+            routeInformationParser: BeamerParser(onParse: (context) {
+              return RouteInformation(state: context.state,uri: context.uri,); 
+            },),
             routerDelegate: BeamerDelegate(
                 transitionDelegate: const NoAnimationTransitionDelegate(),
-                locationBuilder: RoutesLocationBuilder(routes: {
-                  BeamerNavItem.route: (context, state, data) =>
-                      const HomeScreen(),
-                }).call)),
+                locationBuilder: 
+                 RoutesLocationBuilder(routes: {
+                  BeamerNavItem.route: (context, state, data) => const HomeScreen(),
+                }).call
+                )),
       ),
     );
   }

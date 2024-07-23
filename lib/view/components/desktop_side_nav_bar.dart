@@ -1,5 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:work_in_dashboard/controller/constants/nav_items.dart';
 import 'package:work_in_dashboard/controller/utilities/side_nav_bar_item_color.dart';
 import 'package:work_in_dashboard/model/nav_bar_model.dart';
 
@@ -12,8 +13,25 @@ class DesktopSideNavBar extends StatefulWidget {
 
 class _DesktopSideNavBarState extends State<DesktopSideNavBar> {
   int selectedIndex = -1;
+  void getNav() {
+    final path = (context.currentBeamLocation.state as BeamState).uri.path;
+    if (path.contains(BeamerNavItem.dashBoard)) {
+      selectedIndex = 0;
+    } else if (path.contains(BeamerNavItem.users)) {
+      selectedIndex = 1;
+    } else if (path.contains(BeamerNavItem.companies)) {
+     selectedIndex = 2;
+    } else if (path.contains(BeamerNavItem.jobs)) {
+      selectedIndex = 3;
+    } else if (path.contains(BeamerNavItem.training)) {
+      selectedIndex = 4;
+    } else {
+      selectedIndex = -1;
+    }
+  }
   @override
   Widget build(BuildContext context) {
+    getNav();
     return ListView.builder(
       itemCount: NavBarModel.navData.length,
       itemBuilder: (context, index) => InkWell(

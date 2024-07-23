@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:work_in_dashboard/controller/bloc/company_service/company_services_cubit.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/model/company_data_table.dart';
@@ -63,7 +61,8 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                   var data = state.companyData;
                   return PaginatedDataTable(
                     rowsPerPage: data.length < 5 ? data.length : 5,
-                    columnSpacing: 28.w,
+                    columnSpacing: Responsive.isDesktop(context) ? 234 : 20,
+                    horizontalMargin: 16,
                     sortAscending: ascending,
                     sortColumnIndex: 0,
                     header: Row(
@@ -124,7 +123,8 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                 }
                 return PaginatedDataTable(
                   rowsPerPage: 5,
-                  columnSpacing: 28.w,
+                  columnSpacing: Responsive.isDesktop(context)? 234:20,
+                  horizontalMargin: 16,
                   sortAscending: ascending,
                   sortColumnIndex: 0,
                   header: const Row(
@@ -138,39 +138,38 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                       ),
                     ],
                   ),
-                   columns: [
-                      DataColumn(
-                        label: Text(
-                          'Name',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {
-                          setState(() {
-                            ascending = !ascending;
-                          });
-                        },
+                  columns: [
+                    DataColumn(
+                      label: Text(
+                        'Name',
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
-                      DataColumn(
-                        label: Text(
-                          'Email',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
+                      mouseCursor: MaterialStateMouseCursor.clickable,
+                      onSort: (columnIndex, ascending) {
+                        setState(() {
+                          ascending = !ascending;
+                        });
+                      },
+                    ),
+                    DataColumn(
+                      label: Text(
+                        'Email',
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
-                      DataColumn(
-                        label: Text(
-                          'Phone',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        'Phone',
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
-                      DataColumn(
-                        label: Text(
-                          'Company field',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        'Company field',
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
-                    ],
-                   
+                    ),
+                  ],
                   source: NullCompanyDataTable(),
                 );
               },

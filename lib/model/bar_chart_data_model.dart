@@ -1,61 +1,298 @@
-import 'package:work_in_dashboard/model/individual_bar_model.dart';
+import 'package:work_in_dashboard/model/company_mode.dart';
+import 'package:work_in_dashboard/model/job_model.dart';
+import 'package:work_in_dashboard/model/training_model.dart';
+import 'package:work_in_dashboard/model/user_model.dart';
 
 class ChartData {
-  final IndividualBar jan;
-  final IndividualBar feb;
-  final IndividualBar mars;
-  final IndividualBar apr;
-  final IndividualBar may;
-  final IndividualBar jun;
-  final IndividualBar jul;
-  final IndividualBar aug;
-  final IndividualBar sep;
-  final IndividualBar oct;
-  final IndividualBar nov;
-  final IndividualBar dec;
+ final int userX;
+  final int userY;
+  final int companyX;
+  final int companyY;
+  final int jobX;
+  final int jobY;
+  final int trainingX;
+  final int trainingY;
 
   ChartData(
-      {required this.jan,
-      required this.feb,
-      required this.mars,
-      required this.apr,
-      required this.may,
-      required this.jun,
-      required this.jul,
-      required this.aug,
-      required this.sep,
-      required this.oct,
-      required this.nov,
-      required this.dec});
+      {required this.userX,
+      required this.userY,
+      required this.companyX,
+      required this.companyY,
+      required this.jobX,
+      required this.jobY,
+      required this.trainingX,
+      required this.trainingY});
 
-  static List<IndividualBar> monthlySummary = [
-    IndividualBar(ux: 0, uy: 10, cx: 0, cy: 5, jx: 0, jy: 19, tx: 0, ty: 5),
-    IndividualBar(ux: 1, uy: 19, cx: 1, cy: 11, jx: 1, jy: 28, tx: 1, ty: 10),
-    IndividualBar(ux: 2, uy: 27, cx: 2, cy: 13, jx: 2, jy: 33, tx: 2, ty: 7),
-    IndividualBar(ux: 3, uy: 35, cx: 3, cy: 15, jx: 3, jy: 36, tx: 3, ty: 12),
-    IndividualBar(ux: 4, uy: 42, cx: 4, cy: 16, jx: 4, jy: 40, tx: 4, ty: 10),
-    IndividualBar(ux: 5, uy: 51, cx: 5, cy: 17, jx: 5, jy: 47, tx: 5, ty: 6),
-    IndividualBar(ux: 6, uy: 61, cx: 6, cy: 19, jx: 6, jy: 55, tx: 6, ty: 16),
-    IndividualBar(ux: 7, uy: 70, cx: 7, cy: 22, jx: 7, jy: 60, tx: 7, ty: 25),
-    IndividualBar(ux: 8, uy: 75, cx: 8, cy: 22, jx: 8, jy: 68, tx: 8, ty: 16),
-    IndividualBar(ux: 9, uy: 80, cx: 9, cy: 23, jx: 9, jy: 76, tx: 9, ty: 10),
-    IndividualBar(
-        ux: 10, uy: 83, cx: 10, cy: 26, jx: 10, jy: 80, tx: 10, ty: 16),
-    IndividualBar(
-        ux: 11, uy: 92, cx: 11, cy: 30, jx: 11, jy: 88, tx: 11, ty: 20),
-  ];
-
-  static ChartData barData = ChartData(
-      jan: monthlySummary[0],
-      feb: monthlySummary[1],
-      mars: monthlySummary[2],
-      apr: monthlySummary[3],
-      may: monthlySummary[4],
-      jun: monthlySummary[5],
-      jul: monthlySummary[6],
-      aug: monthlySummary[7],
-      sep: monthlySummary[8],
-      oct: monthlySummary[9],
-      nov: monthlySummary[10],
-      dec: monthlySummary[11]);
+  static List<ChartData> monthlySummary(
+      List<UserModel> userData,
+      List<CompanyModel> companyData,
+      List<JobModel> jobData,
+      List<TrainingModel> trainingData) {
+    return [
+      ChartData(
+        userX: 0,
+        userY: userData
+            .where((element) => element.createdAt.month == DateTime.january)
+            .toList()
+            .length,
+        companyX: 0,
+        companyY: companyData
+            .where((element) => element.createdAt.month == DateTime.january)
+            .toList()
+            .length,
+        jobX: 0,
+        jobY: jobData
+            .where((element) => element.createdAt.month == DateTime.january)
+            .toList()
+            .length,
+        trainingX: 0,
+        trainingY: trainingData
+            .where((element) => element.createdAt.month == DateTime.january)
+            .toList()
+            .length,
+      ),
+      ChartData(
+        userX: 1,
+        userY: userData
+            .where((element) => element.createdAt.month == DateTime.february)
+            .toList()
+            .length,
+        companyX: 1,
+        companyY: companyData
+            .where((element) => element.createdAt.month == DateTime.february)
+            .toList()
+            .length,
+        jobX: 1,
+        jobY: jobData
+            .where((element) => element.createdAt.month == DateTime.february)
+            .toList()
+            .length,
+        trainingX: 1,
+        trainingY: trainingData
+            .where((element) => element.createdAt.month == DateTime.february)
+            .toList()
+            .length,
+      ),
+      ChartData(
+        userX: 2,
+        userY: userData
+            .where((element) => element.createdAt.month == DateTime.march)
+            .toList()
+            .length,
+        companyX: 2,
+        companyY: companyData
+            .where((element) => element.createdAt.month == DateTime.march)
+            .toList()
+            .length,
+        jobX: 2,
+        jobY: jobData
+            .where((element) => element.createdAt.month == DateTime.march)
+            .toList()
+            .length,
+        trainingX: 2,
+        trainingY: trainingData
+            .where((element) => element.createdAt.month == DateTime.march)
+            .toList()
+            .length,
+      ),
+      ChartData(
+        userX: 3,
+        userY: userData
+            .where((element) => element.createdAt.month == DateTime.april)
+            .toList()
+            .length,
+        companyX: 3,
+        companyY: companyData
+            .where((element) => element.createdAt.month == DateTime.april)
+            .toList()
+            .length,
+        jobX: 3,
+        jobY: jobData
+            .where((element) => element.createdAt.month == DateTime.april)
+            .toList()
+            .length,
+        trainingX: 3,
+        trainingY: trainingData
+            .where((element) => element.createdAt.month == DateTime.april)
+            .toList()
+            .length,
+      ),
+      ChartData(
+        userX: 4,
+        userY: userData
+            .where((element) => element.createdAt.month == DateTime.may)
+            .toList()
+            .length,
+        companyX: 4,
+        companyY: companyData
+            .where((element) => element.createdAt.month == DateTime.may)
+            .toList()
+            .length,
+        jobX: 4,
+        jobY: jobData
+            .where((element) => element.createdAt.month == DateTime.may)
+            .toList()
+            .length,
+        trainingX: 4,
+        trainingY: trainingData
+            .where((element) => element.createdAt.month == DateTime.may)
+            .toList()
+            .length,
+      ),
+      ChartData(
+        userX: 5,
+        userY: userData
+            .where((element) => element.createdAt.month == DateTime.june)
+            .toList()
+            .length,
+        companyX: 5,
+        companyY: companyData
+            .where((element) => element.createdAt.month == DateTime.june)
+            .toList()
+            .length,
+        jobX: 5,
+        jobY: jobData
+            .where((element) => element.createdAt.month == DateTime.june)
+            .toList()
+            .length,
+        trainingX: 5,
+        trainingY: trainingData
+            .where((element) => element.createdAt.month == DateTime.june)
+            .toList()
+            .length,
+      ),
+      ChartData(
+        userX: 6,
+        userY: userData
+            .where((element) => element.createdAt.month == DateTime.july)
+            .toList()
+            .length,
+        companyX: 6,
+        companyY: companyData
+            .where((element) => element.createdAt.month == DateTime.july)
+            .toList()
+            .length,
+        jobX: 6,
+        jobY: jobData
+            .where((element) => element.createdAt.month == DateTime.july)
+            .toList()
+            .length,
+        trainingX: 6,
+        trainingY: trainingData
+            .where((element) => element.createdAt.month == DateTime.july)
+            .toList()
+            .length,
+      ),
+      ChartData(
+        userX: 7,
+        userY: userData
+            .where((element) => element.createdAt.month == DateTime.august)
+            .toList()
+            .length,
+        companyX: 7,
+        companyY: companyData
+            .where((element) => element.createdAt.month == DateTime.august)
+            .toList()
+            .length,
+        jobX: 7,
+        jobY: jobData
+            .where((element) => element.createdAt.month == DateTime.august)
+            .toList()
+            .length,
+        trainingX: 7,
+        trainingY: trainingData
+            .where((element) => element.createdAt.month == DateTime.august)
+            .toList()
+            .length,
+      ),
+      ChartData(
+        userX: 8,
+        userY: userData
+            .where((element) => element.createdAt.month == DateTime.september)
+            .toList()
+            .length,
+        companyX: 8,
+        companyY: companyData
+            .where((element) => element.createdAt.month == DateTime.september)
+            .toList()
+            .length,
+        jobX: 8,
+        jobY: jobData
+            .where((element) => element.createdAt.month == DateTime.september)
+            .toList()
+            .length,
+        trainingX: 8,
+        trainingY: trainingData
+            .where((element) => element.createdAt.month == DateTime.september)
+            .toList()
+            .length,
+      ),
+      ChartData(
+        userX: 9,
+        userY: userData
+            .where((element) => element.createdAt.month == DateTime.october)
+            .toList()
+            .length,
+        companyX: 9,
+        companyY: companyData
+            .where((element) => element.createdAt.month == DateTime.october)
+            .toList()
+            .length,
+        jobX: 9,
+        jobY: jobData
+            .where((element) => element.createdAt.month == DateTime.october)
+            .toList()
+            .length,
+        trainingX: 9,
+        trainingY: trainingData
+            .where((element) => element.createdAt.month == DateTime.october)
+            .toList()
+            .length,
+      ),
+      ChartData(
+        userX: 10,
+        userY: userData
+            .where((element) => element.createdAt.month == DateTime.november)
+            .toList()
+            .length,
+        companyX: 10,
+        companyY: companyData
+            .where((element) => element.createdAt.month == DateTime.november)
+            .toList()
+            .length,
+        jobX: 10,
+        jobY: jobData
+            .where((element) => element.createdAt.month == DateTime.november)
+            .toList()
+            .length,
+        trainingX: 10,
+        trainingY: trainingData
+            .where((element) => element.createdAt.month == DateTime.november)
+            .toList()
+            .length,
+      ),
+      ChartData(
+        userX: 11,
+        userY: userData
+            .where((element) => element.createdAt.month == DateTime.december)
+            .toList()
+            .length,
+        companyX: 11,
+        companyY: companyData
+            .where((element) => element.createdAt.month == DateTime.december)
+            .toList()
+            .length,
+        jobX: 11,
+        jobY: jobData
+            .where((element) => element.createdAt.month == DateTime.december)
+            .toList()
+            .length,
+        trainingX: 11,
+        trainingY: trainingData
+            .where((element) => element.createdAt.month == DateTime.december)
+            .toList()
+            .length,
+      ),
+    ];
+  }
 }
