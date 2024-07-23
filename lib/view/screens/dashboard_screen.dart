@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:work_in_dashboard/controller/style/app_color.dart';
+import 'package:work_in_dashboard/controller/utilities/char_bar_titels.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/model/bar_chart_data_model.dart';
 import 'package:work_in_dashboard/view/components/item_card.dart';
@@ -37,8 +38,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             const Wrap(
               alignment: WrapAlignment.spaceEvenly,
               runAlignment: WrapAlignment.center,
-              runSpacing: 16,
-              spacing: 16,
+              runSpacing: 8,
+              spacing: 8,
               children: [
                 ItemsCard(
                   circelColor: AppColor.white,
@@ -70,7 +71,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
               height: 16,
             ),
             AspectRatio(
-              aspectRatio: 3.0,
+              aspectRatio: 2.0,
               child: BarChart(
                   swapAnimationCurve: Curves.linear,
                   swapAnimationDuration: const Duration(milliseconds: 200),
@@ -83,25 +84,25 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                     BarChartRodData(
                                       toY: e.uy,
                                       color: AppColor.white,
-                                      width: 4.w,
+                                      width: 2.w,
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                     BarChartRodData(
                                       toY: e.cy,
                                       color: AppColor.blue,
-                                      width: 4.w,
+                                      width: 2.w,
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                     BarChartRodData(
                                       toY: e.jy,
                                       color: AppColor.red,
-                                      width: 4.w,
+                                      width: 2.w,
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                     BarChartRodData(
                                       toY: e.ty,
                                       color: AppColor.green,
-                                      width: 4.w,
+                                      width: 2.w,
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                   ]))
@@ -125,7 +126,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                             sideTitles: SideTitles(
                                 showTitles: true,
                                 reservedSize: 48,
-                                getTitlesWidget: ChartData.getBottomTitels)),
+                                getTitlesWidget: CharBarTitels.getBottomTitels)),
                       ),
                       gridData: const FlGridData(show: false),
                       borderData: FlBorderData(

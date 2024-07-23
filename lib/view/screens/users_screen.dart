@@ -100,7 +100,6 @@ class _UsersScreenState extends State<UsersScreen>
                             setState(() {
                               ascending = !ascending;
                             });
-                            onSortColumn(columnIndex, ascending, data);
                           },
                         ),
                         DataColumn(
@@ -139,77 +138,73 @@ class _UsersScreenState extends State<UsersScreen>
                       source: UserDataTable(userData: data),
                     );
                   }
-                  return Column(
-                    children: [
-                      PaginatedDataTable(
-                        rowsPerPage: 5,
-                        columnSpacing: 28.w,
-                        sortAscending: ascending,
-                        sortColumnIndex: 0,
-                        header: const Row(
-                          children: [
-                             Spacer(
-                              flex: 1,
-                            ),
-                             SearchTextField(
-                              enabled: false,
-                              hintText: 'Search a user',
-                            ),
-                          ],
+                  return PaginatedDataTable(
+                    rowsPerPage: 5,
+                    columnSpacing: 28.w,
+                    sortAscending: ascending,
+                    sortColumnIndex: 0,
+                    header: const Row(
+                      children: [
+                         Spacer(
+                          flex: 1,
                         ),
-                        columns: [
-                          DataColumn(
-                            label: Skeletonizer(
-                              child: Text(
-                                'User Name',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
+                         SearchTextField(
+                          enabled: false,
+                          hintText: 'Search a user',
+                        ),
+                      ],
+                    ),
+                    columns: [
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'User Name',
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
-                          DataColumn(
-                            label: Skeletonizer(
-                              child: Text(
-                                'Email',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'Email',
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
-                          DataColumn(
-                            label: Skeletonizer(
-                              child: Text(
-                                'Phone',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'Phone',
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
-                          DataColumn(
-                            label: Skeletonizer(
-                              child: Text(
-                                'Birth Date',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'Birth Date',
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
-                          DataColumn(
-                            label: Skeletonizer(
-                              child: Text(
-                                'Gender',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'Gender',
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
-                          DataColumn(
-                            label: Skeletonizer(
-                              child: Text(
-                                'Is Admin',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Skeletonizer(
+                          child: Text(
+                            'Is Admin',
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
-                        ],
-                        source: NullUserDataTable(),
+                        ),
                       ),
                     ],
+                    source: NullUserDataTable(),
                   );
                 },
               )

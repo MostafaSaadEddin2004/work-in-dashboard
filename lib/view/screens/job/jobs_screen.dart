@@ -113,7 +113,6 @@ class _JobsScreenState extends State<JobsScreen> {
                           setState(() {
                             ascending = ascendingF;
                           });
-                          onSortColumn(columnIndex, ascendingF, data);
                         },
                       ),
                       DataColumn(

@@ -126,7 +126,6 @@ class _TrainingScreenState extends State<TrainingScreen> {
                           setState(() {
                             ascending = !ascending;
                           });
-                          onSortColumn(columnIndex, ascending, data);
                         },
                       ),
                       DataColumn(

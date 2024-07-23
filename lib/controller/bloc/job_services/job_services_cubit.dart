@@ -28,10 +28,10 @@ class JobServicesCubit extends Cubit<JobServicesState> {
       String experiencesForJob,
       String workTime,
       String companyNav,
-      String gender) {
+      String gender) async{
     emit(JobServicesLoading());
     try {
-      JobServices.addJob(
+      await JobServices.addJob(
           companyName: companyName,
           jobTitle: jobTitle,
           experiencesForJob: experiencesForJob,
@@ -54,10 +54,10 @@ class JobServicesCubit extends Cubit<JobServicesState> {
       String experiencesForJob,
       String workTime,
       String companyNav,
-      String gender) {
+      String gender) async{
     emit(JobServicesLoading());
     try {
-      JobServices.updateJob(
+      await JobServices.updateJob(
           id: id,
           companyName: companyName,
           jobTitle: jobTitle,
@@ -74,16 +74,17 @@ class JobServicesCubit extends Cubit<JobServicesState> {
     }
   }
 
-  void deleteJob(BuildContext context, String id) {
+  void deleteJob(BuildContext context, String id) async{
     emit(JobServicesLoading());
     try {
-      JobServices.deleteJob(id: id);
+      await JobServices.deleteJob(id: id);
       emit(JobServicesSuccess());
       Snack.showSnack(
           context, 'Congrats!', 'Job has been deleted successfully');
     } on HttpException catch (e) {
       emit(JobServicesFailure(errorMessage: e.message));
-      Snack.showSnack(context, 'Congrats!', e.message);
+      Snack.showSnack(context, 'Warning!', e.message);
+      print(e.message);
     }
   }
 }

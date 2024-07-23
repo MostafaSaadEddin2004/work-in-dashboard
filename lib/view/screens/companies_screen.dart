@@ -21,9 +21,13 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
   onSortColumn(int columnIndex, bool ascending, List<CompanyModel> data) {
     if (columnIndex == 0) {
       if (ascending) {
-        // data.sort((a, b) => a.name.compareTo(b.name),);
+        data.sort(
+          (a, b) => a.companyName.compareTo(b.companyName),
+        );
       } else {
-        // data.sort((a, b) => b.name.compareTo(a.name),);
+        data.sort(
+          (a, b) => b.companyName.compareTo(a.companyName),
+        );
       }
     }
   }
@@ -94,7 +98,6 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                           setState(() {
                             ascending = !ascending;
                           });
-                          onSortColumn(columnIndex, ascending, data);
                         },
                       ),
                       DataColumn(
@@ -135,16 +138,39 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                       ),
                     ],
                   ),
-                  columns: [
-                    DataColumn(
-                      label: Skeletonizer(
-                        child: Text(
-                          'Id',
+                   columns: [
+                      DataColumn(
+                        label: Text(
+                          'Name',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        onSort: (columnIndex, ascending) {
+                          setState(() {
+                            ascending = !ascending;
+                          });
+                        },
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Email',
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ),
-                    ),
-                  ],
+                      DataColumn(
+                        label: Text(
+                          'Phone',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Company field',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
+                    ],
+                   
                   source: NullCompanyDataTable(),
                 );
               },
