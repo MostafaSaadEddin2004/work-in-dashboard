@@ -10,19 +10,29 @@ import 'package:work_in_dashboard/controller/bloc/user_service/user_service_cubi
 import 'package:work_in_dashboard/controller/constants/nav_items.dart';
 import 'package:work_in_dashboard/controller/theme/app_theme.dart';
 import 'package:work_in_dashboard/model/http_override_model.dart';
-import 'package:work_in_dashboard/view/screens/home_screen.dart';
+import 'package:work_in_dashboard/view/screens/landing_screen.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 void main() {
+  usePathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
   runApp(const Main());
 }
 
-class Main extends StatelessWidget {
+class Main extends StatefulWidget {
   const Main({super.key});
 
   @override
+  State<Main> createState() => _MainState();
+}
+
+class _MainState extends State<Main> {
+  final GlobalKey<BeamerState> beamerKey = GlobalKey();
+
+  @override
   Widget build(BuildContext context) {
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -42,21 +52,20 @@ class Main extends StatelessWidget {
         designSize: const Size(360, 819.5),
         minTextAdapt: true,
         splitScreenMode: true,
-        builder: (context, child) => MaterialApp.router(
+        child: MaterialApp.router(
             debugShowCheckedModeBanner: false,
             theme: AppTheme.darkTheme,
             darkTheme: AppTheme.darkTheme,
             themeMode: ThemeMode.dark,
-            routeInformationParser: BeamerParser(onParse: (context) {
-              return RouteInformation(state: context.state,uri: context.uri,); 
-            },),
+            routeInformationParser: BeamerParser(),
             routerDelegate: BeamerDelegate(
-                transitionDelegate: const NoAnimationTransitionDelegate(),
-                locationBuilder: 
-                 RoutesLocationBuilder(routes: {
-                  BeamerNavItem.route: (context, state, data) => const HomeScreen(),
-                }).call
-                )),
+              locationBuilder: RoutesLocationBuilder(
+              routes: {
+              BeamerNavItem.route: (context, state, data) => BeamPage(
+                key: ValueKey(BeamerNavItem.routeKey),
+                type: BeamPageType.slideTopTransition,
+                child: const LandingScreen()),
+            }).call)),
       ),
     );
   }

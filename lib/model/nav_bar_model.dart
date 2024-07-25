@@ -22,19 +22,6 @@ class NavBarModel {
   });
   static final List<NavBarModel> navData = [
     NavBarModel(
-      title: 'Dashboard',
-      icon: const Icon(
-        Icons.space_dashboard_rounded,
-        color: AppColor.white,
-        size: 25,
-      ),
-      isHovered: false,
-      activeColor: AppColor.blue,
-      unactiveColor: AppColor.primary,
-      nav: BeamerNavItem.dashBoard,
-      index: 0,
-    ),
-    NavBarModel(
       title: 'Users',
       icon: const Icon(
         Icons.person,
@@ -45,7 +32,7 @@ class NavBarModel {
       activeColor: AppColor.blue,
       unactiveColor: AppColor.primary,
       nav: BeamerNavItem.users,
-      index: 1,
+      index: 0,
     ),
     NavBarModel(
       title: 'Companies',
@@ -58,7 +45,7 @@ class NavBarModel {
       activeColor: AppColor.blue,
       unactiveColor: AppColor.primary,
       nav: BeamerNavItem.companies,
-      index: 2,
+      index: 1,
     ),
     NavBarModel(
       title: 'Jobs',
@@ -71,7 +58,7 @@ class NavBarModel {
       activeColor: AppColor.blue,
       unactiveColor: AppColor.primary,
       nav: BeamerNavItem.jobs,
-      index: 3,
+      index: 2,
     ),
     NavBarModel(
       title: 'Training',
@@ -84,7 +71,7 @@ class NavBarModel {
       activeColor: AppColor.blue,
       unactiveColor: AppColor.primary,
       nav: BeamerNavItem.training,
-      index: 4,
+      index: 3,
     ),
   ];
 }

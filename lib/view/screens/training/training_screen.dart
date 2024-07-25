@@ -56,9 +56,16 @@ class _TrainingScreenState extends State<TrainingScreen> {
                       const Spacer(
                         flex: 1,
                       ),
-                      const AddButton(
+                      AddButton(
                         text: 'Add new',
                         color: AppColor.blue,
+                        onPressed: () {
+                          setState(() {
+                            // _beam.currentState?.routerDelegate
+                            //     .beamToNamed(BeamerNavItem.addTraining);
+                            context.beamToNamed(BeamerNavItem.addTraining);
+                          });
+                        },
                       ),
                     ],
                   ),
@@ -78,25 +85,13 @@ class _TrainingScreenState extends State<TrainingScreen> {
                   var data = state.trainingData;
                   return PaginatedDataTable(
                     rowsPerPage: data.length < 5 ? data.length : 5,
-                    columnSpacing: Responsive.isDesktop(context)? 208: 20,
+                    columnSpacing: Responsive.isDesktop(context) ? 208 : 20,
                     horizontalMargin: 16,
                     sortAscending: ascending,
                     sortColumnIndex: 0,
                     header: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        AddButton(
-                          text: 'Add new',
-                          color: AppColor.blue,
-                          onPressed: () {
-                            setState(() {
-                              _beam.currentState?.routerDelegate
-                                  .beamToNamed(BeamerNavItem.addTraining);
-                            });
-                          },
-                        ),
-                        const Spacer(
-                          flex: 1,
-                        ),
                         SearchTextField(
                           enabled: true,
                           hintText: 'Search a training',
@@ -161,8 +156,8 @@ class _TrainingScreenState extends State<TrainingScreen> {
                 }
                 return PaginatedDataTable(
                   rowsPerPage: 5,
-                  columnSpacing: Responsive.isDesktop(context)? 208: 20,
-                    horizontalMargin: 16,
+                  columnSpacing: Responsive.isDesktop(context) ? 208 : 20,
+                  horizontalMargin: 16,
                   sortAscending: ascending,
                   sortColumnIndex: 0,
                   header: const Row(

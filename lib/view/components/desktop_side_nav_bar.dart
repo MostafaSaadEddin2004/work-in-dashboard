@@ -15,23 +15,21 @@ class _DesktopSideNavBarState extends State<DesktopSideNavBar> {
   int selectedIndex = -1;
   void getNav() {
     final path = (context.currentBeamLocation.state as BeamState).uri.path;
-    if (path.contains(BeamerNavItem.dashBoard)) {
+    if (path.contains(BeamerNavItem.users)) {
       selectedIndex = 0;
-    } else if (path.contains(BeamerNavItem.users)) {
-      selectedIndex = 1;
     } else if (path.contains(BeamerNavItem.companies)) {
-     selectedIndex = 2;
+      selectedIndex = 1;
     } else if (path.contains(BeamerNavItem.jobs)) {
-      selectedIndex = 3;
+      selectedIndex = 2;
     } else if (path.contains(BeamerNavItem.training)) {
-      selectedIndex = 4;
+      selectedIndex = 3;
     } else {
       selectedIndex = -1;
     }
   }
+
   @override
   Widget build(BuildContext context) {
-    getNav();
     return ListView.builder(
       itemCount: NavBarModel.navData.length,
       itemBuilder: (context, index) => InkWell(
@@ -55,9 +53,7 @@ class _DesktopSideNavBarState extends State<DesktopSideNavBar> {
             height: 40,
             decoration: BoxDecoration(
                 color: SideNavBarItemColor.itemColor(
-                    index,
-                    selectedIndex,
-                    NavBarModel.navData[index].isHovered),
+                    index, selectedIndex, NavBarModel.navData[index].isHovered),
                 borderRadius: BorderRadius.circular(8)),
             child: Row(
               children: [

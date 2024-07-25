@@ -1,9 +1,13 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:work_in_dashboard/controller/bloc/company_service/company_services_cubit.dart';
+import 'package:work_in_dashboard/controller/constants/nav_items.dart';
+import 'package:work_in_dashboard/controller/style/app_color.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/model/company_data_table.dart';
 import 'package:work_in_dashboard/model/company_mode.dart';
+import 'package:work_in_dashboard/view/components/add_button.dart';
 import 'package:work_in_dashboard/view/components/search_text_field.dart';
 
 class CompaniesScreen extends StatefulWidget {
@@ -41,9 +45,21 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
             if (Responsive.isDesktop(context))
               Column(
                 children: [
-                  Text(
-                    'Companies',
-                    style: Theme.of(context).textTheme.labelLarge,
+                  Row(
+                    children: [
+                      Text(
+                        'Companies',
+                        style: Theme.of(context).textTheme.labelLarge,
+                      ),const Spacer(flex: 1,),
+                        AddButton(
+                          text: 'Show requests',
+                          color: AppColor.blue,
+                          isAddLoading: false,
+                          onPressed: () {
+                            context.beamToNamed(BeamerNavItem.companiesRequest);
+                          },
+                        ),
+                    ],
                   ),
                   const SizedBox(
                     height: 16,
@@ -66,10 +82,8 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                     sortAscending: ascending,
                     sortColumnIndex: 0,
                     header: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        const Spacer(
-                          flex: 1,
-                        ),
                         SearchTextField(
                           enabled: true,
                           hintText: 'Search a company',
@@ -123,7 +137,7 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                 }
                 return PaginatedDataTable(
                   rowsPerPage: 5,
-                  columnSpacing: Responsive.isDesktop(context)? 234:20,
+                  columnSpacing: Responsive.isDesktop(context) ? 234 : 20,
                   horizontalMargin: 16,
                   sortAscending: ascending,
                   sortColumnIndex: 0,

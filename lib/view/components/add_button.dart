@@ -28,13 +28,13 @@ class _AddButtonState extends State<AddButton> {
         });
       },
       onTap: widget.onPressed,
+      mouseCursor: MaterialStateMouseCursor.clickable,
       borderRadius: BorderRadius.circular(16),
       child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeIn,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           margin: const EdgeInsets.symmetric(vertical: 16),
-          width: 100,
           height: 36,
           alignment: Alignment.center,
           decoration: BoxDecoration(

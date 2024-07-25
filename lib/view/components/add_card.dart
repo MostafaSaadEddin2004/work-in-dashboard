@@ -9,23 +9,20 @@ class AddCard extends StatelessWidget {
       this.onCancelPressed,
       required this.onAddPressed,
       required this.fieldList,
-      this.isAddMode = false,
       this.isAddLoading = false,
       required this.label});
   final void Function()? onCancelPressed;
   final void Function() onAddPressed;
   final List<Widget> fieldList;
-  final bool isAddMode;
   final bool isAddLoading;
   final String label;
 
   @override
   Widget build(BuildContext context) {
-    if (isAddMode != false) {
       return Container(
           width: double.infinity,
           padding: const EdgeInsets.all(16),
-          margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 4),
+          margin: const EdgeInsets.all(16),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               color: AppColor.secondary),
@@ -64,7 +61,5 @@ class AddCard extends StatelessWidget {
               )
             ],
           ));
-    }
-    return const PreferredSize(preferredSize: Size.zero, child: SizedBox());
   }
 }

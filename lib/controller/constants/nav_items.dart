@@ -3,6 +3,7 @@ abstract class BeamerNavItem{
   static String dashBoard = '/Dashboard';
   static String users = '/Users';
   static String companies = '/Companies';
+  static String companiesRequest = '/Companies/CompaniesRequests';
   static String jobs = '/Jobs';
   static String addJob = '/Jobs/AddJob';
   static String updateJob = '/Jobs/UpdateJob';
@@ -10,10 +11,11 @@ abstract class BeamerNavItem{
   static String addTraining = '/Training/AddTraining';
   static String updateTraining = '/Training/UpdateTraining';
 
-  static String routeKey = '*';
+  static String routeKey = 'routeKey';
   static String dashBoardKey = 'DashboardKey';
   static String usersKey = 'UsersKey';
   static String companiesKey = 'CompaniesKey';
+  static String companiesRequestKey = 'CompaniesRequestsKey';
   static String jobsKey = 'JobsKey';
   static String addJobKey = 'AddJobKey';
   static String updateJobKey = 'UpdateJobKey';

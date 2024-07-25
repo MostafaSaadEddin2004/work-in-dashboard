@@ -34,7 +34,7 @@ class _AddTrainingScreenState extends State<AddTrainingScreen> {
       },
       builder: (context, state) {
         return Form(
-          key: formKey,
+            key: formKey,
             child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
@@ -93,33 +93,38 @@ class _AddTrainingScreenState extends State<AddTrainingScreen> {
                         ),
                       ],
                     ),
-                    AddButton(
-                      text: 'Add Training',
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          context.read<TrainingServicesCubit>().addTraining(
-                              context,
-                              _kindOfTrain.text,
-                              _location.text,
-                              _trainingCompany.text);
-                        }
-                      },
-                      isAddLoading: isLoading,
-                      color: AppColor.blue,
-                    ),
-                    AddButton(
-                      text: 'Add & add another',
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          context.read<TrainingServicesCubit>().addTraining(
-                              context,
-                              _kindOfTrain.text,
-                              _location.text,
-                              _trainingCompany.text);
-                        }
-                      },
-                      isAddLoading: isLoading,
-                      color: AppColor.blue,
+                    Row(
+                      children: [
+                        AddButton(
+                          text: 'Add Training',
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              context.read<TrainingServicesCubit>().addTraining(
+                                  context,
+                                  _kindOfTrain.text,
+                                  _location.text,
+                                  _trainingCompany.text);
+                            }
+                          },
+                          isAddLoading: isLoading,
+                          color: AppColor.blue,
+                        ),
+                        const SizedBox(width: 16),
+                        AddButton(
+                          text: 'Add & add another',
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              context.read<TrainingServicesCubit>().addTraining(
+                                  context,
+                                  _kindOfTrain.text,
+                                  _location.text,
+                                  _trainingCompany.text);
+                            }
+                          },
+                          isAddLoading: isLoading,
+                          color: AppColor.blue,
+                        ),
+                      ],
                     ),
                   ],
                 )));

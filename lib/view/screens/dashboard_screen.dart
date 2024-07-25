@@ -9,6 +9,7 @@ import 'package:work_in_dashboard/controller/style/app_color.dart';
 import 'package:work_in_dashboard/controller/utilities/char_bar_titels.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/model/bar_chart_data_model.dart';
+import 'package:work_in_dashboard/view/components/drop_down_button.dart';
 import 'package:work_in_dashboard/view/components/item_card.dart';
 
 class DashBoardScreen extends StatefulWidget {
@@ -19,6 +20,7 @@ class DashBoardScreen extends StatefulWidget {
 }
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
+  int selectedYear = 2024;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -70,6 +72,16 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   subtitbitle: 'Training',
                 ),
               ],
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            CustomDropDown(
+              onChanged: (value) {
+                setState(() {
+                  selectedYear = value!;
+                });
+              },
             ),
             const SizedBox(
               height: 16,

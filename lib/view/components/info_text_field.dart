@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:work_in_dashboard/controller/style/app_color.dart';
+import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 
 class InfoTextField extends StatelessWidget {
   const InfoTextField({
@@ -22,7 +22,7 @@ class InfoTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 240.w,
+      width: Responsive.isDesktop(context)? 450:240,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

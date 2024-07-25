@@ -1,7 +1,8 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:work_in_dashboard/controller/constants/nav_items.dart';
-import 'package:work_in_dashboard/view/screens/companies_screen.dart';
+import 'package:work_in_dashboard/view/screens/company/companies_requests_screen.dart';
+import 'package:work_in_dashboard/view/screens/company/companies_screen.dart';
 import 'package:work_in_dashboard/view/screens/dashboard_screen.dart';
 import 'package:work_in_dashboard/view/screens/job/add_job_screen.dart';
 import 'package:work_in_dashboard/view/screens/job/jobs_screen.dart';
@@ -17,10 +18,10 @@ abstract class BeamerRouterDeleget {
         setBrowserTabTitle: true,
         locationBuilder: RoutesLocationBuilder(
           routes: {
-            // BeamerNavItem.route: (context, state, data) => BeamPage(
-            //     key: ValueKey(BeamerNavItem.routeKey),
-            //     type: BeamPageType.slideTopTransition,
-            //     child: const DashBoardScreen()),
+            BeamerNavItem.route: (context, state, data) => BeamPage(
+                key: ValueKey(BeamerNavItem.routeKey),
+                type: BeamPageType.slideTopTransition,
+                child: const DashBoardScreen()),
             BeamerNavItem.dashBoard: (context, state, data) => BeamPage(
                 key: ValueKey(BeamerNavItem.dashBoardKey),
                 type: BeamPageType.slideTopTransition,
@@ -29,10 +30,18 @@ abstract class BeamerRouterDeleget {
                 key: ValueKey(BeamerNavItem.usersKey),
                 type: BeamPageType.slideTopTransition,
                 child: const UsersScreen()),
-            BeamerNavItem.companies: (context, state, data) => BeamPage(
+            BeamerNavItem.companies: (context, state, data) {
+              if(state.pathPatternSegments.contains('CompaniesRequests')){
+                return BeamPage(
+                key: ValueKey(BeamerNavItem.companiesRequestKey),
+                type: BeamPageType.slideTopTransition,
+                child: const CompaniesRequestsSecreen());
+              }
+              return BeamPage(
                 key: ValueKey(BeamerNavItem.companiesKey),
                 type: BeamPageType.slideTopTransition,
-                child: const CompaniesScreen()),
+                child: const CompaniesScreen());
+            },
             BeamerNavItem.jobs: (context, state, data) {
               if (state.pathPatternSegments.contains('AddJob')) {
                 return BeamPage(
@@ -56,7 +65,8 @@ abstract class BeamerRouterDeleget {
                     key: ValueKey(BeamerNavItem.addTrainingKey),
                     type: BeamPageType.slideLeftTransition,
                     child: const AddTrainingScreen());
-              } else if (state.pathPatternSegments.contains('UpdateTraining')) {
+              }
+              else if (state.pathPatternSegments.contains('UpdateTraining')) {
                 return BeamPage(
                     key: ValueKey(BeamerNavItem.updateTrainingKey),
                     type: BeamPageType.slideLeftTransition,

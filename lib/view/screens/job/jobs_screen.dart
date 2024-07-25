@@ -48,9 +48,26 @@ class _JobsScreenState extends State<JobsScreen> {
             if (Responsive.isDesktop(context))
               Column(
                 children: [
-                  Text(
-                    'Jobs',
-                    style: Theme.of(context).textTheme.labelLarge,
+                  Row(
+                    children: [
+                      Text(
+                        'Jobs',
+                        style: Theme.of(context).textTheme.labelLarge,
+                      ),
+                      const Spacer(
+                        flex: 1,
+                      ),
+                      AddButton(
+                        text: 'Add new',
+                        color: AppColor.blue,
+                        isAddLoading: false,
+                        onPressed: () {
+                          setState(() {
+                            context.beamToNamed(BeamerNavItem.addJob);
+                          });
+                        },
+                      ),
+                    ],
                   ),
                   const SizedBox(
                     height: 16,
@@ -72,20 +89,8 @@ class _JobsScreenState extends State<JobsScreen> {
                     sortAscending: ascending,
                     sortColumnIndex: 0,
                     header: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        AddButton(
-                          text: 'Add new',
-                          color: AppColor.blue,
-                          onPressed: () {
-                            setState(() {
-                              _beam.currentState?.routerDelegate
-                                  .beamToNamed(BeamerNavItem.addJob);
-                            });
-                          },
-                        ),
-                        const Spacer(
-                          flex: 1,
-                        ),
                         SearchTextField(
                           enabled: true,
                           hintText: 'Search a job',
@@ -170,14 +175,8 @@ class _JobsScreenState extends State<JobsScreen> {
                   sortAscending: ascending,
                   sortColumnIndex: 0,
                   header: const Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      AddButton(
-                        text: 'Add new',
-                        color: AppColor.blue,
-                      ),
-                      Spacer(
-                        flex: 1,
-                      ),
                       SearchTextField(
                         enabled: false,
                         hintText: 'Search a job',
