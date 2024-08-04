@@ -24,6 +24,17 @@ class _AddJobScreenState extends State<AddJobScreen> {
   final _location = TextEditingController();
   int selectedGender = 1;
   bool isLoading = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _companyName.dispose();
+    _jobTitle.dispose();
+    _experiencesForJob.dispose();
+    _workTime.dispose();
+    _location.dispose();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<JobServicesCubit, JobServicesState>(
@@ -43,7 +54,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
           child: Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
-              margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 4),
+              margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   color: AppColor.secondary),
@@ -52,9 +63,21 @@ class _AddJobScreenState extends State<AddJobScreen> {
                     ? CrossAxisAlignment.start
                     : CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    'Add new job',
-                    style: Theme.of(context).textTheme.labelSmall,
+                  Row(
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            // Beamer.of(context).beamBack();
+                          },
+                          icon: const Icon(Icons.arrow_back_rounded)),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        'Create new job',
+                        style: Theme.of(context).textTheme.labelSmall,
+                      ),
+                    ],
                   ),
                   const SizedBox(
                     height: 32,
@@ -128,39 +151,44 @@ class _AddJobScreenState extends State<AddJobScreen> {
                       )
                     ],
                   ),
-                  AddButton(
-                    text: 'Add job',
-                    onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        context.read<JobServicesCubit>().addJob(
-                            context,
-                            _companyName.text,
-                            _jobTitle.text,
-                            _experiencesForJob.text,
-                            _workTime.text,
-                            _location.text,
-                            Gender.getGender(selectedGender));
-                      }
-                    },
-                    isAddLoading: isLoading,
-                    color: AppColor.blue,
-                  ),
-                  AddButton(
-                    text: 'Add & add another',
-                    onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        context.read<JobServicesCubit>().addJob(
-                            context,
-                            _companyName.text,
-                            _jobTitle.text,
-                            _experiencesForJob.text,
-                            _workTime.text,
-                            _location.text,
-                            Gender.getGender(selectedGender));
-                      }
-                    },
-                    isAddLoading: isLoading,
-                    color: AppColor.blue,
+                  Row(
+                    children: [
+                      AddButton(
+                        text: 'Create',
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            context.read<JobServicesCubit>().addJob(
+                                context,
+                                _companyName.text,
+                                _jobTitle.text,
+                                _experiencesForJob.text,
+                                _workTime.text,
+                                _location.text,
+                                Gender.getGender(selectedGender));
+                          }
+                        },
+                        isAddLoading: isLoading,
+                        color: AppColor.blue,
+                      ),
+                      const SizedBox(width: 8),
+                      AddButton(
+                        text: 'Create & create another',
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            context.read<JobServicesCubit>().addJob(
+                                context,
+                                _companyName.text,
+                                _jobTitle.text,
+                                _experiencesForJob.text,
+                                _workTime.text,
+                                _location.text,
+                                Gender.getGender(selectedGender));
+                          }
+                        },
+                        isAddLoading: isLoading,
+                        color: AppColor.blue,
+                      ),
+                    ],
                   ),
                 ],
               )),

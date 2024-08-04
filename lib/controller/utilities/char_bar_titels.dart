@@ -1,8 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-class CharBarTitels{
-  
+class CharBarTitels {
   static Widget getBottomTitels(double value, TitleMeta meta) {
     const style = TextStyle(fontSize: 12);
     Widget text;
@@ -47,8 +46,12 @@ class CharBarTitels{
         text = const Text('', style: style);
         break;
     }
-    return SideTitleWidget(child: text, axisSide: meta.axisSide);
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      child: text,
+    );
   }
+
   static Widget getLeftTitels(double value, TitleMeta meta) {
     const style = TextStyle(fontSize: 14);
     Widget text;
@@ -75,7 +78,9 @@ class CharBarTitels{
         text = const Text('', style: style);
         break;
     }
-    return SideTitleWidget(child: text, axisSide: meta.axisSide);
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      child: text,
+    );
   }
-
 }

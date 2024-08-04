@@ -28,7 +28,7 @@ class JobServicesCubit extends Cubit<JobServicesState> {
       String experiencesForJob,
       String workTime,
       String companyNav,
-      String gender) async{
+      String gender) async {
     emit(JobServicesLoading());
     try {
       await JobServices.addJob(
@@ -54,7 +54,7 @@ class JobServicesCubit extends Cubit<JobServicesState> {
       String experiencesForJob,
       String workTime,
       String companyNav,
-      String gender) async{
+      String gender) async {
     emit(JobServicesLoading());
     try {
       await JobServices.updateJob(
@@ -74,7 +74,7 @@ class JobServicesCubit extends Cubit<JobServicesState> {
     }
   }
 
-  void deleteJob(BuildContext context, String id) async{
+  void deleteJob(BuildContext context, String id) async {
     emit(JobServicesLoading());
     try {
       await JobServices.deleteJob(id: id);

@@ -1,14 +1,13 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:work_in_dashboard/controller/bloc/job_services/job_services_cubit.dart';
 import 'package:work_in_dashboard/controller/constants/nav_items.dart';
 import 'package:work_in_dashboard/controller/style/app_color.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/model/job_data_table.dart';
-import 'package:work_in_dashboard/model/job_model.dart';
 import 'package:work_in_dashboard/view/components/add_button.dart';
 import 'package:work_in_dashboard/view/components/search_text_field.dart';
 
@@ -20,22 +19,15 @@ class JobsScreen extends StatefulWidget {
 }
 
 class _JobsScreenState extends State<JobsScreen> {
-  bool ascending = false;
-  onSortColumn(int columnIndex, bool ascendingF, List<JobModel> data) {
-    if (columnIndex == 0) {
-      if (ascendingF) {
-        data.sort(
-          (a, b) => a.companyName.compareTo(b.companyName),
-        );
-      } else {
-        data.sort(
-          (a, b) => b.companyName.compareTo(a.companyName),
-        );
-      }
-    }
-  }
+  bool isAscending = false;
+  int sortColumnIndex = 0;
 
-  final GlobalKey<BeamerState> _beam = GlobalKey();
+  int compareString(
+    bool ascending,
+    String value1,
+    String value2,
+  ) =>
+      ascending ? value1.compareTo(value2) : value2.compareTo(value1);
 
   @override
   Widget build(BuildContext context) {
@@ -58,13 +50,11 @@ class _JobsScreenState extends State<JobsScreen> {
                         flex: 1,
                       ),
                       AddButton(
-                        text: 'Add new',
+                        text: 'Create new',
                         color: AppColor.blue,
                         isAddLoading: false,
                         onPressed: () {
-                          setState(() {
-                            context.beamToNamed(BeamerNavItem.addJob);
-                          });
+                          context.goNamed(NavItemsName.addJobName);
                         },
                       ),
                     ],
@@ -86,26 +76,21 @@ class _JobsScreenState extends State<JobsScreen> {
                   return PaginatedDataTable(
                     rowsPerPage: data.length < 5 ? data.length : 5,
                     columnSpacing: 28.w,
-                    sortAscending: ascending,
+                    sortAscending: isAscending,
                     sortColumnIndex: 0,
-                    header: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        SearchTextField(
-                          enabled: true,
-                          hintText: 'Search a job',
-                          onChanged: (value) {
-                            setState(() {
-                              data = value == null
-                                  ? data
-                                  : data
-                                      .where((element) =>
-                                          element.companyName.contains(value))
-                                      .toList();
-                            });
-                          },
-                        ),
-                      ],
+                    header: SearchTextField(
+                      enabled: true,
+                      hintText: 'Search a job',
+                      onChanged: (value) {
+                        setState(() {
+                          data = value == null
+                              ? data
+                              : data
+                                  .where((element) =>
+                                      element.companyName.contains(value))
+                                  .toList();
+                        });
+                      },
                     ),
                     columns: [
                       DataColumn(
@@ -114,9 +99,16 @@ class _JobsScreenState extends State<JobsScreen> {
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascendingF) {
+                        onSort: (columnIndex, ascending) {
                           setState(() {
-                            ascending = ascendingF;
+                            if (columnIndex == 0) {
+                              data.sort((a, b) => compareString(
+                                  ascending, a.companyName, b.companyName));
+                            }
+                            setState(() {
+                              isAscending = ascending;
+                              sortColumnIndex = columnIndex;
+                            });
                           });
                         },
                       ),
@@ -160,28 +152,17 @@ class _JobsScreenState extends State<JobsScreen> {
                     source: JobdataTable(
                       jobData: data,
                       context: context,
-                      onEditPressed: () {
-                        setState(() {
-                          _beam.currentState?.routerDelegate
-                              .beamToNamed(BeamerNavItem.updateJob);
-                        });
-                      },
                     ),
                   );
                 }
                 return PaginatedDataTable(
                   rowsPerPage: 5,
                   columnSpacing: Responsive.isDesktop(context) ? 100 : 20,
-                  sortAscending: ascending,
+                  sortAscending: isAscending,
                   sortColumnIndex: 0,
-                  header: const Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      SearchTextField(
-                        enabled: false,
-                        hintText: 'Search a job',
-                      ),
-                    ],
+                  header: const SearchTextField(
+                    enabled: false,
+                    hintText: 'Search a job',
                   ),
                   columns: [
                     DataColumn(

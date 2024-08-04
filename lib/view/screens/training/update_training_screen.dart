@@ -7,8 +7,17 @@ import 'package:work_in_dashboard/view/components/add_button.dart';
 import 'package:work_in_dashboard/view/components/info_text_field.dart';
 
 class UpdateTrainingScreen extends StatefulWidget {
-  const UpdateTrainingScreen({super.key, this.trainingId});
-  final String? trainingId;
+  const UpdateTrainingScreen({
+    super.key,
+    required this.trainingId,
+    required this.trainingCompany,
+    required this.kindOfTrain,
+    required this.location,
+  });
+  final String trainingId;
+  final String trainingCompany;
+  final String kindOfTrain;
+  final String location;
 
   @override
   State<UpdateTrainingScreen> createState() => _UpdateTrainingScreenState();
@@ -20,6 +29,23 @@ class _UpdateTrainingScreenState extends State<UpdateTrainingScreen> {
   final _location = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey();
   bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _trainingCompany.text = widget.trainingCompany;
+    _kindOfTrain.text = widget.kindOfTrain;
+    _location.text = widget.location;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _trainingCompany.dispose();
+    _kindOfTrain.dispose();
+    _location.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<TrainingServicesCubit, TrainingServicesState>(
@@ -100,7 +126,7 @@ class _UpdateTrainingScreenState extends State<UpdateTrainingScreen> {
                         if (formKey.currentState!.validate()) {
                           context.read<TrainingServicesCubit>().updateTraining(
                               context,
-                              widget.trainingId!,
+                              widget.trainingId,
                               _kindOfTrain.text,
                               _location.text,
                               _trainingCompany.text);

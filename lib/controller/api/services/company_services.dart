@@ -5,7 +5,7 @@ import 'package:work_in_dashboard/model/company_request_model.dart';
 
 abstract class CompanyServices extends BaseApi {
   static Future<List<CompanyModel>> getAllCompanies() async {
-  final response = await BaseApi.getRequest(endPoint: 'dashboard/All_companies');
+  final response = await BaseApi.getRequest(endPoint: 'All_companies');
   final data = (jsonDecode(response.body) as List)
       .map((e) => CompanyModel.fromJson(e))
       .toList();
@@ -13,7 +13,7 @@ abstract class CompanyServices extends BaseApi {
   }
 
   static Future<List<CompanyRequestModel>> getAllCompaniesRequests() async {
-  final response = await BaseApi.getRequest(endPoint: 'dashboard/All_companies');
+  final response = await BaseApi.getRequest(endPoint: '/All_Order_Forms');
   final data = (jsonDecode(response.body) as List)
       .map((e) => CompanyRequestModel.fromJson(e))
       .toList();

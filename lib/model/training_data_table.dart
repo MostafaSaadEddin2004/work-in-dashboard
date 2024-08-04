@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:work_in_dashboard/controller/bloc/training_services/training_services_cubit.dart';
+import 'package:work_in_dashboard/controller/constants/nav_items.dart';
 import 'package:work_in_dashboard/controller/style/app_color.dart';
 import 'package:work_in_dashboard/model/training_model.dart';
 import 'package:work_in_dashboard/view/components/skeletonizer_text.dart';
@@ -8,11 +10,9 @@ import 'package:work_in_dashboard/view/components/skeletonizer_text.dart';
 class TrainingDataTable extends DataTableSource {
   final List<TrainingModel> trainingData;
   final BuildContext context;
-  final void Function() onEditPressed;
   TrainingDataTable({
     required this.trainingData,
     required this.context,
-    required this.onEditPressed,
   });
   @override
   DataRow? getRow(int index) {
@@ -36,9 +36,17 @@ class TrainingDataTable extends DataTableSource {
         ),
       ),
       DataCell(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           IconButton(
-              onPressed: onEditPressed,
+              onPressed: () {
+                context.goNamed(NavItemsName.updateJobName, queryParameters: {
+                  'trainingId': trainingData[index].id,
+                  'trainingCompany': trainingData[index].trainingCompany,
+                  'kindOfTrain': trainingData[index].kindOfTrain,
+                  'location': trainingData[index].location,
+                });
+              },
               icon: const Icon(
                 Icons.edit_rounded,
                 size: 25,
@@ -87,6 +95,7 @@ class NullTrainingDataTable extends DataTableSource {
       DataCell(SkeletonizerText(text: _data[index].kindOfTrain)),
       DataCell(SkeletonizerText(text: _data[index].location)),
       DataCell(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           IconButton(
               onPressed: () {},

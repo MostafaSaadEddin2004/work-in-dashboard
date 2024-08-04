@@ -117,16 +117,6 @@ class _CompaniesRequestsSecreenState extends State<CompaniesRequestsSecreen> {
                     source: CompanyRequestDataTabel(
                         companiesRequestsData: data,
                         isLoading: isLoading,
-                        onAcceptPressed: () {
-                          context
-                              .read<CompaniesRequestsServicesCubit>()
-                              .acceptCompanyRequest(context);
-                        },
-                        onRejectPressed: () {
-                          context
-                              .read<CompaniesRequestsServicesCubit>()
-                              .rejectCompanyRequest(context);
-                        },
                         context: context),
                   );
                 }

@@ -1,6 +1,6 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:work_in_dashboard/controller/bloc/company_service/company_services_cubit.dart';
 import 'package:work_in_dashboard/controller/constants/nav_items.dart';
 import 'package:work_in_dashboard/controller/style/app_color.dart';
@@ -50,15 +50,18 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                       Text(
                         'Companies',
                         style: Theme.of(context).textTheme.labelLarge,
-                      ),const Spacer(flex: 1,),
-                        AddButton(
-                          text: 'Show requests',
-                          color: AppColor.blue,
-                          isAddLoading: false,
-                          onPressed: () {
-                            context.beamToNamed(BeamerNavItem.companiesRequest);
-                          },
-                        ),
+                      ),
+                      const Spacer(
+                        flex: 1,
+                      ),
+                      AddButton(
+                        text: 'Show requests',
+                        color: AppColor.blue,
+                        isAddLoading: false,
+                        onPressed: () {
+                          context.goNamed(NavItemsName.companiesRequestName);
+                        },
+                      ),
                     ],
                   ),
                   const SizedBox(
@@ -77,28 +80,23 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                   var data = state.companyData;
                   return PaginatedDataTable(
                     rowsPerPage: data.length < 5 ? data.length : 5,
-                    columnSpacing: Responsive.isDesktop(context) ? 234 : 20,
+                    columnSpacing: Responsive.isDesktop(context) ? 232 : 20,
                     horizontalMargin: 16,
                     sortAscending: ascending,
                     sortColumnIndex: 0,
-                    header: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        SearchTextField(
-                          enabled: true,
-                          hintText: 'Search a company',
-                          onChanged: (value) {
-                            setState(() {
-                              data = value == null
-                                  ? data
-                                  : data
-                                      .where((element) =>
-                                          element.id.toString().contains(value))
-                                      .toList();
-                            });
-                          },
-                        ),
-                      ],
+                    header: SearchTextField(
+                      enabled: true,
+                      hintText: 'Search a company',
+                      onChanged: (value) {
+                        setState(() {
+                          data = value == null
+                              ? data
+                              : data
+                                  .where((element) =>
+                                      element.id.toString().contains(value))
+                                  .toList();
+                        });
+                      },
                     ),
                     columns: [
                       DataColumn(
@@ -109,7 +107,7 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                         mouseCursor: MaterialStateMouseCursor.clickable,
                         onSort: (columnIndex, ascending) {
                           setState(() {
-                            ascending = !ascending;
+                            onSortColumn(columnIndex, ascending, data);
                           });
                         },
                       ),
@@ -137,20 +135,13 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                 }
                 return PaginatedDataTable(
                   rowsPerPage: 5,
-                  columnSpacing: Responsive.isDesktop(context) ? 234 : 20,
+                  columnSpacing: Responsive.isDesktop(context) ? 233 : 20,
                   horizontalMargin: 16,
                   sortAscending: ascending,
                   sortColumnIndex: 0,
-                  header: const Row(
-                    children: [
-                      Spacer(
-                        flex: 1,
-                      ),
-                      SearchTextField(
-                        enabled: false,
-                        hintText: 'Search a company',
-                      ),
-                    ],
+                  header: const SearchTextField(
+                    enabled: false,
+                    hintText: 'Search a company',
                   ),
                   columns: [
                     DataColumn(

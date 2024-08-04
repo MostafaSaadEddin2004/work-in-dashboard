@@ -19,6 +19,15 @@ class _AddTrainingScreenState extends State<AddTrainingScreen> {
   final _location = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey();
   bool isLoading = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _trainingCompany.dispose();
+    _kindOfTrain.dispose();
+    _location.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<TrainingServicesCubit, TrainingServicesState>(
@@ -38,7 +47,8 @@ class _AddTrainingScreenState extends State<AddTrainingScreen> {
             child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
-                margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 4),
+                margin:
+                    const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: AppColor.secondary),
@@ -47,9 +57,21 @@ class _AddTrainingScreenState extends State<AddTrainingScreen> {
                       ? CrossAxisAlignment.start
                       : CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      'Add new training',
-                      style: Theme.of(context).textTheme.labelSmall,
+                    Row(
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              // Beamer.of(context).beamBack();
+                            },
+                            icon: const Icon(Icons.arrow_back_rounded)),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          'Create new training',
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+                      ],
                     ),
                     const SizedBox(
                       height: 32,
@@ -96,7 +118,7 @@ class _AddTrainingScreenState extends State<AddTrainingScreen> {
                     Row(
                       children: [
                         AddButton(
-                          text: 'Add Training',
+                          text: 'Create new',
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
                               context.read<TrainingServicesCubit>().addTraining(
@@ -109,9 +131,9 @@ class _AddTrainingScreenState extends State<AddTrainingScreen> {
                           isAddLoading: isLoading,
                           color: AppColor.blue,
                         ),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: 8),
                         AddButton(
-                          text: 'Add & add another',
+                          text: 'Create & create another',
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
                               context.read<TrainingServicesCubit>().addTraining(

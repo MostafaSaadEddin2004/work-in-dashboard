@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 abstract class BaseApi {
-  static String get baseUrl => 'http://127.0.0.1:5000/api/';
+  static String get baseUrl => 'http://127.0.0.1:5000/api/dashboard/';
 
   static Future<http.Response> getRequest({
     required String endPoint,

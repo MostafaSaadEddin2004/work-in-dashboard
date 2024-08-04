@@ -68,26 +68,19 @@ class _UsersScreenState extends State<UsersScreen>
                       columnSpacing: 28.w,
                       sortAscending: ascending,
                       sortColumnIndex: 0,
-                      header: Row(
-                        children: [
-                          const Spacer(
-                            flex: 1,
-                          ),
-                          SearchTextField(
-                            enabled: true,
-                            hintText: 'Search a user',
-                            onChanged: (value) {
-                              setState(() {
-                                data = value == null
-                                    ? data
-                                    : data
-                                        .where((element) => element.username
-                                            .contains(value))
-                                        .toList();
-                              });
-                            },
-                          ),
-                        ],
+                      header: SearchTextField(
+                        enabled: true,
+                        hintText: 'Search a user',
+                        onChanged: (value) {
+                          setState(() {
+                            data = value == null
+                                ? data
+                                : data
+                                    .where((element) => element.username
+                                        .contains(value))
+                                    .toList();
+                          });
+                        },
                       ),
                       columns: [
                         DataColumn(
@@ -98,7 +91,7 @@ class _UsersScreenState extends State<UsersScreen>
                           mouseCursor: MaterialStateMouseCursor.clickable,
                           onSort: (columnIndex, ascending) {
                             setState(() {
-                              ascending = !ascending;
+                            onSortColumn(columnIndex, ascending, data);
                             });
                           },
                         ),
@@ -143,17 +136,10 @@ class _UsersScreenState extends State<UsersScreen>
                     columnSpacing: 28.w,
                     sortAscending: ascending,
                     sortColumnIndex: 0,
-                    header: const Row(
-                      children: [
-                         Spacer(
-                          flex: 1,
-                        ),
-                         SearchTextField(
-                          enabled: false,
-                          hintText: 'Search a user',
-                        ),
-                      ],
-                    ),
+                    header: const SearchTextField(
+                     enabled: false,
+                     hintText: 'Search a user',
+                                            ),
                     columns: [
                       DataColumn(
                         label: Skeletonizer(

@@ -9,15 +9,11 @@ import 'package:work_in_dashboard/view/components/skeletonizer_text.dart';
 class CompanyRequestDataTabel extends DataTableSource {
   final List<CompanyRequestModel> companiesRequestsData;
   final bool isLoading;
-  final void Function() onAcceptPressed;
-  final void Function() onRejectPressed;
   final BuildContext context;
 
   CompanyRequestDataTabel({
     required this.companiesRequestsData,
     required this.isLoading,
-    required this.onAcceptPressed,
-    required this.onRejectPressed,
     required this.context,
   });
 
@@ -26,6 +22,7 @@ class CompanyRequestDataTabel extends DataTableSource {
     return DataRow(cells: [
       DataCell(Text(companiesRequestsData[index].id)),
       DataCell(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           AcceptButton(
               onPressed: () {
@@ -52,15 +49,12 @@ class CompanyRequestDataTabel extends DataTableSource {
   }
 
   @override
-  // TODO: implement isRowCountApproximate
   bool get isRowCountApproximate => false;
 
   @override
-  // TODO: implement rowCount
   int get rowCount => companiesRequestsData.length;
 
   @override
-  // TODO: implement selectedRowCount
   int get selectedRowCount => 0;
 }
 
@@ -77,9 +71,6 @@ class NullCompanyRequestDataTabel extends DataTableSource {
       DataCell(Row(
         children: [
           AcceptButton(onPressed: () {}, text: 'Accept', color: AppColor.blue),
-          const SizedBox(
-            width: 8,
-          ),
           AcceptButton(onPressed: () {}, text: 'Reject', color: AppColor.red),
         ],
       )),
@@ -87,14 +78,11 @@ class NullCompanyRequestDataTabel extends DataTableSource {
   }
 
   @override
-  // TODO: implement isRowCountApproximate
   bool get isRowCountApproximate => false;
 
   @override
-  // TODO: implement rowCount
   int get rowCount => companiesRequestsData.length;
 
   @override
-  // TODO: implement selectedRowCount
   int get selectedRowCount => 0;
 }

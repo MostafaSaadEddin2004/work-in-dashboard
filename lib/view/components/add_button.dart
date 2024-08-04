@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:work_in_dashboard/view/components/loading.dart';
 
 class AddButton extends StatefulWidget {
-  const AddButton(
-      {super.key,
-      this.onPressed,
-      required this.text,
-      this.isAddLoading = false,
-      required this.color,});
+  const AddButton({
+    super.key,
+    this.onPressed,
+    required this.text,
+    this.isAddLoading = false,
+    required this.color,
+  });
   final void Function()? onPressed;
   final String text;
   final bool isAddLoading;
@@ -22,6 +23,10 @@ class _AddButtonState extends State<AddButton> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      focusColor: Colors.transparent,
+      hoverColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
       onHover: (value) {
         setState(() {
           isHovered = value;
@@ -35,7 +40,6 @@ class _AddButtonState extends State<AddButton> {
           curve: Curves.easeIn,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           margin: const EdgeInsets.symmetric(vertical: 16),
-          height: 36,
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: isHovered ? widget.color.withOpacity(0.5) : widget.color,

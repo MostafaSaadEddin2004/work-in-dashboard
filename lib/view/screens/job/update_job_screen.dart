@@ -9,8 +9,23 @@ import 'package:work_in_dashboard/view/components/gender_radio_buttons.dart';
 import 'package:work_in_dashboard/view/components/info_text_field.dart';
 
 class UpdateJobScreen extends StatefulWidget {
-  const UpdateJobScreen({super.key, this.jobId});
-  final String? jobId;
+  const UpdateJobScreen({
+    super.key,
+    required this.jobId,
+    required this.companyName,
+    required this.jobTitle,
+    required this.experiencesForJob,
+    required this.workTime,
+    required this.location,
+    required this.gender,
+  });
+  final String jobId;
+  final String companyName;
+  final String jobTitle;
+  final String experiencesForJob;
+  final String workTime;
+  final String location;
+  final String gender;
 
   @override
   State<UpdateJobScreen> createState() => _UpdateJobScreenState();
@@ -25,6 +40,28 @@ class _UpdateJobScreenState extends State<UpdateJobScreen> {
   final _location = TextEditingController();
   int selectedGender = 1;
   bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _companyName.text = widget.companyName;
+    _jobTitle.text = widget.jobTitle;
+    _experiencesForJob.text = widget.experiencesForJob;
+    _workTime.text = widget.workTime;
+    _location.text = widget.location;
+    selectedGender = widget.gender == 'male' ? 1 : 2;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _companyName.dispose();
+    _jobTitle.dispose();
+    _experiencesForJob.dispose();
+    _workTime.dispose();
+    _location.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<JobServicesCubit, JobServicesState>(
@@ -53,9 +90,21 @@ class _UpdateJobScreenState extends State<UpdateJobScreen> {
                     ? CrossAxisAlignment.start
                     : CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    'Add job',
-                    style: Theme.of(context).textTheme.labelSmall,
+                  Row(
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            // Beamer.of(context).beamBack();
+                          },
+                          icon: const Icon(Icons.arrow_back_rounded)),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        'Update job',
+                        style: Theme.of(context).textTheme.labelSmall,
+                      ),
+                    ],
                   ),
                   const SizedBox(
                     height: 32,
@@ -135,7 +184,7 @@ class _UpdateJobScreenState extends State<UpdateJobScreen> {
                       if (formKey.currentState!.validate()) {
                         context.read<JobServicesCubit>().updateJob(
                             context,
-                            widget.jobId!,
+                            widget.jobId,
                             _companyName.text,
                             _jobTitle.text,
                             _experiencesForJob.text,

@@ -31,8 +31,8 @@ class NavBarModel {
       isHovered: false,
       activeColor: AppColor.blue,
       unactiveColor: AppColor.primary,
-      nav: BeamerNavItem.users,
-      index: 0,
+      nav: NavItemsName.users,
+      index: 1,
     ),
     NavBarModel(
       title: 'Companies',
@@ -44,8 +44,8 @@ class NavBarModel {
       isHovered: false,
       activeColor: AppColor.blue,
       unactiveColor: AppColor.primary,
-      nav: BeamerNavItem.companies,
-      index: 1,
+      nav: NavItemsName.companies,
+      index: 2,
     ),
     NavBarModel(
       title: 'Jobs',
@@ -57,8 +57,8 @@ class NavBarModel {
       isHovered: false,
       activeColor: AppColor.blue,
       unactiveColor: AppColor.primary,
-      nav: BeamerNavItem.jobs,
-      index: 2,
+      nav: NavItemsName.jobs,
+      index: 3,
     ),
     NavBarModel(
       title: 'Training',
@@ -70,8 +70,8 @@ class NavBarModel {
       isHovered: false,
       activeColor: AppColor.blue,
       unactiveColor: AppColor.primary,
-      nav: BeamerNavItem.training,
-      index: 3,
+      nav: NavItemsName.training,
+      index: 4,
     ),
   ];
 }

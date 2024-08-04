@@ -1,6 +1,6 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:work_in_dashboard/controller/bloc/training_services/training_services_cubit.dart';
 import 'package:work_in_dashboard/controller/constants/nav_items.dart';
@@ -34,7 +34,7 @@ class _TrainingScreenState extends State<TrainingScreen> {
     }
   }
 
-  final GlobalKey<BeamerState> _beam = GlobalKey();
+  // final GlobalKey<BeamerState> _beam = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -57,14 +57,10 @@ class _TrainingScreenState extends State<TrainingScreen> {
                         flex: 1,
                       ),
                       AddButton(
-                        text: 'Add new',
+                        text: 'Create new',
                         color: AppColor.blue,
                         onPressed: () {
-                          setState(() {
-                            // _beam.currentState?.routerDelegate
-                            //     .beamToNamed(BeamerNavItem.addTraining);
-                            context.beamToNamed(BeamerNavItem.addTraining);
-                          });
+                          context.goNamed(NavItemsName.addTrainingName);
                         },
                       ),
                     ],
@@ -89,24 +85,19 @@ class _TrainingScreenState extends State<TrainingScreen> {
                     horizontalMargin: 16,
                     sortAscending: ascending,
                     sortColumnIndex: 0,
-                    header: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        SearchTextField(
-                          enabled: true,
-                          hintText: 'Search a training',
-                          onChanged: (value) {
-                            setState(() {
-                              data = value == null
-                                  ? data
-                                  : data
-                                      .where((element) =>
-                                          element.kindOfTrain.contains(value))
-                                      .toList();
-                            });
-                          },
-                        ),
-                      ],
+                    header: SearchTextField(
+                      enabled: true,
+                      hintText: 'Search a training',
+                      onChanged: (value) {
+                        setState(() {
+                          data = value == null
+                              ? data
+                              : data
+                                  .where((element) =>
+                                      element.kindOfTrain.contains(value))
+                                  .toList();
+                        });
+                      },
                     ),
                     columns: [
                       DataColumn(
@@ -119,7 +110,7 @@ class _TrainingScreenState extends State<TrainingScreen> {
                         mouseCursor: MaterialStateMouseCursor.clickable,
                         onSort: (columnIndex, ascending) {
                           setState(() {
-                            ascending = !ascending;
+                            onSortColumn(columnIndex, ascending, data);
                           });
                         },
                       ),
@@ -145,12 +136,6 @@ class _TrainingScreenState extends State<TrainingScreen> {
                     source: TrainingDataTable(
                       trainingData: data,
                       context: context,
-                      onEditPressed: () {
-                        setState(() {
-                          _beam.currentState?.routerDelegate
-                              .beamToNamed(BeamerNavItem.updateTraining);
-                        });
-                      },
                     ),
                   );
                 }
@@ -160,16 +145,9 @@ class _TrainingScreenState extends State<TrainingScreen> {
                   horizontalMargin: 16,
                   sortAscending: ascending,
                   sortColumnIndex: 0,
-                  header: const Row(
-                    children: [
-                      Spacer(
-                        flex: 1,
-                      ),
-                      SearchTextField(
-                        enabled: false,
-                        hintText: 'Search a training',
-                      ),
-                    ],
+                  header: const SearchTextField(
+                    enabled: false,
+                    hintText: 'Search a training',
                   ),
                   columns: [
                     DataColumn(

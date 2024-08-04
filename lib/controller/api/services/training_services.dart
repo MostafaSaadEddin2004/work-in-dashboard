@@ -4,7 +4,7 @@ import 'package:work_in_dashboard/model/training_model.dart';
 
 class TrainingServices extends BaseApi {
   static Future<List<TrainingModel>> getAllTraining() async {
-    final response = await BaseApi.getRequest(endPoint: 'TrainingForm');
+    final response = await BaseApi.getRequest(endPoint: 'All_training');
     final data = (jsonDecode(response.body) as List)
         .map((e) => TrainingModel.fromJson(e))
         .toList();

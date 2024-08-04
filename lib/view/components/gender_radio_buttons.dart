@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:work_in_dashboard/controller/style/app_color.dart';
+import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 
 class GenderRadioButton extends StatefulWidget {
   const GenderRadioButton(
@@ -15,7 +15,7 @@ class _GenderRadioButtonState extends State<GenderRadioButton> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 240.w,
+      width: Responsive.isDesktop(context) ? 450 : 240,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -30,7 +30,7 @@ class _GenderRadioButtonState extends State<GenderRadioButton> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                width: 120.w,
+                width: Responsive.isDesktop(context) ? 225 : 120,
                 child: RadioListTile(
                   contentPadding: const EdgeInsets.all(0),
                   activeColor: AppColor.blue,
@@ -46,7 +46,7 @@ class _GenderRadioButtonState extends State<GenderRadioButton> {
                 ),
               ),
               SizedBox(
-                width: 120.w,
+                width: Responsive.isDesktop(context) ? 225 : 120,
                 child: RadioListTile(
                   contentPadding: const EdgeInsets.all(0),
                   activeColor: AppColor.blue,

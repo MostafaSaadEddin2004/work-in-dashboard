@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:work_in_dashboard/controller/bloc/job_services/job_services_cubit.dart';
+import 'package:work_in_dashboard/controller/constants/nav_items.dart';
 import 'package:work_in_dashboard/controller/style/app_color.dart';
 import 'package:work_in_dashboard/model/job_model.dart';
 import 'package:work_in_dashboard/view/components/skeletonizer_text.dart';
@@ -8,11 +10,9 @@ import 'package:work_in_dashboard/view/components/skeletonizer_text.dart';
 class JobdataTable extends DataTableSource {
   final List<JobModel> jobData;
   final BuildContext context;
-  final void Function() onEditPressed;
   JobdataTable({
     required this.jobData,
     required this.context,
-    required this.onEditPressed,
   });
   @override
   DataRow? getRow(int index) {
@@ -54,9 +54,20 @@ class JobdataTable extends DataTableSource {
         ),
       ),
       DataCell(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           IconButton(
-              onPressed: onEditPressed,
+              onPressed: () {
+                context.goNamed(NavItemsName.updateJobName, queryParameters: {
+                  'jobId': jobData[index].id,
+                  'companyName': jobData[index].companyName,
+                  'jobTitle': jobData[index].jobTitle,
+                  'experiencesForJob': jobData[index].experiencesForJob,
+                  'workTime': jobData[index].workTime,
+                  'location': jobData[index].companyNav,
+                  'gender': jobData[index].gender,
+                });
+              },
               icon: const Icon(
                 Icons.edit_rounded,
                 size: 25,
@@ -104,7 +115,7 @@ class NullJobdataTable extends DataTableSource {
   @override
   DataRow? getRow(int index) {
     return DataRow(cells: [
-    DataCell(SkeletonizerText(
+      DataCell(SkeletonizerText(
         text: _data[index].companyName,
       )),
       DataCell(SkeletonizerText(
@@ -123,11 +134,12 @@ class NullJobdataTable extends DataTableSource {
         text: _data[index].workTime,
       )),
       DataCell(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           IconButton(
               onPressed: () {},
               icon: const Icon(
-                Icons.mode_edit_rounded,
+                Icons.edit_rounded,
                 size: 25,
               )),
           IconButton(
@@ -135,6 +147,7 @@ class NullJobdataTable extends DataTableSource {
               icon: const Icon(
                 Icons.delete_rounded,
                 size: 25,
+                color: AppColor.red,
               )),
         ],
       )),

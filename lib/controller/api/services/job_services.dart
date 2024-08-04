@@ -6,7 +6,7 @@ import 'package:work_in_dashboard/model/job_model.dart';
 class JobServices extends BaseApi {
   static Future<List<JobModel>> getAllJobs() async {
     try {
-      final response = await BaseApi.getRequest(endPoint: 'JobForm');
+      final response = await BaseApi.getRequest(endPoint: 'All_jobs');
       final data = (jsonDecode(response.body) as List)
           .map((e) => JobModel.fromJson(e))
           .toList();
