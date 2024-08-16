@@ -83,7 +83,7 @@ abstract class AppRoute {
                       GoRoute(
                         name: NavItemsName.updateJobName,
                         path:
-                            'UpdateJob/:jobId/:companyName/:Email/:Phone/:jobTitle/:experiencesForJob/:workTime/:location/:gender',
+                            'UpdateJob',
                         pageBuilder: (context, state) => MaterialPage(
                             child: UpdateJobScreen(
                           key: state.pageKey,

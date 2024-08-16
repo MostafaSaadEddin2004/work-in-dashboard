@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:work_in_dashboard/controller/utilities/side_nav_bar_item_color.dart';
+import 'package:work_in_dashboard/controller/utilities/uri_path.dart';
 import 'package:work_in_dashboard/model/nav_bar_model.dart';
 
 class MobileSideNavBar extends StatefulWidget {
@@ -14,13 +15,15 @@ class MobileSideNavBar extends StatefulWidget {
 }
 
 class _MobileSideNavBarState extends State<MobileSideNavBar> {
-  int selectedIndex = -1;
   void changetBranch(int index) {
     widget.navShell.goBranch(index,
         initialLocation: index == widget.navShell.currentIndex);
   }
+
   @override
   Widget build(BuildContext context) {
+    final path = GoRouterState.of(context).fullPath!;
+    int selectedIndex = UriPath.getNav(context, path);
     return ListView.builder(
         itemCount: NavBarModel.navData.length,
         itemBuilder: (context, index) => InkWell(
@@ -32,7 +35,7 @@ class _MobileSideNavBarState extends State<MobileSideNavBar> {
                 setState(() {
                   selectedIndex = index;
                 });
-                  changetBranch(NavBarModel.navData[index].index);
+                changetBranch(NavBarModel.navData[index].index);
               },
               onHover: (value) {
                 setState(() {

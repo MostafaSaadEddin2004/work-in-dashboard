@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:work_in_dashboard/controller/style/app_color.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
+import 'package:work_in_dashboard/controller/utilities/uri_path.dart';
 import 'package:work_in_dashboard/view/components/desktop_side_nav_bar.dart';
 import 'package:work_in_dashboard/view/components/logo_button.dart';
 import 'package:work_in_dashboard/view/components/mobile_side_nav_bar.dart';
@@ -19,40 +20,8 @@ class _LandingScreenState extends State<LandingScreen> {
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
-  
-  // final title = UriPath.getTitle(context);
-  // final path = GoRouterState.of(context).path!;
-
-    // Widget getButtonTitle(String path) {
-    //   if (path.contains(NavItemsName.jobsName)) {
-    //     return AddButton(
-    //       text: 'Create new',
-    //       color: AppColor.blue,
-    //       onPressed: () {
-    //         context.goNamed(NavItemsName.addJobName);
-    //       },
-    //     );
-    //   } else if (path.contains(NavItemsName.trainingName)) {
-    //     return AddButton(
-    //       text: 'Create new',
-    //       color: AppColor.blue,
-    //       onPressed: () {
-    //         context.goNamed(NavItemsName.addTrainingName);
-    //       },
-    //     );
-    //   } else if (path.contains(NavItemsName.companiesName)) {
-    //     return AddButton(
-    //       text: 'Create new',
-    //       color: AppColor.blue,
-    //       onPressed: () {
-    //         context.goNamed(NavItemsName.addTrainingName);
-    //       },
-    //     );
-    //   } else {
-    //     return const PreferredSize(preferredSize: Size.zero, child: SizedBox());
-    //   }
-    // }
-
+    final path = GoRouterState.of(context).fullPath!;
+    final title = UriPath.getTitle(context, path);
     return Scaffold(
       key: _globalKey,
       backgroundColor: AppColor.primary,
@@ -116,13 +85,13 @@ class _LandingScreenState extends State<LandingScreen> {
                                 width: 16,
                               ),
                               Text(
-                                'DashBoard',
+                                title,
                                 style: Theme.of(context).textTheme.labelMedium,
                               ),
                               const Spacer(
                                 flex: 1,
                               ),
-                              // getButtonTitle(path)
+                              UriPath.getButtonTitle(context, path)
                             ],
                           ),
                         ),

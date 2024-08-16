@@ -1,32 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:work_in_dashboard/controller/constants/nav_items.dart';
+import 'package:work_in_dashboard/controller/style/app_color.dart';
+import 'package:work_in_dashboard/view/components/add_button.dart';
 
 abstract class UriPath {
-  static void getNav(int selectedIndex, BuildContext context) {
-    final path = GoRouterState.of(context).path!;
-    if (path.contains(NavItemsName.route)) {
-      selectedIndex = -1;
-    }
-    else if (path.contains(NavItemsName.users)) {
-      selectedIndex = 0;
-    }
-     else if (path.contains(NavItemsName.companies)) {
-      selectedIndex = 1;
+  static int getNav(BuildContext context, String path) {
+    if (path.contains(NavItemsName.users)) {
+      return 0;
+    } else if (path.contains(NavItemsName.companies)) {
+      return 1;
     } else if (path.contains(NavItemsName.jobs)) {
-      selectedIndex = 2;
+      return 2;
     } else if (path.contains(NavItemsName.training)) {
-      selectedIndex = 3;
+      return 3;
     } else {
-      selectedIndex = -1;
+      return -1;
     }
   }
 
-  static String getTitle(BuildContext context) {
-    final path = GoRouterState.of(context).path!;
-    if (path.contains(NavItemsName.route)) {
-      return 'Dashboard';
-    } else if (path.contains(NavItemsName.users)) {
+  static String getTitle(BuildContext context, String path) {
+    if (path.contains(NavItemsName.users)) {
       return 'Users';
     } else if (path.contains(NavItemsName.companies)) {
       return 'Companies';
@@ -35,7 +29,29 @@ abstract class UriPath {
     } else if (path.contains(NavItemsName.training)) {
       return 'Training';
     } else {
-      return '';
+      return 'Dashboard';
+    }
+  }
+
+  static Widget getButtonTitle(BuildContext context, String path) {
+    if (path.contains(NavItemsName.jobsName)) {
+      return AddButton(
+        text: 'Create new',
+        color: AppColor.blue,
+        onPressed: () {
+          context.goNamed(NavItemsName.addJobName);
+        },
+      );
+    } else if (path.contains(NavItemsName.trainingName)) {
+      return AddButton(
+        text: 'Create new',
+        color: AppColor.blue,
+        onPressed: () {
+          context.goNamed(NavItemsName.addTrainingName);
+        },
+      );
+    } else {
+      return const PreferredSize(preferredSize: Size.zero, child: SizedBox());
     }
   }
 }
