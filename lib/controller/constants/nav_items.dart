@@ -1,8 +1,8 @@
 abstract class NavItemsName{
+  static String route = '/';
   static String dashBoard = 'Dashboard';
   static String users = 'Users';
   static String companies = 'Companies';
-  static String companiesRequest = 'Companies/CompaniesRequests';
   static String jobs = 'Jobs';
   static String addJob = 'Jobs/AddJob';
   static String updateJob = 'Jobs/UpdateJob';
@@ -13,7 +13,6 @@ abstract class NavItemsName{
   static String dashBoardName = 'Dashboard';
   static String usersName = 'Users';
   static String companiesName = 'Companies';
-  static String companiesRequestName = 'CompaniesRequests';
   static String jobsName = 'Jobs';
   static String addJobName = 'AddJob';
   static String updateJobName = 'UpdateJob';

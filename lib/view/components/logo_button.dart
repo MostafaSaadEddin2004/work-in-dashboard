@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:work_in_dashboard/controller/constants/nav_items.dart';
 import 'package:work_in_dashboard/controller/style/app_color.dart';
 
 class LogoButton extends StatefulWidget {
@@ -22,7 +24,7 @@ class _LogoButtonState extends State<LogoButton> {
         });
       },
       onTap: () {
-        // beam.currentState?.routerDelegate.beamToNamed(BeamerNavItem.route);
+        context.replaceNamed(NavItemsName.dashBoardName);
       },
       hoverColor: Colors.transparent,
       focusColor: Colors.transparent,

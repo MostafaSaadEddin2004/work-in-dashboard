@@ -10,9 +10,11 @@ import 'package:work_in_dashboard/view/components/skeletonizer_text.dart';
 class TrainingDataTable extends DataTableSource {
   final List<TrainingModel> trainingData;
   final BuildContext context;
+  final void Function() onEditPressed;
   TrainingDataTable({
     required this.trainingData,
     required this.context,
+    required this.onEditPressed,
   });
   @override
   DataRow? getRow(int index) {
@@ -40,9 +42,12 @@ class TrainingDataTable extends DataTableSource {
         children: [
           IconButton(
               onPressed: () {
-                context.goNamed(NavItemsName.updateJobName, queryParameters: {
+                context
+                    .goNamed(NavItemsName.updateTrainingName, queryParameters: {
                   'trainingId': trainingData[index].id,
                   'trainingCompany': trainingData[index].trainingCompany,
+                  'Email': trainingData[index].email,
+                  'Phone': trainingData[index].phone,
                   'kindOfTrain': trainingData[index].kindOfTrain,
                   'location': trainingData[index].location,
                 });
@@ -81,13 +86,15 @@ class NullTrainingDataTable extends DataTableSource {
   final _data = List.generate(
       10,
       (index) => TrainingModel(
-          id: 'dsfssfd60sdf4',
-          trainingCompany: 'trainingCompany',
-          kindOfTrain: 'kindOfTrain',
-          location: 'location',
-          createdAt: DateTime(2024, 6, 25),
-          updatedAt: DateTime(2024, 6, 25),
-          version: 1));
+            id: 'dsfssfd60sdf4',
+            trainingCompany: 'trainingCompany',
+            email: 'asdadasd',
+            phone: '09658465335',
+            kindOfTrain: 'kindOfTrain',
+            location: 'location',
+            createdAt: DateTime(2024, 6, 25),
+            updatedAt: DateTime(2024, 6, 25),
+          ));
   @override
   DataRow? getRow(int index) {
     return DataRow(cells: [

@@ -23,6 +23,18 @@ abstract class AppTheme {
             fontSize: 14,
             color: AppColor.white,
           ),
+          displayLarge: TextStyle(
+            fontSize: 22,
+            color: AppColor.black,
+          ),
+          displayMedium: TextStyle(
+            fontSize: 18,
+            color: AppColor.black,
+          ),
+          displaySmall: TextStyle(
+            fontSize: 14,
+            color: AppColor.black,
+          ),
         ),
         colorScheme: const ColorScheme.dark(
           brightness: Brightness.dark,

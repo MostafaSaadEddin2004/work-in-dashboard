@@ -4,11 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:work_in_dashboard/controller/bloc/company_service/company_services_cubit.dart';
 import 'package:work_in_dashboard/controller/bloc/job_services/job_services_cubit.dart';
 import 'package:work_in_dashboard/controller/bloc/training_services/training_services_cubit.dart';
+import 'package:work_in_dashboard/controller/bloc/user_service/user_service_cubit.dart';
 import 'package:work_in_dashboard/controller/style/app_color.dart';
 import 'package:work_in_dashboard/controller/utilities/char_bar_titels.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/model/bar_chart_data_model.dart';
-import 'package:work_in_dashboard/model/user_model.dart';
 import 'package:work_in_dashboard/view/components/drop_down_button.dart';
 import 'package:work_in_dashboard/view/components/item_card.dart';
 
@@ -21,20 +21,6 @@ class DashBoardScreen extends StatefulWidget {
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
   int selectedYear = 2024;
-  final users = List.generate(
-      11,
-      (index) => UserModel(
-          id: 'fdsee566ewee',
-          username: 'username',
-          email: 'email',
-          password: 'password',
-          phone: 'phone',
-          birthDate: DateTime.now(),
-          gender: 'gender',
-          isAdmin: false,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-          v: 0));
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -101,16 +87,16 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
               height: 16,
             ),
             Builder(builder: (context) {
-              // final usersState = context.read<UserServiceCubit>().state;
+              final usersState = context.read<UserServiceCubit>().state;
               final companiesState = context.read<CompanyServicesCubit>().state;
               final jobsState = context.read<JobServicesCubit>().state;
               final trainingState = context.read<TrainingServicesCubit>().state;
               if (
-                  // usersState is UserServiceFetched &&
+                  usersState is UserServiceFetched &&
                   companiesState is CompanyServicesFetched &&
                       jobsState is JobServicesFetched &&
                       trainingState is TrainingServicesFetched) {
-                // final usersData = usersState.userData;
+                final usersData = usersState.userData;
                 final companiesData = companiesState.companyData;
                 final jobsData = jobsState.jobData;
                 final trainingData = trainingState.trainingData;
@@ -121,7 +107,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       swapAnimationDuration: const Duration(milliseconds: 200),
                       BarChartData(
                           barGroups: ChartData.monthlySummary(
-                                  users,
+                                  usersData,
                                   companiesData,
                                   jobsData,
                                   trainingData,

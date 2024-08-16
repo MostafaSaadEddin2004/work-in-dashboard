@@ -23,16 +23,20 @@ class TrainingServicesCubit extends Cubit<TrainingServicesState> {
 
   void addTraining(
     BuildContext context,
+    String trainingCompany,
+     String companyEmail,
+     String companyPhone,
     String kindOfTrain,
     String location,
-    String trainingCompany,
   ) async{
     emit(TrainingServicesLoading());
     try {
-      await TrainingServices.addTraining(
+       TrainingServices.addTraining(
+        trainingCompany: trainingCompany,
+        companyEmail: companyEmail,
+        companyPhone: companyPhone,
         kindOfTrain: kindOfTrain,
         location: location,
-        trainingCompany: trainingCompany,
       );
       emit(TrainingServicesSuccess());
       Snack.showSnack(context, 'Congrats!', 'Job has been added successfully');
@@ -45,17 +49,21 @@ class TrainingServicesCubit extends Cubit<TrainingServicesState> {
   void updateTraining(
     BuildContext context,
     String id,
-    String kindOfTrain,
-    String location,
     String trainingCompany,
+     String companyEmail,
+     String companyPhone,
+    String location,
+    String kindOfTrain,
   ) async{
     emit(TrainingServicesLoading());
     try {
       await TrainingServices.updateTraining(
         id: id,
+        trainingCompany: trainingCompany,
+        companyEmail: companyEmail,
+        companyPhone: companyPhone,
         kindOfTrain: kindOfTrain,
         location: location,
-        trainingCompany: trainingCompany,
       );
       emit(TrainingServicesSuccess());
       Snack.showSnack(

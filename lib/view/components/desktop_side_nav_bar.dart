@@ -22,14 +22,15 @@ class _DesktopSideNavBarState extends State<DesktopSideNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    // GetNav.getNav(selectedIndex, context);
+
+    // UriPath.getNav(selectedIndex, context);
+    
     return ListView.builder(
       itemCount: NavBarModel.navData.length,
       itemBuilder: (context, index) => InkWell(
           onTap: () {
             setState(() {
               selectedIndex = index;
-              // context.go(NavBarModel.navData[index].nav);
             });
             changetBranch(NavBarModel.navData[index].index);
           },

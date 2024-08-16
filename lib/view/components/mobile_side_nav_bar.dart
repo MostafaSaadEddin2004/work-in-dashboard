@@ -21,7 +21,6 @@ class _MobileSideNavBarState extends State<MobileSideNavBar> {
   }
   @override
   Widget build(BuildContext context) {
-    // GetNav.getNav(selectedIndex, context);
     return ListView.builder(
         itemCount: NavBarModel.navData.length,
         itemBuilder: (context, index) => InkWell(
@@ -32,7 +31,6 @@ class _MobileSideNavBarState extends State<MobileSideNavBar> {
               onTap: () {
                 setState(() {
                   selectedIndex = index;
-                  // context.go(NavBarModel.navData[index].nav);
                 });
                   changetBranch(NavBarModel.navData[index].index);
               },

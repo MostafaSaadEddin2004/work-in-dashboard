@@ -24,6 +24,8 @@ class JobServicesCubit extends Cubit<JobServicesState> {
   void addJob(
       BuildContext context,
       String companyName,
+      String companyEmail,
+      String companyPhone,
       String jobTitle,
       String experiencesForJob,
       String workTime,
@@ -33,6 +35,8 @@ class JobServicesCubit extends Cubit<JobServicesState> {
     try {
       await JobServices.addJob(
           companyName: companyName,
+          companyEmail: companyEmail,
+          companyPhone: companyPhone,
           jobTitle: jobTitle,
           experiencesForJob: experiencesForJob,
           workTime: workTime,
@@ -50,6 +54,8 @@ class JobServicesCubit extends Cubit<JobServicesState> {
       BuildContext context,
       String id,
       String companyName,
+      String companyEmail,
+      String companyPhone,
       String jobTitle,
       String experiencesForJob,
       String workTime,
@@ -60,6 +66,8 @@ class JobServicesCubit extends Cubit<JobServicesState> {
       await JobServices.updateJob(
           id: id,
           companyName: companyName,
+          companyEmail: companyEmail,
+          companyPhone: companyPhone,
           jobTitle: jobTitle,
           experiencesForJob: experiencesForJob,
           workTime: workTime,

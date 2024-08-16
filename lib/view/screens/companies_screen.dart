@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:work_in_dashboard/controller/bloc/company_service/company_services_cubit.dart';
-import 'package:work_in_dashboard/controller/constants/nav_items.dart';
-import 'package:work_in_dashboard/controller/style/app_color.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/model/company_data_table.dart';
 import 'package:work_in_dashboard/model/company_mode.dart';
-import 'package:work_in_dashboard/view/components/add_button.dart';
 import 'package:work_in_dashboard/view/components/search_text_field.dart';
 
 class CompaniesScreen extends StatefulWidget {
@@ -45,24 +41,9 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
             if (Responsive.isDesktop(context))
               Column(
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        'Companies',
-                        style: Theme.of(context).textTheme.labelLarge,
-                      ),
-                      const Spacer(
-                        flex: 1,
-                      ),
-                      AddButton(
-                        text: 'Show requests',
-                        color: AppColor.blue,
-                        isAddLoading: false,
-                        onPressed: () {
-                          context.goNamed(NavItemsName.companiesRequestName);
-                        },
-                      ),
-                    ],
+                  Text(
+                    'Companies',
+                    style: Theme.of(context).textTheme.labelLarge,
                   ),
                   const SizedBox(
                     height: 16,
@@ -79,8 +60,8 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                 } else if (state is CompanyServicesFetched) {
                   var data = state.companyData;
                   return PaginatedDataTable(
-                    rowsPerPage: data.length < 5 ? data.length : 5,
-                    columnSpacing: Responsive.isDesktop(context) ? 232 : 20,
+                    rowsPerPage: data.length < 5 ? data.length : 8,
+                    columnSpacing: 50,
                     horizontalMargin: 16,
                     sortAscending: ascending,
                     sortColumnIndex: 0,
@@ -129,13 +110,26 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ),
+                      DataColumn(
+                        label: Text(
+                          'Acceptance',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Actions',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
                     ],
-                    source: CompanyDataTable(companyData: data),
+                    source:
+                        CompanyDataTable(companyData: data, context: context),
                   );
                 }
                 return PaginatedDataTable(
                   rowsPerPage: 5,
-                  columnSpacing: Responsive.isDesktop(context) ? 233 : 20,
+                  columnSpacing: 50,
                   horizontalMargin: 16,
                   sortAscending: ascending,
                   sortColumnIndex: 0,
@@ -171,6 +165,18 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                     DataColumn(
                       label: Text(
                         'Company field',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ),
+                      DataColumn(
+                        label: Text(
+                          'Acceptance',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
+                    DataColumn(
+                      label: Text(
+                        'Actions',
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),

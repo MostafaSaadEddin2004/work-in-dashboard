@@ -18,42 +18,50 @@ class JobServices extends BaseApi {
 
   static Future<void> addJob({
     required String companyName,
+    required String companyEmail,
+    required String companyPhone,
     required String jobTitle,
     required String experiencesForJob,
     required String workTime,
     required String companyNav,
     required String gender,
   }) async {
-    await BaseApi.postRequest(endPoint: 'JobForm/Add-job', data: {
-      'CompanyName': companyName,
-      'JobTitle': jobTitle,
-      'ExperiencesForJob': experiencesForJob,
-      'WorkTime': workTime,
-      'CompanyNav': companyNav,
-      'Gender': gender,
+    await BaseApi.postRequest(endPoint: 'Add-job', data: {
+      'CompanyName': jsonEncode(companyName),
+      'Email': jsonEncode(companyEmail),
+      'Phone': jsonEncode(companyPhone),
+      'JobTitle': jsonEncode(jobTitle),
+      'ExperiencesForJob': jsonEncode(experiencesForJob),
+      'WorkTime': jsonEncode(workTime),
+      'CompanyNav': jsonEncode(companyNav),
+      'Gender': jsonEncode(gender),
     });
   }
 
   static Future<void> updateJob({
     required String id,
     String? companyName,
+    String? companyEmail,
+    String? companyPhone,
     String? jobTitle,
     String? experiencesForJob,
     String? workTime,
     String? companyNav,
     String? gender,
   }) async {
-    await BaseApi.putRequest(endPoint: 'JobForm/Update-Job', id: id, data: {
-      'CompanyName': companyName,
-      'JobTitle': jobTitle,
-      'ExperiencesForJob': experiencesForJob,
-      'WorkTime': workTime,
-      'CompanyNav': companyNav,
-      'Gender': gender,
+    await BaseApi.putRequest(endPoint: 'Update-Job', id: id, data: {
+      'CompanyName': jsonEncode(companyName),
+      'Email': jsonEncode(companyEmail),
+      'Phone': jsonEncode(companyPhone),
+      'JobTitle': jsonEncode(jobTitle),
+      'ExperiencesForJob': jsonEncode(experiencesForJob),
+      'WorkTime': jsonEncode(workTime),
+      'CompanyNav': jsonEncode(companyNav),
+      'Gender': jsonEncode(gender),
     });
   }
 
   static Future<void> deleteJob({required String id}) async {
-    await BaseApi.deleteRequest(endPoint: 'JobForm/Delete-job', id: id);
+    await BaseApi.deleteRequest(endPoint: 'Delete-job', id: id);
   }
 }

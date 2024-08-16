@@ -9,16 +9,16 @@ class Snack {
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: Theme.of(context).textTheme.displayMedium,
           ),
           Text(
             message,
-            style: Theme.of(context).textTheme.bodySmall,
+            style: Theme.of(context).textTheme.displaySmall,
           ),
         ],
       ),
-      backgroundColor: AppColor.secondary,
+      backgroundColor: AppColor.white,
       duration: const Duration(seconds: 3),
-    ));
+    ),);
   }
 }

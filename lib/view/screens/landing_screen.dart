@@ -17,12 +17,42 @@ class LandingScreen extends StatefulWidget {
 
 class _LandingScreenState extends State<LandingScreen> {
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
-  // final GlobalKey<BeamerState> _beamerKey = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
-    // final title = GetNav.getTitle(context);
-    // final path = (context.currentBeamLocation.state as BeamState).uri.path;
+  
+  // final title = UriPath.getTitle(context);
+  // final path = GoRouterState.of(context).path!;
+
+    // Widget getButtonTitle(String path) {
+    //   if (path.contains(NavItemsName.jobsName)) {
+    //     return AddButton(
+    //       text: 'Create new',
+    //       color: AppColor.blue,
+    //       onPressed: () {
+    //         context.goNamed(NavItemsName.addJobName);
+    //       },
+    //     );
+    //   } else if (path.contains(NavItemsName.trainingName)) {
+    //     return AddButton(
+    //       text: 'Create new',
+    //       color: AppColor.blue,
+    //       onPressed: () {
+    //         context.goNamed(NavItemsName.addTrainingName);
+    //       },
+    //     );
+    //   } else if (path.contains(NavItemsName.companiesName)) {
+    //     return AddButton(
+    //       text: 'Create new',
+    //       color: AppColor.blue,
+    //       onPressed: () {
+    //         context.goNamed(NavItemsName.addTrainingName);
+    //       },
+    //     );
+    //   } else {
+    //     return const PreferredSize(preferredSize: Size.zero, child: SizedBox());
+    //   }
+    // }
+
     return Scaffold(
       key: _globalKey,
       backgroundColor: AppColor.primary,
@@ -86,32 +116,13 @@ class _LandingScreenState extends State<LandingScreen> {
                                 width: 16,
                               ),
                               Text(
-                                'title',
+                                'DashBoard',
                                 style: Theme.of(context).textTheme.labelMedium,
                               ),
                               const Spacer(
                                 flex: 1,
                               ),
-                              // path.contains(BeamerNavItem.jobs) ||
-                              //         path.contains(BeamerNavItem.training)
-                              //     ? AddButton(
-                              //         text: 'Create new',
-                              //         color: AppColor.blue,
-                              //         isAddLoading: false,
-                              //         onPressed: () {
-                              //           if (path.contains(BeamerNavItem.jobs)) {
-                              //             context.beamToNamed(
-                              //                 BeamerNavItem.addJob);
-                              //           } else if (path
-                              //               .contains(BeamerNavItem.training)) {
-                              //             context.beamToNamed(
-                              //                 BeamerNavItem.addTraining);
-                              //           }
-                              //         },
-                              //       )
-                              //     : const PreferredSize(
-                              //         preferredSize: Size.zero,
-                              //         child: SizedBox())
+                              // getButtonTitle(path)
                             ],
                           ),
                         ),

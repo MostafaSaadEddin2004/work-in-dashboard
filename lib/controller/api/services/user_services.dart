@@ -8,8 +8,6 @@ abstract class UserServices extends BaseApi {
     final data = (jsonDecode(response.body) as List)
         .map((e) => UserModel.fromJson(e))
         .toList();
-    print(response.statusCode);
-    print(response.body);
     return data;
   }
 }

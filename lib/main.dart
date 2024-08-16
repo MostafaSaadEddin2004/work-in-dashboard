@@ -45,7 +45,7 @@ class _MainState extends State<Main> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(360, 819.5),
+      designSize: const Size(641, 1366),
       minTextAdapt: true,
       splitScreenMode: true,
       child: MaterialApp.router(

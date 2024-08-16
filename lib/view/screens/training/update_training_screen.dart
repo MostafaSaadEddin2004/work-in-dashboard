@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:work_in_dashboard/controller/bloc/training_services/training_services_cubit.dart';
 import 'package:work_in_dashboard/controller/style/app_color.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
@@ -11,11 +12,15 @@ class UpdateTrainingScreen extends StatefulWidget {
     super.key,
     required this.trainingId,
     required this.trainingCompany,
+    required this.companyEmail,
+    required this.companyPhone,
     required this.kindOfTrain,
     required this.location,
   });
   final String trainingId;
   final String trainingCompany;
+  final String companyEmail;
+  final String companyPhone;
   final String kindOfTrain;
   final String location;
 
@@ -26,6 +31,8 @@ class UpdateTrainingScreen extends StatefulWidget {
 class _UpdateTrainingScreenState extends State<UpdateTrainingScreen> {
   final _trainingCompany = TextEditingController();
   final _kindOfTrain = TextEditingController();
+  final _companyEmail = TextEditingController();
+  final _companyPhone = TextEditingController();
   final _location = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey();
   bool isLoading = false;
@@ -34,6 +41,8 @@ class _UpdateTrainingScreenState extends State<UpdateTrainingScreen> {
   void initState() {
     super.initState();
     _trainingCompany.text = widget.trainingCompany;
+    _companyEmail.text = widget.companyEmail;
+    _companyPhone.text = widget.companyPhone;
     _kindOfTrain.text = widget.kindOfTrain;
     _location.text = widget.location;
   }
@@ -42,6 +51,8 @@ class _UpdateTrainingScreenState extends State<UpdateTrainingScreen> {
   void dispose() {
     super.dispose();
     _trainingCompany.dispose();
+    _companyEmail.dispose();
+    _companyPhone.dispose();
     _kindOfTrain.dispose();
     _location.dispose();
   }
@@ -74,9 +85,21 @@ class _UpdateTrainingScreenState extends State<UpdateTrainingScreen> {
                       ? CrossAxisAlignment.start
                       : CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      'Add new training',
-                      style: Theme.of(context).textTheme.labelSmall,
+                    Row(
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              GoRouter.of(context).pop();
+                            },
+                            icon: const Icon(Icons.arrow_back_rounded)),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          'Update Training',
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+                      ],
                     ),
                     const SizedBox(
                       height: 32,
@@ -88,7 +111,7 @@ class _UpdateTrainingScreenState extends State<UpdateTrainingScreen> {
                         InfoTextField(
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Company location field is required';
+                              return 'Company name is required';
                             }
                             return null;
                           },
@@ -99,24 +122,46 @@ class _UpdateTrainingScreenState extends State<UpdateTrainingScreen> {
                         InfoTextField(
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Company location field is required';
+                              return 'Company email is required';
                             }
                             return null;
                           },
-                          controller: _kindOfTrain,
-                          hintText: 'Enter job title',
-                          labelText: 'Job title',
+                          controller: _companyEmail,
+                          hintText: 'Enter company email',
+                          labelText: 'Company email',
                         ),
                         InfoTextField(
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Company location field is required';
+                              return 'Company phone is required';
+                            }
+                            return null;
+                          },
+                          controller: _companyPhone,
+                          hintText: 'Enter company phone',
+                          labelText: 'Company phone',
+                        ),
+                        InfoTextField(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Kind of train is required';
+                            }
+                            return null;
+                          },
+                          controller: _kindOfTrain,
+                          hintText: 'Enter kind oof train',
+                          labelText: 'Kind of train',
+                        ),
+                        InfoTextField(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Company location is required';
                             }
                             return null;
                           },
                           controller: _location,
-                          hintText: 'Enter job title',
-                          labelText: 'Job title',
+                          hintText: 'Enter company location',
+                          labelText: 'Company location',
                         ),
                       ],
                     ),
@@ -125,11 +170,14 @@ class _UpdateTrainingScreenState extends State<UpdateTrainingScreen> {
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
                           context.read<TrainingServicesCubit>().updateTraining(
-                              context,
-                              widget.trainingId,
-                              _kindOfTrain.text,
-                              _location.text,
-                              _trainingCompany.text);
+                                context,
+                                widget.trainingId,
+                                _trainingCompany.text,
+                                _companyEmail.text,
+                                _companyPhone.text,
+                                _kindOfTrain.text,
+                                _location.text,
+                              );
                         }
                       },
                       isAddLoading: isLoading,

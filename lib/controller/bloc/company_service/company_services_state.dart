@@ -18,3 +18,5 @@ final class CompanyServicesFailure extends CompanyServicesState {
 
   CompanyServicesFailure({required this.errorMessage});
 }
+
+final class CompanyServicesSuccess extends CompanyServicesState{}

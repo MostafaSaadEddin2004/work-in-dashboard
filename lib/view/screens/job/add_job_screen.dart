@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:work_in_dashboard/controller/bloc/job_services/job_services_cubit.dart';
 import 'package:work_in_dashboard/controller/style/app_color.dart';
 import 'package:work_in_dashboard/controller/utilities/gender.dart';
@@ -18,6 +19,8 @@ class AddJobScreen extends StatefulWidget {
 class _AddJobScreenState extends State<AddJobScreen> {
   GlobalKey<FormState> formKey = GlobalKey();
   final _companyName = TextEditingController();
+  final _companyEmail = TextEditingController();
+  final _companyPhone = TextEditingController();
   final _jobTitle = TextEditingController();
   final _experiencesForJob = TextEditingController();
   final _workTime = TextEditingController();
@@ -29,12 +32,14 @@ class _AddJobScreenState extends State<AddJobScreen> {
   void dispose() {
     super.dispose();
     _companyName.dispose();
+    _companyEmail.dispose();
+    _companyPhone.dispose();
     _jobTitle.dispose();
     _experiencesForJob.dispose();
     _workTime.dispose();
     _location.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<JobServicesCubit, JobServicesState>(
@@ -67,7 +72,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                     children: [
                       IconButton(
                           onPressed: () {
-                            // Beamer.of(context).beamBack();
+                            GoRouter.of(context).pop();
                           },
                           icon: const Icon(Icons.arrow_back_rounded)),
                       const SizedBox(
@@ -96,6 +101,28 @@ class _AddJobScreenState extends State<AddJobScreen> {
                         controller: _companyName,
                         hintText: 'Enter company name',
                         labelText: 'Company name',
+                      ),
+                      InfoTextField(
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Company email field is required';
+                          }
+                          return null;
+                        },
+                        controller: _companyEmail,
+                        hintText: 'Enter company email',
+                        labelText: 'Company email',
+                      ),
+                      InfoTextField(
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Company phone field is required';
+                          }
+                          return null;
+                        },
+                        controller: _companyPhone,
+                        hintText: 'Enter company phone',
+                        labelText: 'Company phone',
                       ),
                       InfoTextField(
                         validator: (value) {
@@ -160,12 +187,15 @@ class _AddJobScreenState extends State<AddJobScreen> {
                             context.read<JobServicesCubit>().addJob(
                                 context,
                                 _companyName.text,
+                                _companyEmail.text,
+                                _companyPhone.text,
                                 _jobTitle.text,
                                 _experiencesForJob.text,
                                 _workTime.text,
                                 _location.text,
                                 Gender.getGender(selectedGender));
                           }
+                          GoRouter.of(context).pop();
                         },
                         isAddLoading: isLoading,
                         color: AppColor.blue,
@@ -178,6 +208,8 @@ class _AddJobScreenState extends State<AddJobScreen> {
                             context.read<JobServicesCubit>().addJob(
                                 context,
                                 _companyName.text,
+                                _companyEmail.text,
+                                _companyPhone.text,
                                 _jobTitle.text,
                                 _experiencesForJob.text,
                                 _workTime.text,

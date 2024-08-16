@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:work_in_dashboard/controller/api/services/user_services.dart';
@@ -12,8 +14,8 @@ class UserServiceCubit extends Cubit<UserServiceState> {
     try {
      final userData = await UserServices.getAllUsers();
      emit(UserServiceFetched(userData: userData)); 
-    } catch (e) {
-      emit(UserServiceFailure(errorMessage: e.toString()));
+    } on HttpException catch (e) {
+      emit(UserServiceFailure(errorMessage: e.message));
     }
   }
 }

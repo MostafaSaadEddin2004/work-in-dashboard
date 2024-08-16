@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:work_in_dashboard/controller/bloc/job_services/job_services_cubit.dart';
 import 'package:work_in_dashboard/controller/style/app_color.dart';
 import 'package:work_in_dashboard/controller/utilities/gender.dart';
@@ -13,6 +14,8 @@ class UpdateJobScreen extends StatefulWidget {
     super.key,
     required this.jobId,
     required this.companyName,
+    required this.companyEmail,
+    required this.companyPhone,
     required this.jobTitle,
     required this.experiencesForJob,
     required this.workTime,
@@ -21,6 +24,8 @@ class UpdateJobScreen extends StatefulWidget {
   });
   final String jobId;
   final String companyName;
+  final String companyEmail;
+  final String companyPhone;
   final String jobTitle;
   final String experiencesForJob;
   final String workTime;
@@ -34,6 +39,8 @@ class UpdateJobScreen extends StatefulWidget {
 class _UpdateJobScreenState extends State<UpdateJobScreen> {
   GlobalKey<FormState> formKey = GlobalKey();
   final _companyName = TextEditingController();
+  final _companyEmail = TextEditingController();
+  final _companyPhone = TextEditingController();
   final _jobTitle = TextEditingController();
   final _experiencesForJob = TextEditingController();
   final _workTime = TextEditingController();
@@ -94,7 +101,7 @@ class _UpdateJobScreenState extends State<UpdateJobScreen> {
                     children: [
                       IconButton(
                           onPressed: () {
-                            // Beamer.of(context).beamBack();
+                            GoRouter.of(context).pop();
                           },
                           icon: const Icon(Icons.arrow_back_rounded)),
                       const SizedBox(
@@ -116,7 +123,7 @@ class _UpdateJobScreenState extends State<UpdateJobScreen> {
                       InfoTextField(
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'This is required';
+                            return 'Company name is required';
                           }
                           return null;
                         },
@@ -127,7 +134,29 @@ class _UpdateJobScreenState extends State<UpdateJobScreen> {
                       InfoTextField(
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'This field is required';
+                            return 'Company email is required';
+                          }
+                          return null;
+                        },
+                        controller: _companyName,
+                        hintText: 'Enter company email',
+                        labelText: 'Company email',
+                      ),
+                      InfoTextField(
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Compant phone is required';
+                          }
+                          return null;
+                        },
+                        controller: _companyName,
+                        hintText: 'Enter company phone',
+                        labelText: 'Company phone',
+                      ),
+                      InfoTextField(
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Job title is required';
                           }
                           return null;
                         },
@@ -138,7 +167,7 @@ class _UpdateJobScreenState extends State<UpdateJobScreen> {
                       InfoTextField(
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'This field is required';
+                            return 'Requireed experiences is required';
                           }
                           return null;
                         },
@@ -149,7 +178,7 @@ class _UpdateJobScreenState extends State<UpdateJobScreen> {
                       InfoTextField(
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'This field is required';
+                            return 'Work time is required';
                           }
                           return null;
                         },
@@ -160,7 +189,7 @@ class _UpdateJobScreenState extends State<UpdateJobScreen> {
                       InfoTextField(
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'This field is required';
+                            return 'Company location is required';
                           }
                           return null;
                         },
@@ -186,6 +215,8 @@ class _UpdateJobScreenState extends State<UpdateJobScreen> {
                             context,
                             widget.jobId,
                             _companyName.text,
+                            _companyEmail.text,
+                            _companyPhone.text,
                             _jobTitle.text,
                             _experiencesForJob.text,
                             _workTime.text,

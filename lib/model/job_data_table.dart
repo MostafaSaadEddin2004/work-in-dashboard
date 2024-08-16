@@ -61,6 +61,8 @@ class JobdataTable extends DataTableSource {
                 context.goNamed(NavItemsName.updateJobName, queryParameters: {
                   'jobId': jobData[index].id,
                   'companyName': jobData[index].companyName,
+                  'Email': jobData[index].email,
+                  'Phone': jobData[index].phone,
                   'jobTitle': jobData[index].jobTitle,
                   'experiencesForJob': jobData[index].experiencesForJob,
                   'workTime': jobData[index].workTime,
@@ -104,6 +106,8 @@ class NullJobdataTable extends DataTableSource {
       (index) => JobModel(
           id: 'sdfskf500',
           companyName: 'companyName',
+          email: 'asdasdasd@gmail.com',
+          phone: '0965965659',
           jobTitle: 'jobTitle',
           experiencesForJob: 'experiencesForJob',
           workTime: 'workTime',
@@ -111,7 +115,7 @@ class NullJobdataTable extends DataTableSource {
           gender: 'gender',
           createdAt: DateTime(2024, 6, 25),
           updatedAt: DateTime(2024, 6, 25),
-          version: 1));
+          version: 0));
   @override
   DataRow? getRow(int index) {
     return DataRow(cells: [

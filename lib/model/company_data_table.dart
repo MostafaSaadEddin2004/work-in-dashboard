@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:work_in_dashboard/controller/bloc/company_service/company_services_cubit.dart';
+import 'package:work_in_dashboard/controller/style/app_color.dart';
 import 'package:work_in_dashboard/model/company_mode.dart';
+import 'package:work_in_dashboard/view/components/accept_button.dart';
 import 'package:work_in_dashboard/view/components/skeletonizer_text.dart';
 
 class CompanyDataTable extends DataTableSource {
   final List<CompanyModel> companyData;
-  CompanyDataTable({required this.companyData});
+  final BuildContext context;
+  CompanyDataTable({required this.companyData, required this.context});
 
   @override
   DataRow? getRow(int index) {
@@ -25,6 +30,32 @@ class CompanyDataTable extends DataTableSource {
         companyData[index].companyField,
         style: const TextStyle(fontSize: 14),
       )),
+      DataCell(Text(
+        companyData[index].isAccepted.toString(),
+        style: const TextStyle(fontSize: 14),
+      )),
+      DataCell(companyData[index].isAccepted == false
+          ? Row(
+              children: [
+                AcceptButton(
+                    onPressed: () {
+                      context
+                          .read<CompanyServicesCubit>()
+                          .acceptCompanyRequest(context, companyData[index].id);
+                    },
+                    text: 'Accept',
+                    color: AppColor.blue),
+                AcceptButton(
+                    onPressed: () {
+                      context
+                          .read<CompanyServicesCubit>()
+                          .rejectCompanyRequest(context, companyData[index].id);
+                    },
+                    text: 'Reject',
+                    color: AppColor.red),
+              ],
+            )
+          : const SizedBox()),
     ]);
   }
 
@@ -42,11 +73,11 @@ class NullCompanyDataTable extends DataTableSource {
   final _data = List.generate(
     10,
     (index) => CompanyModel(
-        isAdmin: true,
+        isAdmin: false,
+        isAccepted: false,
         id: 'sadasdasd',
         companyName: 'companyName',
         email: 'email',
-        password: 'password',
         phone: 'phone',
         companyField: 'companyField',
         createdAt: DateTime(7, 22, 2024),
@@ -70,6 +101,15 @@ class NullCompanyDataTable extends DataTableSource {
       DataCell(
         SkeletonizerText(text: _data[index].companyField),
       ),
+      DataCell(
+        SkeletonizerText(text: _data[index].isAccepted.toString()),
+      ),
+      DataCell(Row(
+        children: [
+          AcceptButton(onPressed: () {}, text: 'Accept', color: AppColor.blue),
+          AcceptButton(onPressed: () {}, text: 'Reject', color: AppColor.red),
+        ],
+      )),
     ]);
   }
 

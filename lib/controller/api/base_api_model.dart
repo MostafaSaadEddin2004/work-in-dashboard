@@ -3,14 +3,16 @@ import 'package:http/http.dart' as http;
 
 abstract class BaseApi {
   static String get baseUrl => 'http://127.0.0.1:5000/api/dashboard/';
-
+  static final client = http.Client();
+  static const _token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2YmI5ZmJhMzEyNjEyNGVhY2U2YmJkOSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTcyMzU3MjIwNSwiZXhwIjoxNzMyMjEyMjA1fQ.P3gm62ytDR4wcZh8mNI3fzyCNDsRfqkmYgMtBBNJaDo';
+  
   static Future<http.Response> getRequest({
     required String endPoint,
   }) async {
-    final response = await http.get(Uri.parse(baseUrl + endPoint), headers: {
+    final response = await client.get(Uri.parse(baseUrl + endPoint), headers: {
       HttpHeaders.acceptHeader: 'application/json',
-      HttpHeaders.authorizationHeader:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NWVjNjdkZjAzNDYzMWRjM2M5MWQxNCIsImlzQWRtaW4iOnRydWUsImlhdCI6MTcxNzQ4NzQxNiwiZXhwIjoxNzI2MTI3NDE2fQ.1a4AixlrdPfcjVGw1Ij_qGz91EE_q5F67h3nUZSbh2E',
+      'Authorization': 'Bearer $_token',
     });
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -23,11 +25,10 @@ abstract class BaseApi {
 
   static Future<http.Response> postRequest(
       {required String endPoint, Map<String, dynamic>? data}) async {
-    final response = await http.post(Uri.parse(baseUrl + endPoint),
+    final response = await client.post(Uri.parse(baseUrl + endPoint),
         headers: {
           HttpHeaders.acceptHeader: 'application/json',
-          HttpHeaders.authorizationHeader:
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NWVjNjdkZjAzNDYzMWRjM2M5MWQxNCIsImlzQWRtaW4iOnRydWUsImlhdCI6MTcxNzQ4NzQxNiwiZXhwIjoxNzI2MTI3NDE2fQ.1a4AixlrdPfcjVGw1Ij_qGz91EE_q5F67h3nUZSbh2E',
+          'Authorization': 'Bearer $_token',
         },
         body: data);
     if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -43,11 +44,10 @@ abstract class BaseApi {
       required String id,
       required Map<String, dynamic> data,
       requierd}) async {
-    final response = await http.put(Uri.parse('${baseUrl + endPoint}/$id'),
+    final response = await client.put(Uri.parse('${baseUrl + endPoint}/$id'),
         headers: {
           HttpHeaders.acceptHeader: 'application/json',
-          HttpHeaders.authorizationHeader:
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NWVjNjdkZjAzNDYzMWRjM2M5MWQxNCIsImlzQWRtaW4iOnRydWUsImlhdCI6MTcxNzQ4NzQxNiwiZXhwIjoxNzI2MTI3NDE2fQ.1a4AixlrdPfcjVGw1Ij_qGz91EE_q5F67h3nUZSbh2E',
+          'Authorization': 'Bearer $_token',
         },
         body: data);
     if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -62,12 +62,11 @@ abstract class BaseApi {
     required String endPoint,
     required String id,
   }) async {
-    final response = await http.delete(
+    final response = await client.delete(
       Uri.parse('${baseUrl + endPoint}/$id'),
       headers: {
         HttpHeaders.acceptHeader: 'application/json',
-        HttpHeaders.authorizationHeader:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NWVjNjdkZjAzNDYzMWRjM2M5MWQxNCIsImlzQWRtaW4iOnRydWUsImlhdCI6MTcxNzQ4NzQxNiwiZXhwIjoxNzI2MTI3NDE2fQ.1a4AixlrdPfcjVGw1Ij_qGz91EE_q5F67h3nUZSbh2E',
+        'Authorization': 'Bearer $_token',
       },
     );
     if (response.statusCode >= 200 && response.statusCode < 300) {

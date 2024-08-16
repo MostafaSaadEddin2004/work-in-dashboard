@@ -28,10 +28,6 @@ class UserDataTable extends DataTableSource {
         userData[index].gender.toString(),
         style: const TextStyle(fontSize: 14),
       )),
-      DataCell(Text(
-        userData[index].isAdmin.toString(),
-        style: const TextStyle(fontSize: 14),
-      )),
     ]);
   }
 
@@ -49,17 +45,24 @@ class NullUserDataTable extends DataTableSource {
   final _data = List.generate(
       10,
       (index) => UserModel(
-          id: 'asd454asdasd',
-          username: 'username',
-          email: 'email',
-          password: 'password',
-          phone: 'phone',
-          birthDate: DateTime(2000, 10, 6),
-          gender: 'gender',
-          isAdmin: false,
-          createdAt: DateTime(2024, 10, 6),
-          updatedAt: DateTime(2024, 10, 6),
-          v: 0,
+            block: false,
+            favorite: [
+              FavoriteItem(item: 'item', itemType: 'itemType', id: 'asdasd'),
+            ],
+            isAdmin: false,
+            password: 'asdasasdsa',
+            profileImage: 'afasfsaafsafasfaf',
+            followedCompanies: ['saasdasd', 'asdsad'],
+            role: 'user',
+            id: 'asd454asdasd',
+            username: 'username',
+            email: 'email',
+            phone: 'phone',
+            birthDate: DateTime(2000, 10, 6),
+            gender: 'gender',
+            createdAt: DateTime(2024, 10, 6),
+            updatedAt: DateTime(2024, 10, 6),
+            version: 0,
           ));
 
   @override
@@ -67,7 +70,6 @@ class NullUserDataTable extends DataTableSource {
     return DataRow(cells: [
       DataCell(SkeletonizerText(text: _data[index].username)),
       DataCell(SkeletonizerText(text: _data[index].email)),
-      DataCell(SkeletonizerText(text: _data[index].password)),
       DataCell(SkeletonizerText(text: _data[index].phone)),
       DataCell(SkeletonizerText(text: _data[index].birthDate.toString())),
       DataCell(SkeletonizerText(text: _data[index].gender)),
