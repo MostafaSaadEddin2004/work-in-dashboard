@@ -21,11 +21,11 @@ class _UsersScreenState extends State<UsersScreen>
     if (columnIndex == 0) {
       if (ascending) {
         data.sort(
-          (a, b) => a.username.compareTo(b.username),
+          // (a, b) => a.username.compareTo(b.username),
         );
       } else {
         data.sort(
-          (a, b) => b.username.compareTo(a.username),
+          // (a, b) => b.username.compareTo(a.username),
         );
       }
     }
@@ -33,95 +33,20 @@ class _UsersScreenState extends State<UsersScreen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => UserServiceCubit(),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: SingleChildScrollView(
-          child: BlocBuilder<UserServiceCubit, UserServiceState>(
-            bloc: UserServiceCubit()..getAllUsers(),
-            builder: (context, state) {
-              if (state is UserServiceFailure) {
-                return Center(
-                  child: Text(state.errorMessage),
-                );
-              } else if (state is UserServiceFetched) {
-                var data = state.userData;
-                return PaginatedDataTable(
-                  rowsPerPage: data.length < 5 ? data.length : 8,
-                  columnSpacing: 28.w,
-                  sortAscending: ascending,
-                  sortColumnIndex: 0,
-                  header: Row(
-                    children: [
-                      Text(
-                        'Users',
-                        style: Theme.of(context).textTheme.labelLarge,
-                      ),
-                      const Spacer(
-                        flex: 1,
-                      ),
-                      SearchTextField(
-                        enabled: true,
-                        hintText: 'Search a user',
-                        onChanged: (value) {
-                          setState(() {
-                            data = value == null
-                                ? data
-                                : data
-                                    .where((element) =>
-                                        element.username.contains(value))
-                                    .toList();
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                  columns: [
-                    DataColumn(
-                      label: Text(
-                        'User Name',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      mouseCursor: MaterialStateMouseCursor.clickable,
-                      onSort: (columnIndex, ascending) {
-                        setState(() {
-                          onSortColumn(columnIndex, ascending, data);
-                        });
-                      },
-                    ),
-                    DataColumn(
-                      label: Skeletonizer(
-                        child: Text(
-                          'Email',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        'Phone',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        'Birth Date',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        'Gender',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ),
-                  ],
-                  source: UserDataTable(userData: data),
-                );
-              }
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: SingleChildScrollView(
+        child: BlocBuilder<UserServiceCubit, UserServiceState>(
+          bloc: UserServiceCubit()..getAllUsers(),
+          builder: (context, state) {
+            if (state is UserServiceFailure) {
+              return Center(
+                child: Text(state.errorMessage),
+              );
+            } else if (state is UserServiceFetched) {
+              var data = state.userData;
               return PaginatedDataTable(
-                rowsPerPage: 5,
+                rowsPerPage: data.length < 5 ? data.length : 8,
                 columnSpacing: 28.w,
                 sortAscending: ascending,
                 sortColumnIndex: 0,
@@ -134,58 +59,128 @@ class _UsersScreenState extends State<UsersScreen>
                     const Spacer(
                       flex: 1,
                     ),
-                    const SearchTextField(
-                      enabled: false,
+                    SearchTextField(
+                      enabled: true,
                       hintText: 'Search a user',
+                      onChanged: (value) {
+                        setState(() {
+                          // data = value == null
+                          //     ? data
+                          //     : data
+                          //         .where((element) =>
+                          //             element.username.contains(value))
+                          //         .toList();
+                        });
+                      },
                     ),
                   ],
                 ),
                 columns: [
                   DataColumn(
-                    label: Skeletonizer(
-                      child: Text(
-                        'User Name',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
+                    label: Text(
+                      'User Name',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    mouseCursor: MaterialStateMouseCursor.clickable,
+                    onSort: (columnIndex, ascending) {
+                      setState(() {
+                        onSortColumn(columnIndex, ascending, data);
+                      });
+                    },
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'Email',
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
                   DataColumn(
-                    label: Skeletonizer(
-                      child: Text(
-                        'Email',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
+                    label: Text(
+                      'Phone',
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
                   DataColumn(
-                    label: Skeletonizer(
-                      child: Text(
-                        'Phone',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
+                    label: Text(
+                      'User type',
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
                   DataColumn(
-                    label: Skeletonizer(
-                      child: Text(
-                        'Birth Date',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Skeletonizer(
-                      child: Text(
-                        'Gender',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
+                    label: Text(
+                      'Gender',
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
                 ],
-                source: NullUserDataTable(),
+                source: UserDataTable(userData: data),
               );
-            },
-          ),
+            }
+            return PaginatedDataTable(
+              rowsPerPage: 5,
+              columnSpacing: 28.w,
+              sortAscending: ascending,
+              sortColumnIndex: 0,
+              header: Row(
+                children: [
+                  Text(
+                    'Users',
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
+                  const Spacer(
+                    flex: 1,
+                  ),
+                  const SearchTextField(
+                    enabled: false,
+                    hintText: 'Search a user',
+                  ),
+                ],
+              ),
+              columns: [
+                DataColumn(
+                  label: Skeletonizer(
+                    child: Text(
+                      'User Name',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                ),
+                DataColumn(
+                  label: Skeletonizer(
+                    child: Text(
+                      'Email',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                ),
+                DataColumn(
+                  label: Skeletonizer(
+                    child: Text(
+                      'Phone',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                ),
+                DataColumn(
+                  label: Skeletonizer(
+                    child: Text(
+                      'User type',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                ),
+                DataColumn(
+                  label: Skeletonizer(
+                    child: Text(
+                      'Gender',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                ),
+              ],
+              source: NullUserDataTable(),
+            );
+          },
         ),
       ),
     );

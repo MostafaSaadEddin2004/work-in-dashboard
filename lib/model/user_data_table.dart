@@ -21,7 +21,7 @@ class UserDataTable extends DataTableSource {
         style: const TextStyle(fontSize: 14),
       )),
       DataCell(Text(
-        userData[index].birthDate.toString(),
+        userData[index].role.toString(),
         style: const TextStyle(fontSize: 14),
       )),
       DataCell(Text(
@@ -45,24 +45,14 @@ class NullUserDataTable extends DataTableSource {
   final _data = List.generate(
       10,
       (index) => UserModel(
-            block: false,
-            favorite: [
-              FavoriteItem(item: 'item', itemType: 'itemType', id: 'asdasd'),
-            ],
-            isAdmin: false,
-            password: 'asdasasdsa',
-            profileImage: 'afasfsaafsafasfaf',
-            followedCompanies: ['saasdasd', 'asdsad'],
             role: 'user',
             id: 'asd454asdasd',
             username: 'username',
             email: 'email',
             phone: 'phone',
-            birthDate: DateTime(2000, 10, 6),
             gender: 'gender',
             createdAt: DateTime(2024, 10, 6),
             updatedAt: DateTime(2024, 10, 6),
-            version: 0,
           ));
 
   @override
@@ -71,7 +61,7 @@ class NullUserDataTable extends DataTableSource {
       DataCell(SkeletonizerText(text: _data[index].username)),
       DataCell(SkeletonizerText(text: _data[index].email)),
       DataCell(SkeletonizerText(text: _data[index].phone)),
-      DataCell(SkeletonizerText(text: _data[index].birthDate.toString())),
+      DataCell(SkeletonizerText(text: _data[index].role.toString())),
       DataCell(SkeletonizerText(text: _data[index].gender)),
     ]);
   }

@@ -28,18 +28,18 @@ class JobModel {
 
   factory JobModel.fromJson(Map<String, dynamic> json) {
     return JobModel(
-      id: json['_id'] as String,
-      companyName: json['CompanyName'] as String,
-      email: json['Email'] as String,
-      phone: json['Phone'] as String,
-      jobTitle: json['JobTitle'] as String,
-      experiencesForJob: json['ExperiencesForJob'] as String,
-      workTime: json['WorkTime'] as String,
-      companyNav: json['CompanyNav'] as String,
-      gender: json['Gender'] as String,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
-      version: json['__v'] as int,
+      id: json['_id'] ,
+      companyName: json['CompanyName'] ,
+      email: json['Email'] ,
+      phone: json['Phone'] ,
+      jobTitle: json['JobTitle'] ,
+      experiencesForJob: json['ExperiencesForJob'] ,
+      workTime: json['WorkTime'] ,
+      companyNav: json['CompanyNav'] ,
+      gender: json['Gender'] ,
+      createdAt: DateTime.parse(json['createdAt'] ),
+      updatedAt: DateTime.parse(json['updatedAt'] ),
+      version: json['__v'],
     );
   }
 }
