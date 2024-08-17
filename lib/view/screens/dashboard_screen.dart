@@ -198,7 +198,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   jobState is JobServicesLoading &&
                   trainState is TrainingServicesLoading) {
                 return const Loading();
-              } return const Loading();
+              } return const Center(child: Loading(),);
                           },
                         );
                       },
