@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:work_in_dashboard/controller/bloc/company_service/company_services_cubit.dart';
-import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/model/company_data_table.dart';
 import 'package:work_in_dashboard/model/company_mode.dart';
 import 'package:work_in_dashboard/view/components/search_text_field.dart';
@@ -20,11 +19,11 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
     if (columnIndex == 0) {
       if (ascending) {
         data.sort(
-          (a, b) => a.companyName.compareTo(b.companyName),
+          (a, b) => a.createdAt.compareTo(b.createdAt),
         );
       } else {
         data.sort(
-          (a, b) => b.companyName.compareTo(a.companyName),
+          (a, b) => b.createdAt.compareTo(a.createdAt),
         );
       }
     }
@@ -35,157 +34,166 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (Responsive.isDesktop(context))
-              Column(
+        child: BlocBuilder<CompanyServicesCubit, CompanyServicesState>(
+          bloc: CompanyServicesCubit()..getAllCompanies(),
+          builder: (context, state) {
+            if (state is CompanyServicesFailure) {
+              return Center(
+                child: Text(state.errorMessage),
+              );
+            } else if (state is CompanyServicesFetched) {
+              var data = state.companyData;
+              List<CompanyModel> filteredData = data;
+              return PaginatedDataTable(
+                rowsPerPage: data.length < 5 ? data.length : 8,
+                columnSpacing: 50,
+                horizontalMargin: 16,
+                sortAscending: ascending,
+                sortColumnIndex: 0,
+                header: Row(
+                  children: [
+                    Text(
+                      'Companies',
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ),
+                    const Spacer(
+                      flex: 1,
+                    ),
+                    SearchTextField(
+                      enabled: true,
+                      hintText: 'Search a company',
+                      onChanged: (value) {
+                        setState(() {
+                          if (value == null) {
+                            filteredData = data;
+                          } else {
+                            filteredData = data
+                                .where((element) =>
+                                    element.companyName.contains(value))
+                                .toList();
+                          }
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                columns: [
+                  DataColumn(
+                    label: Text(
+                      'Name',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    mouseCursor: MaterialStateMouseCursor.clickable,
+                    onSort: (columnIndex, ascending) {
+                      setState(() {
+                        onSortColumn(columnIndex, ascending, data);
+                        this.ascending = ascending;
+                      });
+                    },
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'Email',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'Phone',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'Company field',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'Acceptance',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'Actions',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                ],
+                source: CompanyDataTable(
+                    companyData: filteredData, context: context),
+              );
+            }
+            return PaginatedDataTable(
+              rowsPerPage: 5,
+              columnSpacing: 50,
+              horizontalMargin: 16,
+              sortAscending: ascending,
+              sortColumnIndex: 0,
+              header: Row(
                 children: [
                   Text(
                     'Companies',
                     style: Theme.of(context).textTheme.labelLarge,
                   ),
-                  const SizedBox(
-                    height: 16,
+                  const Spacer(
+                    flex: 1,
                   ),
-                ],
-              ),
-            BlocBuilder<CompanyServicesCubit, CompanyServicesState>(
-              bloc: CompanyServicesCubit()..getAllCompanies(),
-              builder: (context, state) {
-                if (state is CompanyServicesFailure) {
-                  return Center(
-                    child: Text(state.errorMessage),
-                  );
-                } else if (state is CompanyServicesFetched) {
-                  var data = state.companyData;
-                  return PaginatedDataTable(
-                    rowsPerPage: data.length < 5 ? data.length : 8,
-                    columnSpacing: 50,
-                    horizontalMargin: 16,
-                    sortAscending: ascending,
-                    sortColumnIndex: 0,
-                    header: SearchTextField(
-                      enabled: true,
-                      hintText: 'Search a company',
-                      onChanged: (value) {
-                        setState(() {
-                          data = value == null
-                              ? data
-                              : data
-                                  .where((element) =>
-                                      element.id.toString().contains(value))
-                                  .toList();
-                        });
-                      },
-                    ),
-                    columns: [
-                      DataColumn(
-                        label: Text(
-                          'Name',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        onSort: (columnIndex, ascending) {
-                          setState(() {
-                            onSortColumn(columnIndex, ascending, data);
-                          });
-                        },
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Email',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Phone',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Company field',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Acceptance',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Actions',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ),
-                    ],
-                    source:
-                        CompanyDataTable(companyData: data, context: context),
-                  );
-                }
-                return PaginatedDataTable(
-                  rowsPerPage: 5,
-                  columnSpacing: 50,
-                  horizontalMargin: 16,
-                  sortAscending: ascending,
-                  sortColumnIndex: 0,
-                  header: const SearchTextField(
+                  const SearchTextField(
                     enabled: false,
                     hintText: 'Search a company',
                   ),
-                  columns: [
-                    DataColumn(
-                      label: Text(
-                        'Name',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      mouseCursor: MaterialStateMouseCursor.clickable,
-                      onSort: (columnIndex, ascending) {
-                        setState(() {
-                          ascending = !ascending;
-                        });
-                      },
-                    ),
-                    DataColumn(
-                      label: Text(
-                        'Email',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        'Phone',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        'Company field',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ),
-                      DataColumn(
-                        label: Text(
-                          'Acceptance',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ),
-                    DataColumn(
-                      label: Text(
-                        'Actions',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ),
-                  ],
-                  source: NullCompanyDataTable(),
-                );
-              },
-            )
-          ],
+                ],
+              ),
+              columns: [
+                DataColumn(
+                  label: Text(
+                    'Name',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  mouseCursor: MaterialStateMouseCursor.clickable,
+                  onSort: (columnIndex, ascending) {
+                    setState(() {
+                      ascending = !ascending;
+                    });
+                  },
+                ),
+                DataColumn(
+                  label: Text(
+                    'Email',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Phone',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Company field',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Acceptance',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Actions',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ),
+              ],
+              source: NullCompanyDataTable(),
+            );
+          },
         ),
       ),
     );

@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:work_in_dashboard/controller/bloc/job_services/job_services_cubit.dart';
-import 'package:work_in_dashboard/controller/constants/nav_items.dart';
-import 'package:work_in_dashboard/controller/style/app_color.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/model/job_data_table.dart';
-import 'package:work_in_dashboard/model/job_model.dart';
 import 'package:work_in_dashboard/view/components/search_text_field.dart';
 
 class JobsScreen extends StatefulWidget {
@@ -221,97 +217,4 @@ class _JobsScreenState extends State<JobsScreen> {
       ),
     );
   }
-}
-
-class JobdataTable extends DataTableSource {
-  final List<JobModel> jobData;
-  final BuildContext context;
-  JobdataTable({
-    required this.jobData,
-    required this.context,
-  });
-  @override
-  DataRow? getRow(int index) {
-    return DataRow(cells: [
-      DataCell(
-        Text(
-          jobData[index].companyName,
-          style: const TextStyle(fontSize: 14),
-        ),
-      ),
-      DataCell(
-        Text(
-          jobData[index].companyNav,
-          style: const TextStyle(fontSize: 14),
-        ),
-      ),
-      DataCell(
-        Text(
-          jobData[index].experiencesForJob,
-          style: const TextStyle(fontSize: 14),
-        ),
-      ),
-      DataCell(
-        Text(
-          jobData[index].gender,
-          style: const TextStyle(fontSize: 14),
-        ),
-      ),
-      DataCell(
-        Text(
-          jobData[index].jobTitle,
-          style: const TextStyle(fontSize: 14),
-        ),
-      ),
-      DataCell(
-        Text(
-          jobData[index].workTime,
-          style: const TextStyle(fontSize: 14),
-        ),
-      ),
-      DataCell(Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(
-              onPressed: () {
-                context.goNamed(NavItemsName.updateJobName, queryParameters: {
-                  'jobId': jobData[index].id,
-                  'companyName': jobData[index].companyName,
-                  'Email': jobData[index].email,
-                  'Phone': jobData[index].phone,
-                  'jobTitle': jobData[index].jobTitle,
-                  'experiencesForJob': jobData[index].experiencesForJob,
-                  'workTime': jobData[index].workTime,
-                  'location': jobData[index].companyNav,
-                  'gender': jobData[index].gender,
-                });
-              },
-              icon: const Icon(
-                Icons.edit_rounded,
-                size: 25,
-              )),
-          IconButton(
-              onPressed: () {
-                context
-                    .read<JobServicesCubit>()
-                    .deleteJob(context, jobData[index].id);
-              },
-              icon: const Icon(
-                Icons.delete_rounded,
-                size: 25,
-                color: AppColor.red,
-              )),
-        ],
-      )),
-    ]);
-  }
-
-  @override
-  bool get isRowCountApproximate => false;
-
-  @override
-  int get rowCount => jobData.length;
-
-  @override
-  int get selectedRowCount => 0;
 }

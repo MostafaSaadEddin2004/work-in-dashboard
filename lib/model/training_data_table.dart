@@ -42,15 +42,17 @@ class TrainingDataTable extends DataTableSource {
         children: [
           IconButton(
               onPressed: () {
-                context
-                    .goNamed(NavItemsName.updateTrainingName, queryParameters: {
-                  'trainingId': trainingData[index].id,
-                  'trainingCompany': trainingData[index].trainingCompany,
-                  'Email': trainingData[index].email,
-                  'Phone': trainingData[index].phone,
-                  'kindOfTrain': trainingData[index].kindOfTrain,
-                  'location': trainingData[index].location,
-                });
+                context.goNamed(
+                  NavItemsName.updateTrainingName,
+                  pathParameters: {
+                    'trainingId': trainingData[index].id,
+                    'trainingCompany': trainingData[index].trainingCompany,
+                    'email': trainingData[index].email,
+                    'phone': trainingData[index].phone,
+                    'kindOfTrain': trainingData[index].kindOfTrain,
+                    'location': trainingData[index].location,
+                  }
+                );
               },
               icon: const Icon(
                 Icons.edit_rounded,

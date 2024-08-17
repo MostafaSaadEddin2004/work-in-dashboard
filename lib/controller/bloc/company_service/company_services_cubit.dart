@@ -25,7 +25,6 @@ class CompanyServicesCubit extends Cubit<CompanyServicesState> {
     emit(CompanyServicesLoading());
     try {
       await CompanyServices.acceptCompanyRequest(companyId: companyId);
-
       Snack.showSnack(context, 'Congrats!',
           "Company request has been accepted successully");
       emit(CompanyServicesSuccess());

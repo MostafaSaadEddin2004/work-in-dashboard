@@ -52,6 +52,8 @@ class _UpdateJobScreenState extends State<UpdateJobScreen> {
   void initState() {
     super.initState();
     _companyName.text = widget.companyName;
+    _companyEmail.text = widget.companyEmail;
+    _companyPhone.text = widget.companyPhone;
     _jobTitle.text = widget.jobTitle;
     _experiencesForJob.text = widget.experiencesForJob;
     _workTime.text = widget.workTime;
@@ -63,6 +65,8 @@ class _UpdateJobScreenState extends State<UpdateJobScreen> {
   void dispose() {
     super.dispose();
     _companyName.dispose();
+    _companyEmail.dispose();
+    _companyPhone.dispose();
     _jobTitle.dispose();
     _experiencesForJob.dispose();
     _workTime.dispose();

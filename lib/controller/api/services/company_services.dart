@@ -12,12 +12,12 @@ abstract class CompanyServices extends BaseApi {
   }
 
   static Future<void> acceptCompanyRequest({required String companyId}) async {
-    await BaseApi.postRequest(
-        endPoint: 'company/$companyId/accept', data: {'isAccepted': true});
+    await BaseApi.patchRequest(
+        id: companyId, data: {'isAccepted': jsonEncode(true)});
   }
 
   static Future<void> rejectCompanyRequest({required String companyId}) async {
-    await BaseApi.postRequest(
-        endPoint: 'company/$companyId/accept', data: {'isAccepted': false});
+    await BaseApi.patchRequest(
+        id: companyId, data: {'isAccepted': jsonEncode(false)});
   }
 }

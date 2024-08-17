@@ -58,11 +58,11 @@ class JobdataTable extends DataTableSource {
         children: [
           IconButton(
               onPressed: () {
-                context.goNamed(NavItemsName.updateJobName, queryParameters: {
+                context.goNamed(NavItemsName.updateJobName, pathParameters: {
                   'jobId': jobData[index].id,
                   'companyName': jobData[index].companyName,
-                  'Email': jobData[index].email,
-                  'Phone': jobData[index].phone,
+                  'email': jobData[index].email,
+                  'phone': jobData[index].phone,
                   'jobTitle': jobData[index].jobTitle,
                   'experiencesForJob': jobData[index].experiencesForJob,
                   'workTime': jobData[index].workTime,
