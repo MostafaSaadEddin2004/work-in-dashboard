@@ -19,22 +19,20 @@ class TrainingScreen extends StatefulWidget {
 }
 
 class _TrainingScreenState extends State<TrainingScreen> {
-  bool ascending = false;
+  bool isAscending = false;
   onSortColumn(columnIndex, ascending, List<TrainingModel> data) {
     if (columnIndex == 0) {
       if (ascending) {
         data.sort(
-          (a, b) => a.trainingCompany.compareTo(b.trainingCompany),
+          (a, b) => a.createdAt.compareTo(b.createdAt),
         );
       } else {
         data.sort(
-          (a, b) => b.trainingCompany.compareTo(a.trainingCompany),
+          (a, b) => b.createdAt.compareTo(a.createdAt),
         );
       }
     }
   }
-
-  // final GlobalKey<BeamerState> _beam = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -54,18 +52,18 @@ class _TrainingScreenState extends State<TrainingScreen> {
                 rowsPerPage: data.length < 5 ? data.length : 8,
                 columnSpacing: Responsive.isDesktop(context) ? 208 : 20,
                 horizontalMargin: 16,
-                sortAscending: ascending,
+                sortAscending: isAscending,
                 sortColumnIndex: 0,
                 header: Row(
                   children: [
-                    
                     Text(
                       'Training',
                       style: Theme.of(context).textTheme.labelLarge,
                     ),
                     const Spacer(
                       flex: 1,
-                    ),AddButton(
+                    ),
+                    AddButton(
                       text: 'Create new',
                       color: AppColor.blue,
                       onPressed: () {
@@ -102,8 +100,9 @@ class _TrainingScreenState extends State<TrainingScreen> {
                     mouseCursor: MaterialStateMouseCursor.clickable,
                     onSort: (columnIndex, ascending) {
                       setState(() {
-                        onSortColumn(columnIndex, ascending, data);
+                        isAscending = ascending;
                       });
+                      onSortColumn(columnIndex, ascending, data);
                     },
                   ),
                   DataColumn(
@@ -136,7 +135,7 @@ class _TrainingScreenState extends State<TrainingScreen> {
               rowsPerPage: 5,
               columnSpacing: Responsive.isDesktop(context) ? 208 : 20,
               horizontalMargin: 16,
-              sortAscending: ascending,
+              sortAscending: isAscending,
               sortColumnIndex: 0,
               header: Row(
                 children: [

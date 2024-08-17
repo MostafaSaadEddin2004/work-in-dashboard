@@ -16,16 +16,16 @@ class UsersScreen extends StatefulWidget {
 
 class _UsersScreenState extends State<UsersScreen>
     with SingleTickerProviderStateMixin {
-  bool ascending = false;
+  bool isAscending = false;
   onSortColumn(int columnIndex, bool ascending, List<UserModel> data) {
     if (columnIndex == 0) {
       if (ascending) {
         data.sort(
-          // (a, b) => a.username.compareTo(b.username),
+          (a, b) => a.createdAt.compareTo(b.createdAt),
         );
       } else {
         data.sort(
-          // (a, b) => b.username.compareTo(a.username),
+          (a, b) => b.createdAt.compareTo(a.createdAt),
         );
       }
     }
@@ -48,7 +48,7 @@ class _UsersScreenState extends State<UsersScreen>
               return PaginatedDataTable(
                 rowsPerPage: data.length < 5 ? data.length : 8,
                 columnSpacing: 28.w,
-                sortAscending: ascending,
+                sortAscending: isAscending,
                 sortColumnIndex: 0,
                 header: Row(
                   children: [
@@ -64,12 +64,12 @@ class _UsersScreenState extends State<UsersScreen>
                       hintText: 'Search a user',
                       onChanged: (value) {
                         setState(() {
-                          // data = value == null
-                          //     ? data
-                          //     : data
-                          //         .where((element) =>
-                          //             element.username.contains(value))
-                          //         .toList();
+                          data = value == null
+                              ? data
+                              : data
+                                  .where((element) =>
+                                      element.username.contains(value))
+                                  .toList();
                         });
                       },
                     ),
@@ -84,8 +84,9 @@ class _UsersScreenState extends State<UsersScreen>
                     mouseCursor: MaterialStateMouseCursor.clickable,
                     onSort: (columnIndex, ascending) {
                       setState(() {
-                        onSortColumn(columnIndex, ascending, data);
+                        isAscending = ascending;
                       });
+                      onSortColumn(columnIndex, ascending, data);
                     },
                   ),
                   DataColumn(
@@ -119,7 +120,7 @@ class _UsersScreenState extends State<UsersScreen>
             return PaginatedDataTable(
               rowsPerPage: 5,
               columnSpacing: 28.w,
-              sortAscending: ascending,
+              sortAscending: isAscending,
               sortColumnIndex: 0,
               header: Row(
                 children: [

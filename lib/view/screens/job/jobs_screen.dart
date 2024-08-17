@@ -8,6 +8,7 @@ import 'package:work_in_dashboard/controller/constants/nav_items.dart';
 import 'package:work_in_dashboard/controller/style/app_color.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/model/job_data_table.dart';
+import 'package:work_in_dashboard/model/job_model.dart';
 import 'package:work_in_dashboard/view/components/add_button.dart';
 import 'package:work_in_dashboard/view/components/search_text_field.dart';
 
@@ -22,12 +23,19 @@ class _JobsScreenState extends State<JobsScreen> {
   bool isAscending = false;
   int sortColumnIndex = 0;
 
-  int compareString(
-    bool ascending,
-    String value1,
-    String value2,
-  ) =>
-      ascending ? value1.compareTo(value2) : value2.compareTo(value1);
+  onSortColumn(int columnIndex, bool ascending, List<JobModel> data) {
+    if (columnIndex == 0) {
+      if (ascending) {
+        data.sort(
+          (a, b) => a.createdAt.compareTo(b.createdAt),
+        );
+      } else {
+        data.sort(
+          (a, b) => b.createdAt.compareTo(a.createdAt),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,14 +58,14 @@ class _JobsScreenState extends State<JobsScreen> {
                 sortColumnIndex: 0,
                 header: Row(
                   children: [
-                  
                     Text(
                       'Jobs',
                       style: Theme.of(context).textTheme.labelLarge,
                     ),
                     const Spacer(
                       flex: 1,
-                    ),  AddButton(
+                    ),
+                    AddButton(
                       text: 'Create new',
                       color: AppColor.blue,
                       onPressed: () {
@@ -92,15 +100,9 @@ class _JobsScreenState extends State<JobsScreen> {
                     mouseCursor: MaterialStateMouseCursor.clickable,
                     onSort: (columnIndex, ascending) {
                       setState(() {
-                        if (columnIndex == 0) {
-                          data.sort((a, b) => compareString(
-                              ascending, a.companyName, b.companyName));
-                        }
-                        setState(() {
-                          isAscending = ascending;
-                          sortColumnIndex = columnIndex;
-                        });
+                        isAscending = ascending;
                       });
+                      onSortColumn(columnIndex, ascending, data);
                     },
                   ),
                   DataColumn(

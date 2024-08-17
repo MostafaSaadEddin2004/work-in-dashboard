@@ -14,7 +14,7 @@ class CompaniesScreen extends StatefulWidget {
 
 class _CompaniesScreenState extends State<CompaniesScreen> {
   bool addMode = false;
-  bool ascending = false;
+  bool isAscending = false;
   onSortColumn(int columnIndex, bool ascending, List<CompanyModel> data) {
     if (columnIndex == 0) {
       if (ascending) {
@@ -47,7 +47,7 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                 rowsPerPage: data.length < 5 ? data.length : 8,
                 columnSpacing: 50,
                 horizontalMargin: 16,
-                sortAscending: ascending,
+                sortAscending: isAscending,
                 sortColumnIndex: 0,
                 header: Row(
                   children: [
@@ -84,7 +84,7 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                     onSort: (columnIndex, ascending) {
                       setState(() {
                         onSortColumn(columnIndex, ascending, data);
-                        this.ascending = ascending;
+                        isAscending = ascending;
                       });
                     },
                   ),
@@ -126,7 +126,7 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
               rowsPerPage: 5,
               columnSpacing: 50,
               horizontalMargin: 16,
-              sortAscending: ascending,
+              sortAscending: isAscending,
               sortColumnIndex: 0,
               header: Row(
                 children: [
