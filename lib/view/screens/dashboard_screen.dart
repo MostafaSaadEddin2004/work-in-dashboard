@@ -11,6 +11,7 @@ import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/model/bar_chart_data_model.dart';
 import 'package:work_in_dashboard/view/components/drop_down_button.dart';
 import 'package:work_in_dashboard/view/components/item_card.dart';
+import 'package:work_in_dashboard/view/components/loading.dart';
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({super.key});
@@ -86,116 +87,126 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             const SizedBox(
               height: 16,
             ),
-            Builder(builder: (context) {
-              final usersState = context.read<UserServiceCubit>().state;
-              final companiesState = context.read<CompanyServicesCubit>().state;
-              final jobsState = context.read<JobServicesCubit>().state;
-              final trainingState = context.read<TrainingServicesCubit>().state;
-              if (
-                  usersState is UserServiceFetched &&
-                  companiesState is CompanyServicesFetched &&
-                      jobsState is JobServicesFetched &&
-                      trainingState is TrainingServicesFetched) {
-                final usersData = usersState.userData;
-                final companiesData = companiesState.companyData;
-                final jobsData = jobsState.jobData;
-                final trainingData = trainingState.trainingData;
+            BlocBuilder<UserServiceCubit, UserServiceState>(
+              bloc: UserServiceCubit()..getAllUsers(),
+              builder: (context, userState) {
+                return BlocBuilder<CompanyServicesCubit, CompanyServicesState>(
+                  bloc: CompanyServicesCubit()..getAllCompanies(),
+                  builder: (context, companyState) {
+                    return BlocBuilder<JobServicesCubit, JobServicesState>(
+                      bloc: JobServicesCubit()..getAllJobs(),
+                      builder: (context, jobState) {
+                        return BlocBuilder<TrainingServicesCubit, TrainingServicesState>(
+                          bloc: TrainingServicesCubit()..getAllTraining(),
+                          builder: (context, trainState) {
+                            if (userState is UserServiceFetched &&
+                  companyState is CompanyServicesFetched &&
+                  jobState is JobServicesFetched &&
+                  trainState is TrainingServicesFetched) {
+                final usersData = userState.userData;
+                final companiesData = companyState.companyData;
+                final jobsData = jobState.jobData;
+                final trainingData = trainState.trainingData;
                 return AspectRatio(
-                  aspectRatio: 2.0,
+                  aspectRatio: 3.0,
                   child: BarChart(
-                      swapAnimationCurve: Curves.linear,
-                      swapAnimationDuration: const Duration(milliseconds: 200),
-                      BarChartData(
-                          barGroups: ChartData.monthlySummary(
-                                  usersData,
-                                  companiesData,
-                                  jobsData,
-                                  trainingData,
-                                  selectedYear)
-                              .map((e) => BarChartGroupData(
-                                      x: e.companyX,
-                                      barsSpace: 4,
-                                      barRods: [
-                                        BarChartRodData(
-                                          toY: e.userY.toDouble(),
-                                          color: AppColor.white,
-                                          width: Responsive.isDesktop(context)
-                                              ? 12
-                                              : 2,
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                        ),
-                                        BarChartRodData(
-                                          toY: e.companyY.toDouble(),
-                                          color: AppColor.blue,
-                                          width: Responsive.isDesktop(context)
-                                              ? 12
-                                              : 2,
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                        ),
-                                        BarChartRodData(
-                                          toY: e.jobY.toDouble(),
-                                          color: AppColor.red,
-                                          width: Responsive.isDesktop(context)
-                                              ? 12
-                                              : 2,
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                        ),
-                                        BarChartRodData(
-                                          toY: e.trainingY.toDouble(),
-                                          color: AppColor.green,
-                                          width: Responsive.isDesktop(context)
-                                              ? 12
-                                              : 2,
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                        ),
-                                      ]))
-                              .toList(),
-                          titlesData: const FlTitlesData(
-                            rightTitles: AxisTitles(
-                                sideTitles: SideTitles(
-                              showTitles: false,
-                            )),
-                            topTitles: AxisTitles(
-                                sideTitles: SideTitles(
-                              showTitles: false,
-                            )),
-                            leftTitles: AxisTitles(
-                                sideTitles: SideTitles(
-                              showTitles: true,
-                              interval: 10,
-                              reservedSize: 40,
-                            )),
-                            bottomTitles: AxisTitles(
-                                sideTitles: SideTitles(
-                                    showTitles: true,
-                                    reservedSize: 48,
-                                    getTitlesWidget:
-                                        CharBarTitels.getBottomTitels)),
-                          ),
-                          gridData: const FlGridData(show: false),
-                          borderData: FlBorderData(
-                              border: const Border(
-                            left: BorderSide(
-                              color: AppColor.white,
-                            ),
-                            bottom: BorderSide(
-                              color: AppColor.white,
-                            ),
+                    swapAnimationCurve: Curves.linear,
+                    swapAnimationDuration: const Duration(milliseconds: 200),
+                    BarChartData(
+                        barGroups: ChartData.monthlySummary(
+                                usersData,
+                                companiesData,
+                                jobsData,
+                                trainingData,
+                                selectedYear)
+                            .map((e) => BarChartGroupData(
+                                    x: e.companyX,
+                                    barsSpace: 4,
+                                    barRods: [
+                                      BarChartRodData(
+                                        toY: e.userY.toDouble(),
+                                        color: AppColor.white,
+                                        width: Responsive.isDesktop(context)
+                                            ? 12
+                                            : 2,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      BarChartRodData(
+                                       toY: e.companyY.toDouble(),
+                                        color: AppColor.blue,
+                                        width: Responsive.isDesktop(context)
+                                            ? 12
+                                            : 2,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      BarChartRodData(
+                                        toY: e.jobY.toDouble(),
+                                        color: AppColor.red,
+                                        width: Responsive.isDesktop(context)
+                                            ? 12
+                                            : 2,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      BarChartRodData(
+                                        toY: e.trainingY.toDouble(),
+                                        color: AppColor.green,
+                                        width: Responsive.isDesktop(context)
+                                            ? 12
+                                            : 2,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                    ]))
+                            .toList(),
+                        titlesData:  FlTitlesData(
+                          rightTitles: const AxisTitles(
+                              sideTitles: SideTitles(
+                            showTitles: false,
                           )),
-                          minY: 0,
-                          maxY: 100)),
+                          topTitles: const AxisTitles(
+                              sideTitles: SideTitles(
+                            showTitles: false,
+                          )),
+                          leftTitles: AxisTitles(
+                              sideTitles: SideTitles(
+                            showTitles: true,
+                            interval: Responsive.isDesktop(context)? 10: 50,
+                            reservedSize: 40,
+                          )),
+                          bottomTitles: const AxisTitles(
+                              sideTitles: SideTitles(
+                                  showTitles: true,
+                                  reservedSize: 48,
+                                  getTitlesWidget:
+                                      CharBarTitels.getBottomTitels)),
+                        ),
+                        gridData: const FlGridData(show: false),
+                        borderData: FlBorderData(
+                            border: const Border(
+                          left: BorderSide(
+                            color: AppColor.white,
+                          ),
+                          bottom: BorderSide(
+                            color: AppColor.white,
+                          ),
+                        )),
+                        minY: 0,
+                        maxY: 100),
+                  ),
                 );
-              }
-              return Center(
-                  child: Text(
-                'Something went wrong',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ));
-            }),
+              } else if (userState is UserServiceLoading &&
+                  companyState is CompanyServicesLoading &&
+                  jobState is JobServicesLoading &&
+                  trainState is TrainingServicesLoading) {
+                return const Loading();
+              } return const Loading();
+                          },
+                        );
+                      },
+                    );
+                  },
+                );
+              },
+            )
           ],
         ),
       ),
