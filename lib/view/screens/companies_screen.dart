@@ -29,6 +29,7 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -43,7 +44,6 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
               );
             } else if (state is CompanyServicesFetched) {
               var data = state.companyData;
-              List<CompanyModel> filteredData = data;
               return PaginatedDataTable(
                 rowsPerPage: data.length < 5 ? data.length : 8,
                 columnSpacing: 50,
@@ -65,9 +65,9 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                       onChanged: (value) {
                         setState(() {
                           if (value == null) {
-                            filteredData = data;
+                            data = data;
                           } else {
-                            filteredData = data
+                            data = data
                                 .where((element) =>
                                     element.companyName.contains(value))
                                 .toList();
@@ -122,8 +122,7 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                     ),
                   ),
                 ],
-                source: CompanyDataTable(
-                    companyData: filteredData, context: context),
+                source: CompanyDataTable(companyData: data, context: context),
               );
             }
             return PaginatedDataTable(

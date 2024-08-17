@@ -142,7 +142,7 @@ class _UpdateJobScreenState extends State<UpdateJobScreen> {
                           }
                           return null;
                         },
-                        controller: _companyName,
+                        controller: _companyEmail,
                         hintText: 'Enter company email',
                         labelText: 'Company email',
                       ),
@@ -153,7 +153,7 @@ class _UpdateJobScreenState extends State<UpdateJobScreen> {
                           }
                           return null;
                         },
-                        controller: _companyName,
+                        controller: _companyPhone,
                         hintText: 'Enter company phone',
                         labelText: 'Company phone',
                       ),
