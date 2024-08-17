@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:work_in_dashboard/controller/bloc/training_services/training_services_cubit.dart';
+import 'package:work_in_dashboard/controller/constants/nav_items.dart';
+import 'package:work_in_dashboard/controller/style/app_color.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/model/training_data_table.dart';
 import 'package:work_in_dashboard/model/training_model.dart';
+import 'package:work_in_dashboard/view/components/add_button.dart';
 import 'package:work_in_dashboard/view/components/search_text_field.dart';
 
 class TrainingScreen extends StatefulWidget {
@@ -54,14 +58,23 @@ class _TrainingScreenState extends State<TrainingScreen> {
                 sortColumnIndex: 0,
                 header: Row(
                   children: [
+                    
                     Text(
                       'Training',
                       style: Theme.of(context).textTheme.labelLarge,
                     ),
                     const Spacer(
                       flex: 1,
+                    ),AddButton(
+                      text: 'Create new',
+                      color: AppColor.blue,
+                      onPressed: () {
+                        context.goNamed(NavItemsName.addTrainingName);
+                      },
                     ),
-                  
+                    const SizedBox(
+                      width: 16,
+                    ),
                     SearchTextField(
                       enabled: true,
                       hintText: 'Search a training',

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:work_in_dashboard/controller/bloc/job_services/job_services_cubit.dart';
+import 'package:work_in_dashboard/controller/constants/nav_items.dart';
+import 'package:work_in_dashboard/controller/style/app_color.dart';
 import 'package:work_in_dashboard/controller/utilities/screen_size.dart';
 import 'package:work_in_dashboard/model/job_data_table.dart';
+import 'package:work_in_dashboard/view/components/add_button.dart';
 import 'package:work_in_dashboard/view/components/search_text_field.dart';
 
 class JobsScreen extends StatefulWidget {
@@ -46,12 +50,22 @@ class _JobsScreenState extends State<JobsScreen> {
                 sortColumnIndex: 0,
                 header: Row(
                   children: [
+                  
                     Text(
                       'Jobs',
                       style: Theme.of(context).textTheme.labelLarge,
                     ),
                     const Spacer(
                       flex: 1,
+                    ),  AddButton(
+                      text: 'Create new',
+                      color: AppColor.blue,
+                      onPressed: () {
+                        context.goNamed(NavItemsName.addJobName);
+                      },
+                    ),
+                    const SizedBox(
+                      width: 16,
                     ),
                     SearchTextField(
                       enabled: true,

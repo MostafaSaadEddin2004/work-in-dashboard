@@ -36,7 +36,6 @@ class _AddButtonState extends State<AddButton> {
       mouseCursor: MaterialStateMouseCursor.clickable,
       borderRadius: BorderRadius.circular(16),
       child: AnimatedContainer(
-        width: 200,
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeIn,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
