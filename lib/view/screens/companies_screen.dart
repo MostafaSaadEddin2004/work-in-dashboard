@@ -29,7 +29,6 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -64,14 +63,12 @@ class _CompaniesScreenState extends State<CompaniesScreen> {
                       hintText: 'Search a company',
                       onChanged: (value) {
                         setState(() {
-                          if (value == null) {
-                            data = data;
-                          } else {
-                            data = data
-                                .where((element) =>
-                                    element.companyName.contains(value))
-                                .toList();
-                          }
+                          data = value == null
+                              ? data
+                              : data
+                                  .where((element) =>
+                                      element.companyName.contains(value))
+                                  .toList();
                         });
                       },
                     ),
