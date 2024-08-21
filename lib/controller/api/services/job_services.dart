@@ -27,14 +27,14 @@ class JobServices extends BaseApi {
     required String gender,
   }) async {
     await BaseApi.postRequest(endPoint: 'Add-job', data: {
-      'CompanyName': jsonEncode(companyName),
-      'Email': jsonEncode(companyEmail),
-      'Phone': jsonEncode(companyPhone),
-      'JobTitle': jsonEncode(jobTitle),
-      'ExperiencesForJob': jsonEncode(experiencesForJob),
-      'WorkTime': jsonEncode(workTime),
-      'CompanyNav': jsonEncode(companyNav),
-      'Gender': jsonEncode(gender),
+      'CompanyName': companyName,
+      'Email': companyEmail,
+      'Phone': companyPhone,
+      'JobTitle': jobTitle,
+      'ExperiencesForJob': experiencesForJob,
+      'WorkTime': workTime,
+      'CompanyNav': companyNav,
+      'Gender': gender,
     });
   }
 
